@@ -18,5 +18,9 @@ module.exports = {
 			{test: /\.js$/, exclude: /node_modules/, loaders: "babel-loader"}
 		]
 	},
+	resolve: {
+		modules: ['node_modules'], 
+		extensions: ['.js', '.scss']
+	},
 	plugins: [HtmlWebpackPluginConfig]
-}
+};
