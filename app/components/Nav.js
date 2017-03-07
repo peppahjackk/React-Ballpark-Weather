@@ -1,12 +1,29 @@
 import React, { Component } from 'react'
 import { Menu } from 'semantic-ui-react'
 
+var FillMenuOptions = props => {
+  const options = props.navOptions;
+  const menuOptions = options.map((option) => <Menu.Item key={option} name={option} active={props.that.state.activeItem === option} onClick={props.that.handleItemClick.bind(props.that)}>{option}</Menu.Item>)
+  
+  if (props.navTitle) { return (
+    <Menu>
+      <Menu.Item key={props.navTitle}>{props.navTitle}</Menu.Item>
+      {menuOptions}
+    </Menu>
+    )} else { return(
+    <Menu>{menuOptions}</Menu>
+    )}
+}
+
 export default class Nav extends Component {
   constructor(props) {
     super(props);
+    const that = this;
     this.state = {
+      title: props.title,
       items: props.items,
-      activeItem: ''
+      activeItem: props.start,
+      it: that
     }
   }
   
@@ -14,12 +31,7 @@ export default class Nav extends Component {
   
   render() {
     return(
-      <Menu>
-        <Menu.Item>Baseball Weather</Menu.Item>
-        <Menu.Item name={this.state.items[1]} active={this.state.activeItem === this.state.items[1]} onClick={this.handleItemClick.bind(this)}>{this.state.items[1]}</Menu.Item>
-        <Menu.Item name={this.state.items[2]} active={this.state.activeItem === this.state.items[2]} onClick={this.handleItemClick.bind(this)}>{this.state.items[2]}</Menu.Item>
-        <Menu.Item name={this.state.items[3]} active={this.state.activeItem === this.state.items[3]} onClick={this.handleItemClick.bind(this)}>{this.state.items[3]}</Menu.Item>
-      </Menu>
+      <FillMenuOptions navTitle={this.state.title} navOptions={this.state.items} that={this.state.it}/>
     )
   }
 }

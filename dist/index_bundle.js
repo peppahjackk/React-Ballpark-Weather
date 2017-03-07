@@ -28532,7 +28532,8 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var menuOptions = { 1: 'Home', 2: 'Day', 3: 'Stadium' };
+var menuOptions = ['Home', 'Day', 'Stadium'];
+var menuTitle = 'Baseball Weather';
 
 var Main = function (_React$Component) {
   _inherits(Main, _React$Component);
@@ -28549,7 +28550,7 @@ var Main = function (_React$Component) {
       return _react2.default.createElement(
         'div',
         null,
-        _react2.default.createElement(_Nav2.default, { items: menuOptions }),
+        _react2.default.createElement(_Nav2.default, { items: menuOptions, title: menuTitle, start: menuOptions[0] }),
         _react2.default.cloneElement(this.props.children, { key: this.props.location.pathname })
       );
     }
@@ -28587,6 +28588,36 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
+var FillMenuOptions = function FillMenuOptions(props) {
+  var options = props.navOptions;
+  var menuOptions = options.map(function (option) {
+    return _react2.default.createElement(
+      _semanticUiReact.Menu.Item,
+      { key: option, name: option, active: props.that.state.activeItem === option, onClick: props.that.handleItemClick.bind(props.that) },
+      option
+    );
+  });
+
+  if (props.navTitle) {
+    return _react2.default.createElement(
+      _semanticUiReact.Menu,
+      null,
+      _react2.default.createElement(
+        _semanticUiReact.Menu.Item,
+        { key: props.navTitle },
+        props.navTitle
+      ),
+      menuOptions
+    );
+  } else {
+    return _react2.default.createElement(
+      _semanticUiReact.Menu,
+      null,
+      menuOptions
+    );
+  }
+};
+
 var Nav = function (_Component) {
   _inherits(Nav, _Component);
 
@@ -28595,9 +28626,12 @@ var Nav = function (_Component) {
 
     var _this = _possibleConstructorReturn(this, (Nav.__proto__ || Object.getPrototypeOf(Nav)).call(this, props));
 
+    var that = _this;
     _this.state = {
+      title: props.title,
       items: props.items,
-      activeItem: ''
+      activeItem: props.start,
+      it: that
     };
     return _this;
   }
@@ -28611,30 +28645,7 @@ var Nav = function (_Component) {
   }, {
     key: 'render',
     value: function render() {
-      return _react2.default.createElement(
-        _semanticUiReact.Menu,
-        null,
-        _react2.default.createElement(
-          _semanticUiReact.Menu.Item,
-          null,
-          'Baseball Weather'
-        ),
-        _react2.default.createElement(
-          _semanticUiReact.Menu.Item,
-          { name: this.state.items[1], active: this.state.activeItem === this.state.items[1], onClick: this.handleItemClick.bind(this) },
-          this.state.items[1]
-        ),
-        _react2.default.createElement(
-          _semanticUiReact.Menu.Item,
-          { name: this.state.items[2], active: this.state.activeItem === this.state.items[2], onClick: this.handleItemClick.bind(this) },
-          this.state.items[2]
-        ),
-        _react2.default.createElement(
-          _semanticUiReact.Menu.Item,
-          { name: this.state.items[3], active: this.state.activeItem === this.state.items[3], onClick: this.handleItemClick.bind(this) },
-          this.state.items[3]
-        )
-      );
+      return _react2.default.createElement(FillMenuOptions, { navTitle: this.state.title, navOptions: this.state.items, that: this.state.it });
     }
   }]);
 
