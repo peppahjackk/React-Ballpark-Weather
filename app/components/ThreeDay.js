@@ -3,11 +3,14 @@ import { Container, Grid, Header } from 'semantic-ui-react'
 import PageHeader from './PageHeader'
 
 export default class ThreeDay extends Component {
+  constructor(props) {
+    super(props)
+  }
   render() {
     return (
       <Container>
         <Grid columns={3} centered>
-          <PageHeader header='Baseball Weather' subheader='Three Day Forecast' cols={3}></PageHeader>
+          <PageHeader header={this.props.header} subheader={this.props.subheader} cols={3}></PageHeader>
           <Grid.Row>
             <Grid.Column width={3}>
               <h1>Map</h1>
@@ -28,4 +31,9 @@ export default class ThreeDay extends Component {
       </Container>
     )
   }
+}
+
+ThreeDay.defaultProps = {
+  header: 'Baseball Weather',
+  subheader: 'Three Day Forecast'
 }
