@@ -1,11 +1,24 @@
 import React, { Component } from 'react'
 import { Container, Grid, Header } from 'semantic-ui-react'
 import PageHeader from './PageHeader'
+import darkSkyHelper from '../utils/darkSkyHelper'
 
 export default class ThreeDay extends Component {
   constructor(props) {
     super(props)
+    this.state = {
+      weatherInfo: 'No data found'
+    }
   }
+  
+  componentDidMount() {
+    darkSkyHelper.getFiveDay('new_york')
+    .then(function(info) {
+      console.log(info);
+      this.setState({weatherInfo: info.data.list[0].weather[0].description})
+    }.bind(this))
+  }
+  
   render() {
     return (
       <Container>
@@ -19,6 +32,7 @@ export default class ThreeDay extends Component {
           <Grid.Row>
             <Grid.Column>
               <Header as='h3'>Monday</Header>
+              <p>{this.state.weatherInfo}</p>
             </Grid.Column>
             <Grid.Column>
               <Header as='h3'>Tuesday</Header>
