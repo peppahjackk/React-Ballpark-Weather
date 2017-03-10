@@ -14,8 +14,8 @@ export default class ThreeDay extends Component {
   componentDidMount() {
     darkSkyHelper.getFiveDay('new_york')
     .then(function(info) {
-      console.log(info);
-      this.setState({weatherInfo: info.data.list[0].weather[0].description})
+      console.log(info.data);
+      this.setState({weatherInfo: 'gots'})
     }.bind(this))
   }
   
