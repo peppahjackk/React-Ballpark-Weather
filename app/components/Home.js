@@ -6,7 +6,7 @@ import ThreeDay from './ThreeDay'
 export default class Home extends React.Component {
   render() {
     return (
-      <ThreeDay></ThreeDay>
+      <ThreeDay header='New York, NY'></ThreeDay>
     )
   }
 }
