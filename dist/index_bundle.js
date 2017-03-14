@@ -30007,7 +30007,7 @@ var Home = function (_React$Component) {
   _createClass(Home, [{
     key: 'render',
     value: function render() {
-      return _react2.default.createElement(_ThreeDay2.default, null);
+      return _react2.default.createElement(_ThreeDay2.default, { header: 'New York, NY' });
     }
   }]);
 
@@ -30297,7 +30297,10 @@ var ThreeDay = function (_Component) {
     var _this = _possibleConstructorReturn(this, (ThreeDay.__proto__ || Object.getPrototypeOf(ThreeDay)).call(this, props));
 
     _this.state = {
-      weatherInfo: 'No data found'
+      day1Date: 'Current Date',
+      day1Weather: 'No data found',
+      day2Date: 'Current Date',
+      day2Weather: 'No data found'
     };
     return _this;
   }
@@ -30305,9 +30308,16 @@ var ThreeDay = function (_Component) {
   _createClass(ThreeDay, [{
     key: 'componentDidMount',
     value: function componentDidMount() {
-      _darkSkyHelper2.default.getFiveDay('new_york').then(function (info) {
-        console.log(info.data);
-        this.setState({ weatherInfo: 'gots' });
+      _darkSkyHelper2.default.getWeather('new_york').then(function (info) {
+        var data = _darkSkyHelper2.default.formatWeather(info);
+        return data;
+      }).then(function (weatherData) {
+        this.setState({
+          day1Date: weatherData.day1Date,
+          day1Weather: weatherData.day1PrecipPercent,
+          day2Date: weatherData.day2Date,
+          day2Weather: weatherData.day2PrecipPercent
+        });
       }.bind(this));
     }
   }, {
@@ -30347,7 +30357,12 @@ var ThreeDay = function (_Component) {
               _react2.default.createElement(
                 'p',
                 null,
-                this.state.weatherInfo
+                this.state.day1Date
+              ),
+              _react2.default.createElement(
+                'p',
+                null,
+                this.state.day1Weather
               )
             ),
             _react2.default.createElement(
@@ -30357,6 +30372,16 @@ var ThreeDay = function (_Component) {
                 _semanticUiReact.Header,
                 { as: 'h3' },
                 'Tuesday'
+              ),
+              _react2.default.createElement(
+                'p',
+                null,
+                this.state.day2Date
+              ),
+              _react2.default.createElement(
+                'p',
+                null,
+                this.state.day2Weather
               )
             ),
             _react2.default.createElement(
@@ -30492,6 +30517,10 @@ var _stadiumLocations = __webpack_require__(479);
 
 var _stadiumLocations2 = _interopRequireDefault(_stadiumLocations);
 
+var _dateManipulation = __webpack_require__(908);
+
+var _dateManipulation2 = _interopRequireDefault(_dateManipulation);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -30504,10 +30533,22 @@ var getWeatherData = function () {
   }
 
   _createClass(getWeatherData, null, [{
-    key: 'getFiveDay',
-    value: function getFiveDay(city) {
+    key: 'getWeather',
+    value: function getWeather() {
       var info = _axios2.default.get('./proxy.php');
+      console.log(info);
       return info;
+    }
+  }, {
+    key: 'formatWeather',
+    value: function formatWeather(info) {
+      var weatherData = {
+        day1Date: _dateManipulation2.default.prettifyDate(info.data.daily.data[0].time),
+        day1PrecipPercent: info.data.daily.data[0].precipProbability,
+        day2Date: _dateManipulation2.default.prettifyDate(info.data.daily.data[1].time),
+        day2PrecipPercent: info.data.daily.data[1].precipProbability
+      };
+      return weatherData;
     }
   }]);
 
@@ -63074,6 +63115,40 @@ module.exports = g;
 
 module.exports = __webpack_require__(452);
 
+
+/***/ }),
+/* 908 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var dateManip = function () {
+  function dateManip() {
+    _classCallCheck(this, dateManip);
+  }
+
+  _createClass(dateManip, null, [{
+    key: 'prettifyDate',
+    value: function prettifyDate(date) {
+      var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+      var chosenDate = new Date(parseInt(date + '000'));
+      return months[chosenDate.getUTCMonth()] + ' ' + chosenDate.getUTCDate() + ', ' + chosenDate.getUTCFullYear();
+    }
+  }]);
+
+  return dateManip;
+}();
+
+exports.default = dateManip;
 
 /***/ })
 /******/ ]);
