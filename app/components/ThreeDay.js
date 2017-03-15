@@ -9,24 +9,23 @@ export default class ThreeDay extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      day1Date: 'Current Date',
-      day1Weather: 'No data found',
-      day2Date: 'Current Date',
-      day2Weather: 'No data found'
+
     }
   }
   
   componentDidMount() {
     darkSkyHelper.getWeather('new_york')
     .then(function(info) {
-      var data = darkSkyHelper.formatWeather(info);
+      var data = darkSkyHelper.formatWeather(info, 3);
     return data;})
     .then(function(weatherData) { 
       this.setState({
         day1Date: weatherData.day1Date, 
         day1Weather: weatherData.day1PrecipPercent, 
         day2Date: weatherData.day2Date, 
-        day2Weather: weatherData.day2PrecipPercent
+        day2Weather: weatherData.day2PrecipPercent,
+        day3Date: weatherData.day3Date,
+        day3Weather: weatherData.day3PrecipPercent
         })
       }.bind(this))
   }
@@ -54,6 +53,8 @@ export default class ThreeDay extends Component {
             </Grid.Column>
             <Grid.Column>
               <Header as='h3'>Wednesday</Header>
+              <p>{this.state.day3Date}</p>
+              <p>{this.state.day3Weather}</p>
             </Grid.Column>
           </Grid.Row>
         </Grid>
