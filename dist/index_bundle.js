@@ -30296,25 +30296,30 @@ var ThreeDay = function (_Component) {
 
     var _this = _possibleConstructorReturn(this, (ThreeDay.__proto__ || Object.getPrototypeOf(ThreeDay)).call(this, props));
 
-    _this.state = {};
+    _this.state = {
+      days: 3
+    };
     return _this;
   }
 
   _createClass(ThreeDay, [{
     key: 'componentDidMount',
     value: function componentDidMount() {
-      _darkSkyHelper2.default.getWeather('new_york').then(function (info) {
-        var data = _darkSkyHelper2.default.formatWeather(info, 3);
+      _darkSkyHelper2.default.getWeather().then(function (info) {
+        var data = _darkSkyHelper2.default.formatWeather(info, this.state.days);
         return data;
-      }).then(function (weatherData) {
-        this.setState({
-          day1Date: weatherData.day1Date,
-          day1Weather: weatherData.day1PrecipPercent,
-          day2Date: weatherData.day2Date,
-          day2Weather: weatherData.day2PrecipPercent,
-          day3Date: weatherData.day3Date,
-          day3Weather: weatherData.day3PrecipPercent
-        });
+      }.bind(this)).then(function (weatherData) {
+        var totalWeather = {};
+        for (var i = 1; i <= this.state.days; i++) {
+          var today = 'day' + i;
+          totalWeather[today] = weatherData[today];
+          totalWeather[today + 'Date'] = weatherData[today + 'Date'];
+          totalWeather[today + 'Summary'] = weatherData[today + 'Summary'];
+          if (weatherData[today + 'PrecipPercent']) {
+            totalWeather[today + 'Precip'] = weatherData[today + 'PrecipPercent'] + '% chance of ' + weatherData[today + 'PrecipType'];
+          }
+        }
+        this.setState(totalWeather);
       }.bind(this));
     }
   }, {
@@ -30349,7 +30354,7 @@ var ThreeDay = function (_Component) {
               _react2.default.createElement(
                 _semanticUiReact.Header,
                 { as: 'h3' },
-                'Monday'
+                this.state.day1
               ),
               _react2.default.createElement(
                 'p',
@@ -30359,7 +30364,12 @@ var ThreeDay = function (_Component) {
               _react2.default.createElement(
                 'p',
                 null,
-                this.state.day1Weather
+                this.state.day1Summary
+              ),
+              _react2.default.createElement(
+                'p',
+                null,
+                this.state.day1Precip
               )
             ),
             _react2.default.createElement(
@@ -30368,7 +30378,7 @@ var ThreeDay = function (_Component) {
               _react2.default.createElement(
                 _semanticUiReact.Header,
                 { as: 'h3' },
-                'Tuesday'
+                this.state.day2
               ),
               _react2.default.createElement(
                 'p',
@@ -30378,7 +30388,12 @@ var ThreeDay = function (_Component) {
               _react2.default.createElement(
                 'p',
                 null,
-                this.state.day2Weather
+                this.state.day2Summary
+              ),
+              _react2.default.createElement(
+                'p',
+                null,
+                this.state.day2Precip
               )
             ),
             _react2.default.createElement(
@@ -30387,7 +30402,7 @@ var ThreeDay = function (_Component) {
               _react2.default.createElement(
                 _semanticUiReact.Header,
                 { as: 'h3' },
-                'Wednesday'
+                this.state.day3
               ),
               _react2.default.createElement(
                 'p',
@@ -30397,7 +30412,12 @@ var ThreeDay = function (_Component) {
               _react2.default.createElement(
                 'p',
                 null,
-                this.state.day3Weather
+                this.state.day3Summary
+              ),
+              _react2.default.createElement(
+                'p',
+                null,
+                this.state.day3Precip
               )
             )
           )
@@ -30545,28 +30565,45 @@ var getWeatherData = function () {
       var info = _axios2.default.get('./proxy.php');
       return info;
     }
+
+    // Returns an object containing the weather information for the requested amount of days
+
   }, {
     key: 'formatWeather',
     value: function formatWeather(info, days) {
-      var weatherData = {};
+      var weatherData = {},
+          precipType = '';
+      var weekdays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
       var latest = info.data.daily;
+      console.log(latest);
       if (!days) {
+        var day = new Date(parseInt(latest.data[0].time + '000'));
+        if (latest.data[0].precipType) {
+          weatherData.day1PrecipType = latest.data[0].precipType;
+          weatherData.day1PrecipPercent = latest.data[0].precipProbability;
+        } else {
+          precipType = 'rain';
+        }
         weatherData = {
+          day1: weekdays[day.getDay()],
           day1Date: _dateManipulation2.default.prettifyDate(latest.data[0].time),
-          day1PrecipPercent: latest.data[0].precipProbability
+          day1Summary: latest.data[0].summary
         };
+
+        console.log(weatherData.day1PrecipPercent);
       } else {
         for (var i = 1; i <= days; i++) {
           var dayData = latest.data[i - 1];
+          var _day = new Date(parseInt(dayData.time + '000'));
+          weatherData['day' + i] = weekdays[_day.getDay()];
           weatherData['day' + i + 'Date'] = _dateManipulation2.default.prettifyDate(dayData.time);
-          weatherData['day' + i + 'PrecipPercent'] = dayData.precipProbability;
+          weatherData['day' + i + 'Summary'] = dayData.summary;
+          if (dayData.precipType) {
+            weatherData['day' + i + 'PrecipPercent'] = dayData.precipProbability * 100;
+            weatherData['day' + i + 'PrecipType'] = dayData.precipType;
+            //weatherData['day'+i+'PrecipTime'] = dateManip.prettifyTime(dayData.precipIntensityMaxTime);
+          }
         }
-        /*weatherData = {
-          day1Date: dateManip.prettifyDate(info.data.daily.data[0].time),
-          day1PrecipPercent: info.data.daily.data[0].precipProbability,
-          day2Date: dateManip.prettifyDate(info.data.daily.data[1].time),
-          day2PrecipPercent: info.data.daily.data[1].precipProbability
-        }; */
       }
       return weatherData;
     }
@@ -30599,10 +30636,16 @@ var dateManip = function () {
 
   _createClass(dateManip, null, [{
     key: 'prettifyDate',
-    value: function prettifyDate(date) {
+    value: function prettifyDate(time) {
       var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-      var chosenDate = new Date(parseInt(date + '000'));
+      var chosenDate = new Date(parseInt(time + '000'));
       return months[chosenDate.getUTCMonth()] + ' ' + chosenDate.getUTCDate() + ', ' + chosenDate.getUTCFullYear();
+    }
+  }, {
+    key: 'prettifyTime',
+    value: function prettifyTime(time) {
+      var chosenTime = new Date(parseInt(time + '000'));
+      return chosenTime.getHours() + ':' + chosenTime.getMinutes() + ':' + chosenTime.getSeconds();
     }
   }]);
 

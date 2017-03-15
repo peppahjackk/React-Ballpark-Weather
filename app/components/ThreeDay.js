@@ -9,24 +9,27 @@ export default class ThreeDay extends Component {
   constructor(props) {
     super(props)
     this.state = {
-
+      days: 3
     }
   }
   
   componentDidMount() {
-    darkSkyHelper.getWeather('new_york')
+    darkSkyHelper.getWeather()
     .then(function(info) {
-      var data = darkSkyHelper.formatWeather(info, 3);
-    return data;})
-    .then(function(weatherData) { 
-      this.setState({
-        day1Date: weatherData.day1Date, 
-        day1Weather: weatherData.day1PrecipPercent, 
-        day2Date: weatherData.day2Date, 
-        day2Weather: weatherData.day2PrecipPercent,
-        day3Date: weatherData.day3Date,
-        day3Weather: weatherData.day3PrecipPercent
-        })
+      var data = darkSkyHelper.formatWeather(info, this.state.days);
+    return data;}.bind(this))
+    .then(function(weatherData) {
+      let totalWeather = {};
+      for (let i = 1; i <= this.state.days; i++) {
+        let today = 'day' + i;
+        totalWeather[today] = weatherData[today];
+        totalWeather[today + 'Date'] = weatherData[today + 'Date'];
+        totalWeather[today + 'Summary'] = weatherData[today + 'Summary'];
+        if (weatherData[today + 'PrecipPercent']) {
+          totalWeather[today + 'Precip'] = weatherData[today + 'PrecipPercent'] + '% chance of ' + weatherData[today + 'PrecipType'];  
+        }
+      }
+      this.setState(totalWeather)
       }.bind(this))
   }
   
@@ -42,19 +45,22 @@ export default class ThreeDay extends Component {
           </Grid.Row>
           <Grid.Row>
             <Grid.Column>
-              <Header as='h3'>Monday</Header>
+              <Header as='h3'>{this.state.day1}</Header>
               <p>{this.state.day1Date}</p>
-              <p>{this.state.day1Weather}</p>
+              <p>{this.state.day1Summary}</p>
+              <p>{this.state.day1Precip}</p>
             </Grid.Column>
             <Grid.Column>
-              <Header as='h3'>Tuesday</Header>
+              <Header as='h3'>{this.state.day2}</Header>
               <p>{this.state.day2Date}</p>
-              <p>{this.state.day2Weather}</p>
+              <p>{this.state.day2Summary}</p>
+              <p>{this.state.day2Precip}</p>
             </Grid.Column>
             <Grid.Column>
-              <Header as='h3'>Wednesday</Header>
+              <Header as='h3'>{this.state.day3}</Header>
               <p>{this.state.day3Date}</p>
-              <p>{this.state.day3Weather}</p>
+              <p>{this.state.day3Summary}</p>
+              <p>{this.state.day3Precip}</p>
             </Grid.Column>
           </Grid.Row>
         </Grid>
