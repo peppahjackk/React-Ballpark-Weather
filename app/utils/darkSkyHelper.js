@@ -12,39 +12,47 @@ export default class getWeatherData {
   
   // Returns an object containing the weather information for the requested amount of days
   static formatWeather(info, days) {
-    let weatherData = {}, precipType = '';
+    let weatherData = {}, precipType = '', numDays;
     const weekdays = ['Sunday','Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
     let latest = info.data.daily;
     console.log(latest);
+    //Set and format weather data for one or more days
     if (!days) {
         let day = new Date(parseInt(latest.data[0].time + '000'));
-        if (latest.data[0].precipType) {
-          weatherData.day1PrecipType = latest.data[0].precipType;
-          weatherData.day1PrecipPercent = latest.data[0].precipProbability;
-        } else {
-          precipType = 'rain';
-        }
         weatherData = {
           day1: weekdays[day.getDay()],
           day1Date: dateManip.prettifyDate(latest.data[0].time),
           day1Summary: latest.data[0].summary
         }
-        
+        if (latest.data[0].precipType) {
+          weatherData.day1.precipType = latest.data[0].precipType;
+          weatherData.day1.precipPercent = latest.data[0].precipProbability;
+        }         
         console.log(weatherData.day1PrecipPercent);
       } else {
-        for (let i = 1; i <= days; i++) {
+        if (days > 8) {
+          numDays = 8;
+        } else if (days < 1) {
+          numDays = 1;
+        } else {
+          numDays = days;
+        }
+        for (let i = 1; i <= numDays; i++) {
           let dayData = latest.data[i-1];
           let day = new Date(parseInt(dayData.time + '000'));
-          weatherData['day'+i] = weekdays[day.getDay()];                   
-          weatherData['day'+i+'Date'] = dateManip.prettifyDate(dayData.time);
-          weatherData['day'+i+'Summary'] = dayData.summary;
+          weatherData['day'+i] = {
+            day: weekdays[day.getDay()],
+            date: dateManip.prettifyDate(dayData.time),
+            summary: dayData.summary
+          };
           if (dayData.precipType) {
-            weatherData['day'+i+'PrecipPercent'] = (dayData.precipProbability * 100);
-            weatherData['day'+i+'PrecipType'] = dayData.precipType;
+            weatherData['day'+i].precipPercent = (dayData.precipProbability * 100);
+            weatherData['day'+i].precipType = dayData.precipType;
             //weatherData['day'+i+'PrecipTime'] = dateManip.prettifyTime(dayData.precipIntensityMaxTime);
-          } 
+          }
         }
       }
+    console.log(weatherData);
     return weatherData;
   }
 }
