@@ -2,11 +2,36 @@ import axios from 'axios'
 import locations from './stadiumLocations'
 import dateManip from '../utils/dateManipulation'
 
-let id = '04497081d270b956aac2ccc286d0b245';
+let parksRequested = [], lastPark = 0;
 
 export default class getWeatherData {
   static getWeather() {
-    let info = axios.get('./proxy.php');
+    parksRequested = ['col'];
+    parksRequested = JSON.stringify(parksRequested);
+    
+    let info = axios.post('./proxy.php', {parkRequest: parksRequested}, {responseType:'json'})
+    .then(function(msg) {
+      let weatherData = JSON.stringify(msg.data);
+     // weatherData = weatherData.substring(1);
+      parksRequested = JSON.parse(parksRequested);
+      
+      // Breaks up each location's data into seperate objects
+      for (var i = 0; i < parksRequested.length; i++) {
+        let endParkData;
+        
+          endParkData = weatherData.indexOf('}}', lastPark) + 2;
+        
+       
+        if (endParkData > 0) {
+          var data = weatherData.substring(lastPark,endParkData);
+          console.log(JSON.parse(data));
+          lastPark = endParkData;
+        } 
+      }
+    })
+    .catch(function(error) {
+      console.log(error);
+    });
     return info;
   }
   
