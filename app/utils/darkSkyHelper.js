@@ -2,7 +2,7 @@ import axios from 'axios'
 import locations from './stadiumLocations'
 import dateManip from '../utils/dateManipulation'
 
-let parksRequested = [], lastPark = 0;
+let parksRequested = [], lastPark = 0, allData = {};
 
 export default class getWeatherData {
   static getWeather() {
@@ -14,7 +14,6 @@ export default class getWeatherData {
       let weatherData = JSON.stringify(msg);
       weatherData = JSON.parse(weatherData).data;
       parksRequested = JSON.parse(parksRequested);
-      console.log(parksRequested.length);
       if (parksRequested.length > 1) {
         // Breaks up each parks's data into seperate objects
         for (var i = 0; i < parksRequested.length; i++) {
@@ -22,13 +21,14 @@ export default class getWeatherData {
           endParkData = weatherData.indexOf('}}', lastPark) + 2;
           if (endParkData > 0) {
             var data = weatherData.substring(lastPark,endParkData);
-            console.log(JSON.parse(data));
+            allData[i] = JSON.parse(data);
             lastPark = endParkData;
           } 
         }
       } else {
-        console.log(weatherData);
+        allData = weatherData;
       }
+      return allData;
     })
     .catch(function(error) {
       console.log(error);
@@ -40,7 +40,7 @@ export default class getWeatherData {
   static formatWeather(info, days) {
     let weatherData = {}, precipType = '', numDays;
     const weekdays = ['Sunday','Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-    let latest = info.data.daily;
+    let latest = info.daily;
     console.log(latest);
     //Set and format weather data for one or more days
     if (!days) {

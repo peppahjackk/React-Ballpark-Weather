@@ -16,7 +16,8 @@ export default class ThreeDay extends Component {
   componentDidMount() {
    darkSkyHelper.getWeather()
     .then(function(info) {
-      var data = darkSkyHelper.formatWeather(info, this.state.days);
+     console.log(info[1]);
+      var data = darkSkyHelper.formatWeather(info[1], this.state.days);
     return data;}.bind(this))
     .then(function(weatherData) {
       let totalWeather = {};

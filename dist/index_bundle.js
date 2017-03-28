@@ -30306,7 +30306,8 @@ var ThreeDay = function (_Component) {
     key: 'componentDidMount',
     value: function componentDidMount() {
       _darkSkyHelper2.default.getWeather().then(function (info) {
-        var data = _darkSkyHelper2.default.formatWeather(info, this.state.days);
+        console.log(info[1]);
+        var data = _darkSkyHelper2.default.formatWeather(info[1], this.state.days);
         return data;
       }.bind(this)).then(function (weatherData) {
         var totalWeather = {};
@@ -30533,7 +30534,8 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 var parksRequested = [],
-    lastPark = 0;
+    lastPark = 0,
+    allData = {};
 
 var getWeatherData = function () {
   function getWeatherData() {
@@ -30550,7 +30552,6 @@ var getWeatherData = function () {
         var weatherData = JSON.stringify(msg);
         weatherData = JSON.parse(weatherData).data;
         parksRequested = JSON.parse(parksRequested);
-        console.log(parksRequested.length);
         if (parksRequested.length > 1) {
           // Breaks up each parks's data into seperate objects
           for (var i = 0; i < parksRequested.length; i++) {
@@ -30558,13 +30559,14 @@ var getWeatherData = function () {
             endParkData = weatherData.indexOf('}}', lastPark) + 2;
             if (endParkData > 0) {
               var data = weatherData.substring(lastPark, endParkData);
-              console.log(JSON.parse(data));
+              allData[i] = JSON.parse(data);
               lastPark = endParkData;
             }
           }
         } else {
-          console.log(weatherData);
+          allData = weatherData;
         }
+        return allData;
       }).catch(function (error) {
         console.log(error);
       });
@@ -30580,7 +30582,7 @@ var getWeatherData = function () {
           precipType = '',
           numDays = void 0;
       var weekdays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-      var latest = info.data.daily;
+      var latest = info.daily;
       console.log(latest);
       //Set and format weather data for one or more days
       if (!days) {
