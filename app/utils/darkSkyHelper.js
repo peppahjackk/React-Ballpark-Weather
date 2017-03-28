@@ -6,27 +6,28 @@ let parksRequested = [], lastPark = 0;
 
 export default class getWeatherData {
   static getWeather() {
-    parksRequested = ['col'];
+    parksRequested = ['col','nya'];
     parksRequested = JSON.stringify(parksRequested);
     
-    let info = axios.post('./proxy.php', {parkRequest: parksRequested}, {responseType:'json'})
+    let info = axios.post('./proxy.php', {parkRequest: parksRequested})
     .then(function(msg) {
-      let weatherData = JSON.stringify(msg.data);
-     // weatherData = weatherData.substring(1);
+      let weatherData = JSON.stringify(msg);
+      weatherData = JSON.parse(weatherData).data;
       parksRequested = JSON.parse(parksRequested);
-      
-      // Breaks up each location's data into seperate objects
-      for (var i = 0; i < parksRequested.length; i++) {
-        let endParkData;
-        
+      console.log(parksRequested.length);
+      if (parksRequested.length > 1) {
+        // Breaks up each parks's data into seperate objects
+        for (var i = 0; i < parksRequested.length; i++) {
+          let endParkData;
           endParkData = weatherData.indexOf('}}', lastPark) + 2;
-        
-       
-        if (endParkData > 0) {
-          var data = weatherData.substring(lastPark,endParkData);
-          console.log(JSON.parse(data));
-          lastPark = endParkData;
-        } 
+          if (endParkData > 0) {
+            var data = weatherData.substring(lastPark,endParkData);
+            console.log(JSON.parse(data));
+            lastPark = endParkData;
+          } 
+        }
+      } else {
+        console.log(weatherData);
       }
     })
     .catch(function(error) {
