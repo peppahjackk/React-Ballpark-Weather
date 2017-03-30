@@ -30007,7 +30007,7 @@ var Home = function (_React$Component) {
   _createClass(Home, [{
     key: 'render',
     value: function render() {
-      return _react2.default.createElement(_ThreeDay2.default, { header: 'Cincinnati, OH', park: 'cin' });
+      return _react2.default.createElement(_ThreeDay2.default, { header: 'Cincinnati, OH', parks: ['cin', 'nya', 'col', 'was'] });
     }
   }]);
 
@@ -30305,9 +30305,9 @@ var ThreeDay = function (_Component) {
   _createClass(ThreeDay, [{
     key: 'componentDidMount',
     value: function componentDidMount() {
-      _darkSkyHelper2.default.getWeather(['cin', 'nya']).then(function (info) {
-        var data = _darkSkyHelper2.default.formatWeather(info, this.state.days, ['cin', 'nya']);
-        return data;
+      _darkSkyHelper2.default.getWeather(this.props.parks).then(function (info) {
+        console.log(info);
+        return _darkSkyHelper2.default.formatWeather(info, this.state.days, this.props.parks);
       }.bind(this)).then(function (data) {
         this.setState(data);
         console.log(this.state);
@@ -30345,17 +30345,17 @@ var ThreeDay = function (_Component) {
               _react2.default.createElement(
                 _semanticUiReact.Header,
                 { as: 'h3' },
-                this.state.cinDay0
+                this.state.Day0
               ),
               _react2.default.createElement(
                 'p',
                 null,
-                this.state.cinDay0Date
+                this.state.Day0Date
               ),
               _react2.default.createElement(
                 'p',
                 null,
-                this.state.cinDay0Precip
+                this.state.cinDay0PrecipPercent
               ),
               _react2.default.createElement(
                 'p',
@@ -30369,22 +30369,22 @@ var ThreeDay = function (_Component) {
               _react2.default.createElement(
                 _semanticUiReact.Header,
                 { as: 'h3' },
-                this.state.day2
+                this.state.Day1
               ),
               _react2.default.createElement(
                 'p',
                 null,
-                this.state.day2Date
+                this.state.Day1Date
               ),
               _react2.default.createElement(
                 'p',
                 null,
-                this.state.day2Precip
+                this.state.cinDay1PrecipPercent
               ),
               _react2.default.createElement(
                 'p',
                 null,
-                this.state.day2Summary
+                this.state.cinDay1Summary
               )
             ),
             _react2.default.createElement(
@@ -30393,22 +30393,22 @@ var ThreeDay = function (_Component) {
               _react2.default.createElement(
                 _semanticUiReact.Header,
                 { as: 'h3' },
-                this.state.day3
+                this.state.Day2
               ),
               _react2.default.createElement(
                 'p',
                 null,
-                this.state.day3Date
+                this.state.Day2Date
               ),
               _react2.default.createElement(
                 'p',
                 null,
-                this.state.day3Precip
+                this.state.cinDay2PrecipPercent
               ),
               _react2.default.createElement(
                 'p',
                 null,
-                this.state.day3Summary
+                this.state.cinDay2Summary
               )
             )
           )
@@ -30534,36 +30534,35 @@ var getWeatherData = function () {
 
   _createClass(getWeatherData, null, [{
     key: 'getWeather',
+
+    // Requests weather data for given ballparks using proxy server
     value: function getWeather(cities) {
       parksRequested = cities;
       var numParks = parksRequested.length;
       parksRequested = JSON.stringify(parksRequested);
-
-      var info = _axios2.default.post('./proxy.php', {
+      return _axios2.default.post('./proxy.php', {
         parkRequest: parksRequested
       }).then(function (msg) {
-        var weatherData = JSON.stringify(msg);
-        weatherData = JSON.parse(weatherData).data;
+        var weatherData = msg.data;
         parksRequested = JSON.parse(parksRequested);
         if (parksRequested.length > 1) {
-          // Breaks up each parks's data into seperate objects
+          // Breaks up each parks' data into seperate objects
           for (var i = 0; i < parksRequested.length; i++) {
             var endParkData = void 0;
             endParkData = weatherData.indexOf('}}', lastPark) + 2;
             if (endParkData > 0) {
               var data = weatherData.substring(lastPark, endParkData);
-              allData[i] = JSON.parse(data);
+              allData[parksRequested[i]] = JSON.parse(data);
               lastPark = endParkData;
             }
           }
         } else {
-          allData[0] = weatherData;
+          allData[parksRequested[0]] = weatherData;
         }
         return allData;
       }).catch(function (error) {
         console.log(error);
       });
-      return info;
     }
 
     // Returns an object containing the weather information for the requested amount of days
@@ -30587,81 +30586,29 @@ var getWeatherData = function () {
         numDays = days;
       }
       var numPark = Object.keys(info).length;
+      // Obtain and set weekday(s) and date(s)
+      for (var i = 0; i < numDays; i++) {
+        console.log(info);
+        latest = info[cities[0]].daily;
+        var dayData = latest.data[i];
+        var day = new Date(parseInt(dayData.time + '000'));
+        weatherData['Day' + i] = weekdays[day.getDay()];
+        weatherData['Day' + i + 'Date'] = _dateManipulation2.default.prettifyDate(latest.data[i].time);
+      }
+      // Formats weather for each park into a single object
       for (var n = 0; n < numPark; n++) {
-        latest = info[n].daily;
-        for (var i = 0; i < numDays; i++) {
-          var dayData = latest.data[i];
-          var day = new Date(parseInt(dayData.time + '000'));
-          weatherData[cities[n] + 'Day' + i] = weekdays[day.getDay()];
-          weatherData[cities[n] + 'Day' + i + 'Date'] = _dateManipulation2.default.prettifyDate(latest.data[i].time);
-          weatherData[cities[n] + 'Day' + i + 'Summary'] = latest.data[i].summary;
-
-          if (latest.data[i].precipType) {
-            weatherData[cities[n] + 'Day' + i + 'PrecipPercent'] = dayData.precipProbability * 100;
-            weatherData[cities[n] + 'Day' + i + 'PrecipType'] = dayData.precipType;
+        latest = info[cities[n]].daily;
+        // Formats weather data for each requested day
+        for (var _i = 0; _i < numDays; _i++) {
+          var _dayData = latest.data[_i];
+          weatherData[cities[n] + 'Day' + _i + 'Summary'] = latest.data[_i].summary;
+          // Formats precipitation data if applicable
+          if (latest.data[_i].precipType) {
+            weatherData[cities[n] + 'Day' + _i + 'PrecipPercent'] = Math.round(_dayData.precipProbability * 100) + '% chance of ' + _dayData.precipType;
+            weatherData[cities[n] + 'Day' + _i + 'PrecipType'] = _dayData.precipType;
           }
         }
       }
-      /*
-      //Set and format weather data for one or more days
-      if (!days) {
-          let day = new Date(parseInt(latest.data[0].time + '000'));
-          weatherData = {
-            day1: weekdays[day.getDay()],
-            day1Date: dateManip.prettifyDate(latest.data[0].time),
-            day1Summary: latest.data[0].summary
-          }
-          if (latest.data[0].precipType) {
-            weatherData.day1.precipType = latest.data[0].precipType;
-            weatherData.day1.precipPercent = latest.data[0].precipProbability;
-          }         
-        } else {
-          if (days > 8) {
-            numDays = 8;
-          } else if (days < 1) {
-            numDays = 1;
-          } else {
-            numDays = days;
-          }
-          for (let i = 1; i <= numDays; i++) {
-            let dayData = latest.data[i-1];
-            let day = new Date(parseInt(dayData.time + '000'));
-            weatherData['day'+i] = {
-              day: weekdays[day.getDay()],
-              date: dateManip.prettifyDate(dayData.time),
-              summary: dayData.summary
-            };
-            if (dayData.precipType) {
-              weatherData['day'+i].precipPercent = (dayData.precipProbability * 100);
-              weatherData['day'+i].precipType = dayData.precipType;
-              //weatherData['day'+i+'PrecipTime'] = dateManip.prettifyTime(dayData.precipIntensityMaxTime);
-            }
-          }
-        }
-       if (numPark > 1) {
-        for (let n = 0; n < numPark; n++) {
-          for (let i = 1; i <= days; i++) {
-            let today = 'day' + i;
-            totalWeather[n][today] = weatherData[n][today].day;
-            totalWeather[n][today + 'Date'] = weatherData[n][today].date;
-            totalWeather[n][today + 'Summary'] = weatherData[n][today].summary;
-            if (weatherData[n][today].precipPercent) {
-              totalWeather[n][today + 'Precip'] = weatherData[n][today].precipPercent + '% chance of ' + weatherData[n][today].precipType;  
-            }
-          }
-        }
-      } else {
-        for (let i = 1; i <= days; i++) {
-          let today = 'day' + i;
-          totalWeather[today] = weatherData[today].day;
-          totalWeather[today + 'Date'] = weatherData[today].date;
-          totalWeather[today + 'Summary'] = weatherData[today].summary;
-          if (weatherData[today].precipPercent) {
-            totalWeather[today + 'Precip'] = weatherData[today].precipPercent + '% chance of ' + weatherData[today].precipType;  
-          }
-        }
-      }
-        */
       return weatherData;
     }
   }]);

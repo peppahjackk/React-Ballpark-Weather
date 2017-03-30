@@ -14,10 +14,10 @@ export default class ThreeDay extends Component {
   }
   
   componentDidMount() {
-   darkSkyHelper.getWeather(['cin','nya'])
+   darkSkyHelper.getWeather(this.props.parks)
     .then(function(info) {
-      let data = darkSkyHelper.formatWeather(info, this.state.days, ['cin','nya']);
-      return data;
+     console.log(info);
+      return darkSkyHelper.formatWeather(info, this.state.days, this.props.parks);
     }.bind(this))
     .then(function(data) {
       this.setState(data);
@@ -37,22 +37,22 @@ export default class ThreeDay extends Component {
           </Grid.Row>
           <Grid.Row>
             <Grid.Column>
-              <Header as='h3'>{this.state.cinDay0}</Header>
-              <p>{this.state.cinDay0Date}</p>
-              <p>{this.state.cinDay0Precip}</p>
+              <Header as='h3'>{this.state.Day0}</Header>
+              <p>{this.state.Day0Date}</p>
+              <p>{this.state.cinDay0PrecipPercent}</p>
               <p>{this.state.cinDay0Summary}</p>
             </Grid.Column>
             <Grid.Column>
-              <Header as='h3'>{this.state.day2}</Header>
-              <p>{this.state.day2Date}</p>
-              <p>{this.state.day2Precip}</p>
-              <p>{this.state.day2Summary}</p>
+              <Header as='h3'>{this.state.Day1}</Header>
+              <p>{this.state.Day1Date}</p>
+              <p>{this.state.cinDay1PrecipPercent}</p>
+              <p>{this.state.cinDay1Summary}</p>
             </Grid.Column>
             <Grid.Column>
-              <Header as='h3'>{this.state.day3}</Header>
-              <p>{this.state.day3Date}</p>
-              <p>{this.state.day3Precip}</p>
-              <p>{this.state.day3Summary}</p>
+              <Header as='h3'>{this.state.Day2}</Header>
+              <p>{this.state.Day2Date}</p>
+              <p>{this.state.cinDay2PrecipPercent}</p>
+              <p>{this.state.cinDay2Summary}</p>
             </Grid.Column>
           </Grid.Row>
         </Grid>
