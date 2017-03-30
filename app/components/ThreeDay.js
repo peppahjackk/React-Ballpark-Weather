@@ -14,24 +14,15 @@ export default class ThreeDay extends Component {
   }
   
   componentDidMount() {
-   darkSkyHelper.getWeather()
+   darkSkyHelper.getWeather(['cin','nya'])
     .then(function(info) {
-     console.log(info[1]);
-      var data = darkSkyHelper.formatWeather(info[1], this.state.days);
-    return data;}.bind(this))
-    .then(function(weatherData) {
-      let totalWeather = {};
-      for (let i = 1; i <= this.state.days; i++) {
-        let today = 'day' + i;
-        totalWeather[today] = weatherData[today].day;
-        totalWeather[today + 'Date'] = weatherData[today].date;
-        totalWeather[today + 'Summary'] = weatherData[today].summary;
-        if (weatherData[today].precipPercent) {
-          totalWeather[today + 'Precip'] = weatherData[today].precipPercent + '% chance of ' + weatherData[today].precipType;  
-        }
-      }
-      this.setState(totalWeather)
-      }.bind(this))
+      let data = darkSkyHelper.formatWeather(info, this.state.days, ['cin','nya']);
+      return data;
+    }.bind(this))
+    .then(function(data) {
+      this.setState(data);
+     console.log(this.state);
+    }.bind(this))
   }
   
   render() {
@@ -46,10 +37,10 @@ export default class ThreeDay extends Component {
           </Grid.Row>
           <Grid.Row>
             <Grid.Column>
-              <Header as='h3'>{this.state.day1}</Header>
-              <p>{this.state.day1Date}</p>
-              <p>{this.state.day1Precip}</p>
-              <p>{this.state.day1Summary}</p>
+              <Header as='h3'>{this.state.cinDay0}</Header>
+              <p>{this.state.cinDay0Date}</p>
+              <p>{this.state.cinDay0Precip}</p>
+              <p>{this.state.cinDay0Summary}</p>
             </Grid.Column>
             <Grid.Column>
               <Header as='h3'>{this.state.day2}</Header>
