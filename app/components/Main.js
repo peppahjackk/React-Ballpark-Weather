@@ -2,7 +2,7 @@ import React from 'react';
 import Nav from './Nav';
 
 const menuOptions = ['Home', 'Day', 'Stadium'];
-const menuTitle = 'Baseball Weather';
+const menuTitle = 'Ballpark Weather';
 
 export default class Main extends React.Component {
    constructor(props) {

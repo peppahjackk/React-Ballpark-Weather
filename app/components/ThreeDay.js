@@ -2,8 +2,7 @@ import React, { Component } from 'react'
 import { Container, Grid, Header } from 'semantic-ui-react'
 import PageHeader from './PageHeader'
 import darkSkyHelper from '../utils/darkSkyHelper'
-
-
+import WeatherDetails from './WeatherDetails'
 
 export default class ThreeDay extends Component {
   constructor(props) {
@@ -16,12 +15,10 @@ export default class ThreeDay extends Component {
   componentDidMount() {
    darkSkyHelper.getWeather(this.props.parks)
     .then(function(info) {
-     console.log(info);
       return darkSkyHelper.formatWeather(info, this.state.days, this.props.parks);
     }.bind(this))
     .then(function(data) {
       this.setState(data);
-     console.log(this.state);
     }.bind(this))
   }
   
@@ -36,24 +33,9 @@ export default class ThreeDay extends Component {
             </Grid.Column>
           </Grid.Row>
           <Grid.Row>
-            <Grid.Column>
-              <Header as='h3'>{this.state.Day0}</Header>
-              <p>{this.state.Day0Date}</p>
-              <p>{this.state.cinDay0PrecipPercent}</p>
-              <p>{this.state.cinDay0Summary}</p>
-            </Grid.Column>
-            <Grid.Column>
-              <Header as='h3'>{this.state.Day1}</Header>
-              <p>{this.state.Day1Date}</p>
-              <p>{this.state.cinDay1PrecipPercent}</p>
-              <p>{this.state.cinDay1Summary}</p>
-            </Grid.Column>
-            <Grid.Column>
-              <Header as='h3'>{this.state.Day2}</Header>
-              <p>{this.state.Day2Date}</p>
-              <p>{this.state.cinDay2PrecipPercent}</p>
-              <p>{this.state.cinDay2Summary}</p>
-            </Grid.Column>
+            <WeatherDetails day={this.state.Day0} date={this.state.Day0Date} precipPercent={this.state[this.props.parks[0]+'Day0PrecipPercent']} summary={this.state[this.props.parks[0]+'Day0Summary']}/>
+            <WeatherDetails day={this.state.Day1} date={this.state.Day1Date} precipPercent={this.state[this.props.parks[0]+'Day1PrecipPercent']} summary={this.state[this.props.parks[0]+'Day1Summary']}/>
+            <WeatherDetails day={this.state.Day2} date={this.state.Day2Date} precipPercent={this.state[this.props.parks[0]+'Day2PrecipPercent']} summary={this.state[this.props.parks[0]+'Day2Summary']}/>
           </Grid.Row>
         </Grid>
       </Container>
