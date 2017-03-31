@@ -2,13 +2,12 @@ import axios from 'axios'
 import locations from './stadiumLocations'
 import dateManip from '../utils/dateManipulation'
 
-let parksRequested = [],
-  lastPark = 0,
-  allData = {};
-
 export default class getWeatherData {
   // Requests weather data for given ballparks using proxy server
   static getWeather(cities) {
+    let parksRequested = [],
+      lastPark = 0,
+      allData = {};
     parksRequested = cities;
     let numParks = parksRequested.length;
     parksRequested = JSON.stringify(parksRequested);
@@ -45,7 +44,7 @@ export default class getWeatherData {
     let weatherData = {},
       totalWeather = {},
       precipType = '',
-      numDays, 
+      numDays,
       latest;
     const weekdays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
     if (!days) {
@@ -60,12 +59,11 @@ export default class getWeatherData {
     let numPark = Object.keys(info).length;
     // Obtain and set weekday(s) and date(s)
     for (let i = 0; i < numDays; i++) {
-      console.log(info);
       latest = info[cities[0]].daily;
       let dayData = latest.data[i];
-        let day = new Date(parseInt(dayData.time + '000'));
-        weatherData['Day' + i] = weekdays[day.getDay()];
-        weatherData['Day' + i + 'Date'] = dateManip.prettifyDate(latest.data[i].time);
+      let day = new Date(parseInt(dayData.time + '000'));
+      weatherData['Day' + i] = weekdays[day.getDay()];
+      weatherData['Day' + i + 'Date'] = dateManip.prettifyDate(latest.data[i].time);
     }
     // Formats weather for each park into a single object
     for (let n = 0; n < numPark; n++) {
