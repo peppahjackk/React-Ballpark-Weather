@@ -14,7 +14,13 @@ export default class ThreeDay extends Component {
   
   componentDidMount() {
    darkSkyHelper.getWeather(this.props.parks)
+    .then (function(info) {
+     let sortedCities = darkSkyHelper.sortCities(info,this.props.parks);
+     this.setState({sortedCities: sortedCities});
+     return info;
+    }.bind(this))
     .then(function(info) {
+     console.log(this.state);
       return darkSkyHelper.formatWeather(info, this.state.days, this.props.parks);
     }.bind(this))
     .then(function(data) {
