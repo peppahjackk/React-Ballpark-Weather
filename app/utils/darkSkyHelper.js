@@ -81,4 +81,15 @@ export default class getWeatherData {
     }
     return weatherData;
   }
+  
+  static sortCities(info, cities) {
+    console.log(info);
+    console.log(cities);
+    let sortedCities = cities.sort(function(a,b) {
+      //console.log(info[a]);
+      return info[b].daily.data[0].precipProbability - info[a].daily.data[0].precipProbability;
+    })
+    console.log(sortedCities);
+    return sortedCities;
+  }
 }

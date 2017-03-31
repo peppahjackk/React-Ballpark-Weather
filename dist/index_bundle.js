@@ -30007,7 +30007,7 @@ var Home = function (_React$Component) {
   _createClass(Home, [{
     key: 'render',
     value: function render() {
-      return _react2.default.createElement(_ThreeDay2.default, { header: 'Cincinnati, OH', parks: ['cin', 'nya', 'col', 'was'] });
+      return _react2.default.createElement(_ThreeDay2.default, { header: 'Cincinnati, OH', parks: ['cin', 'laa', 'nya', 'col', 'was', 'tex', 'cle'] });
     }
   }]);
 
@@ -30310,6 +30310,11 @@ var ThreeDay = function (_Component) {
     key: 'componentDidMount',
     value: function componentDidMount() {
       _darkSkyHelper2.default.getWeather(this.props.parks).then(function (info) {
+        var sortedCities = _darkSkyHelper2.default.sortCities(info, this.props.parks);
+        this.setState({ sortedCities: sortedCities });
+        return info;
+      }.bind(this)).then(function (info) {
+        console.log(this.state);
         return _darkSkyHelper2.default.formatWeather(info, this.state.days, this.props.parks);
       }.bind(this)).then(function (data) {
         this.setState(data);
@@ -30639,6 +30644,18 @@ var getWeatherData = function () {
         }
       }
       return weatherData;
+    }
+  }, {
+    key: 'sortCities',
+    value: function sortCities(info, cities) {
+      console.log(info);
+      console.log(cities);
+      var sortedCities = cities.sort(function (a, b) {
+        //console.log(info[a]);
+        return info[b].daily.data[0].precipProbability - info[a].daily.data[0].precipProbability;
+      });
+      console.log(sortedCities);
+      return sortedCities;
     }
   }]);
 
