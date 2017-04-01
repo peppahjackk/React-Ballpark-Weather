@@ -30284,6 +30284,10 @@ var _WeatherDetails = __webpack_require__(476);
 
 var _WeatherDetails2 = _interopRequireDefault(_WeatherDetails);
 
+var _MultiParkDetails = __webpack_require__(910);
+
+var _MultiParkDetails2 = _interopRequireDefault(_MultiParkDetails);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -30301,7 +30305,8 @@ var ThreeDay = function (_Component) {
     var _this = _possibleConstructorReturn(this, (ThreeDay.__proto__ || Object.getPrototypeOf(ThreeDay)).call(this, props));
 
     _this.state = {
-      days: 3
+      days: 3,
+      isLoading: true
     };
     return _this;
   }
@@ -30316,14 +30321,39 @@ var ThreeDay = function (_Component) {
       }.bind(this)).then(function (info) {
         console.log(this.state);
         return _darkSkyHelper2.default.formatWeather(info, this.state.days, this.props.parks);
-      }.bind(this)).then(function (data) {
-        this.setState(data);
+      }.bind(this)).then(function (weatherData) {
+        this.setState({
+          weatherData: weatherData,
+          isLoading: false
+        });
+        console.log(this.state);
       }.bind(this));
     }
   }, {
     key: 'render',
     value: function render() {
-      return _react2.default.createElement(
+      return this.state.isLoading === true ? _react2.default.createElement(
+        _semanticUiReact.Container,
+        null,
+        _react2.default.createElement(
+          _semanticUiReact.Grid,
+          { columns: this.state.days, centered: true },
+          _react2.default.createElement(_PageHeader2.default, { header: this.props.header, subheader: this.props.subheader, cols: 3 }),
+          _react2.default.createElement(
+            _semanticUiReact.Grid.Row,
+            null,
+            _react2.default.createElement(
+              _semanticUiReact.Grid.Column,
+              null,
+              _react2.default.createElement(
+                _semanticUiReact.Header,
+                { as: 'h2' },
+                'Loading'
+              )
+            )
+          )
+        )
+      ) : _react2.default.createElement(
         _semanticUiReact.Container,
         null,
         _react2.default.createElement(
@@ -30342,6 +30372,11 @@ var ThreeDay = function (_Component) {
                 'Map'
               )
             )
+          ),
+          _react2.default.createElement(
+            _semanticUiReact.Grid.Row,
+            null,
+            _react2.default.createElement(_MultiParkDetails2.default, { cities: this.state.sortedCities, data: this.state.weatherData })
           ),
           _react2.default.createElement(
             _semanticUiReact.Grid.Row,
@@ -63262,6 +63297,61 @@ module.exports = g;
 
 module.exports = __webpack_require__(452);
 
+
+/***/ }),
+/* 910 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(1);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _semanticUiReact = __webpack_require__(98);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var MultiParkDetails = function (_React$Component) {
+  _inherits(MultiParkDetails, _React$Component);
+
+  function MultiParkDetails(props) {
+    _classCallCheck(this, MultiParkDetails);
+
+    var _this = _possibleConstructorReturn(this, (MultiParkDetails.__proto__ || Object.getPrototypeOf(MultiParkDetails)).call(this, props));
+
+    console.log(_this.props);
+    return _this;
+  }
+
+  _createClass(MultiParkDetails, [{
+    key: 'render',
+    value: function render() {
+      return _react2.default.createElement(
+        _semanticUiReact.Header,
+        { as: 'h3' },
+        this.props.cities
+      );
+    }
+  }]);
+
+  return MultiParkDetails;
+}(_react2.default.Component);
+
+exports.default = MultiParkDetails;
 
 /***/ })
 /******/ ]);
