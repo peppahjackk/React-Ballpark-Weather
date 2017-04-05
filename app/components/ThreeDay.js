@@ -22,7 +22,6 @@ export default class ThreeDay extends Component {
      return info;
     }.bind(this))
     .then(function(info) {
-     console.log(this.state);
       return darkSkyHelper.formatWeather(info, this.state.days, this.props.parks);
     }.bind(this))
     .then(function(weatherData) {
@@ -56,7 +55,7 @@ export default class ThreeDay extends Component {
             </Grid.Column>
           </Grid.Row> 
       <Grid.Row>
-            <MultiParkDetails cities={this.state.sortedCities} data={this.state.weatherData} />
+            <MultiParkDetails cities={this.state.sortedCities} data={this.state.weatherData} day='0'/>
           </Grid.Row>
           <Grid.Row>
             <WeatherDetails day={this.state.Day0} date={this.state.Day0Date} precipPercent={this.state[this.props.parks[0]+'Day0PrecipPercent']} summary={this.state[this.props.parks[0]+'Day0Summary']}/>
