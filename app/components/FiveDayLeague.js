@@ -16,14 +16,10 @@ export default class FiveDayLeague extends React.Component {
   }
   
   componentDidMount() {
-    let allParks = [];
-    let current = new Date();
-    for (let i = 0; i < this.state.days; i++) {
-      let time = current.getTime() + (86400000 * i);
-      allParks.push(darkSkyHelper.getParks(time));
-    }
-    console.log(allParks);
-    darkSkyHelper.getWeather(allParks)
+    darkSkyHelper.getParks(this.state.days)
+    .then(function(allParks) {
+            return darkSkyHelper.getWeather(allParks)
+          })
     .then(function(info) {
       console.log(info)
       let sortedCities = {};
