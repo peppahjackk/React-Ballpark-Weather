@@ -91,27 +91,44 @@ export default class getWeatherData {
     return sortedCities.slice(0);
   }
   
-  static getParks(currentDate) {
-    let finalCities = [],
+  static getParks(days) {
+    let finalCities = {},
         urlMonth='/month_',
-        urlDay='/day_';
-    let today = new Date(currentDate);
-    let year = today.getFullYear();
-    let month = (today.getMonth()+1);
-    let day = today.getDate();
-    if (month < 10) {
-      urlMonth='/month_0';
-    }
-    if (day < 10) {
-      urlDay='/day_0';
-    }
-    axios.get('http://gd2.mlb.com/components/game/mlb/year_'+year+urlMonth+month+urlDay+day+'/grid.json')
-    .then(function(info) {
-      let data = info.data.data.games.game;
-      for (let game in data) {
-        finalCities.push(data[game].home_name_abbrev)
+        urlDay='/day_',
+        daysUrl = [];
+    let today = new Date();
+    for (let i = 0; i < days; i++) {
+      urlMonth='/month_',
+      urlDay='/day_';
+      let currentDay = new Date(today.getTime() + (86400000 * i));
+      let year = currentDay.getFullYear();
+      let month = (currentDay.getMonth()+1);
+      let day = currentDay.getDate();
+      if (month < 10) {
+        urlMonth='/month_0';
       }
-    })
+      if (day < 10) {
+        urlDay='/day_0';
+      }
+      daysUrl.push(year+urlMonth+month+urlDay+day);
+    }
+    axios.all(daysUrl.map(function(url) {
+      return axios.get('http://gd2.mlb.com/components/game/mlb/year_'+url+'/grid.json')
+    }))    
+      .then(function(info) {
+        console.log(info[0].data.data.games.game);
+        for (let day in info) {
+          console.log(day.data);
+          let daysGames = [];
+          /*let data = day.data.data.games.game;
+          for (let game in data) {
+           daysGames.push(data[game].home_name_abbrev);
+          }*/
+          finalCities[day] = daysGames;
+        }
+        
+      })
+    console.log(finalCities);
     return finalCities;
   }
 }
