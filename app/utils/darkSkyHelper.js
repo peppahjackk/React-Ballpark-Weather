@@ -31,6 +31,7 @@ export default class getWeatherData {
         } else {
           allData[parksRequested[0]] = weatherData;
         }
+      console.log(allData);
         return allData;
       })
       .catch(function(error) {
@@ -88,5 +89,29 @@ export default class getWeatherData {
       return info[b].daily.data[day].precipProbability - info[a].daily.data[day].precipProbability;
     })
     return sortedCities.slice(0);
+  }
+  
+  static getParks(currentDate) {
+    let finalCities = [],
+        urlMonth='/month_',
+        urlDay='/day_';
+    let today = new Date(currentDate);
+    let year = today.getFullYear();
+    let month = (today.getMonth()+1);
+    let day = today.getDate();
+    if (month < 10) {
+      urlMonth='/month_0';
+    }
+    if (day < 10) {
+      urlDay='/day_0';
+    }
+    axios.get('http://gd2.mlb.com/components/game/mlb/year_'+year+urlMonth+month+urlDay+day+'/grid.json')
+    .then(function(info) {
+      let data = info.data.data.games.game;
+      for (let game in data) {
+        finalCities.push(data[game].home_name_abbrev)
+      }
+    })
+    return finalCities;
   }
 }

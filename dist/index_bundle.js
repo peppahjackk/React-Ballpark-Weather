@@ -16195,6 +16195,7 @@ var getWeatherData = function () {
         } else {
           allData[parksRequested[0]] = weatherData;
         }
+        console.log(allData);
         return allData;
       }).catch(function (error) {
         console.log(error);
@@ -16254,6 +16255,30 @@ var getWeatherData = function () {
         return info[b].daily.data[day].precipProbability - info[a].daily.data[day].precipProbability;
       });
       return sortedCities.slice(0);
+    }
+  }, {
+    key: 'getParks',
+    value: function getParks(currentDate) {
+      var finalCities = [],
+          urlMonth = '/month_',
+          urlDay = '/day_';
+      var today = new Date(currentDate);
+      var year = today.getFullYear();
+      var month = today.getMonth() + 1;
+      var day = today.getDate();
+      if (month < 10) {
+        urlMonth = '/month_0';
+      }
+      if (day < 10) {
+        urlDay = '/day_0';
+      }
+      _axios2.default.get('http://gd2.mlb.com/components/game/mlb/year_' + year + urlMonth + month + urlDay + day + '/grid.json').then(function (info) {
+        var data = info.data.data.games.game;
+        for (var game in data) {
+          finalCities.push(data[game].home_name_abbrev);
+        }
+      });
+      return finalCities;
     }
   }]);
 
@@ -30330,6 +30355,10 @@ var _PageHeader = __webpack_require__(149);
 
 var _PageHeader2 = _interopRequireDefault(_PageHeader);
 
+var _dateManipulation = __webpack_require__(483);
+
+var _dateManipulation2 = _interopRequireDefault(_dateManipulation);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -30356,10 +30385,18 @@ var FiveDayLeague = function (_React$Component) {
   _createClass(FiveDayLeague, [{
     key: 'componentDidMount',
     value: function componentDidMount() {
-      _darkSkyHelper2.default.getWeather(this.props.parks).then(function (info) {
+      var allParks = [];
+      var current = new Date();
+      for (var i = 0; i < this.state.days; i++) {
+        var time = current.getTime() + 86400000 * i;
+        allParks.push(_darkSkyHelper2.default.getParks(time));
+      }
+      console.log(allParks);
+      _darkSkyHelper2.default.getWeather(allParks).then(function (info) {
+        console.log(info);
         var sortedCities = {};
-        for (var i = 0; i < this.state.days; i++) {
-          sortedCities[i] = _darkSkyHelper2.default.sortCities(info, this.props.parks, i);
+        for (var _i = 0; _i < this.state.days; _i++) {
+          sortedCities[_i] = _darkSkyHelper2.default.sortCities(info, allParks, _i);
         }
         this.setState({ sortedCities: sortedCities });
         return info;

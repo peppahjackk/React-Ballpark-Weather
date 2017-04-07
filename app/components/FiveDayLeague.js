@@ -4,6 +4,7 @@ import darkSkyHelper from '../utils/darkSkyHelper'
 import MultiParkDetails from './MultiParkDetails'
 import Loading from './Loading'
 import PageHeader from './PageHeader'
+import dateManip from '../utils/dateManipulation'
 
 export default class FiveDayLeague extends React.Component {
   constructor(props) {
@@ -15,11 +16,19 @@ export default class FiveDayLeague extends React.Component {
   }
   
   componentDidMount() {
-    darkSkyHelper.getWeather(this.props.parks)
-    .then (function(info) {
+    let allParks = [];
+    let current = new Date();
+    for (let i = 0; i < this.state.days; i++) {
+      let time = current.getTime() + (86400000 * i);
+      allParks.push(darkSkyHelper.getParks(time));
+    }
+    console.log(allParks);
+    darkSkyHelper.getWeather(allParks)
+    .then(function(info) {
+      console.log(info)
       let sortedCities = {};
       for (let i = 0; i < this.state.days; i++) {
-        sortedCities[i] = darkSkyHelper.sortCities(info,this.props.parks,i);
+        sortedCities[i] = darkSkyHelper.sortCities(info,allParks,i);
       }
      this.setState({sortedCities: sortedCities});
      return info;
