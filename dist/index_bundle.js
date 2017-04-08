@@ -16171,9 +16171,16 @@ var getWeatherData = function () {
     // Requests weather data for given ballparks using proxy server
     value: function getWeather(cities) {
       var parksRequested = [],
+          initialParks = [],
           lastPark = 0,
           allData = {};
-      parksRequested = cities;
+      initialParks = cities;
+      for (var i = 0; i < initialParks.length; i++) {
+        if (['ARI', 'HOU', 'MIA', 'MIL', 'SEA', 'TB', 'TOR'].indexOf(initialParks[i]) === -1) {
+          parksRequested.push(initialParks[i]);
+        }
+      }
+      console.log(parksRequested);
       var numParks = parksRequested.length;
       parksRequested = JSON.stringify(parksRequested);
       return _axios2.default.post('./proxy.php', {
@@ -16278,22 +16285,33 @@ var getWeatherData = function () {
         }
         daysUrl.push(year + urlMonth + month + urlDay + day);
       }
-      _axios2.default.all(daysUrl.map(function (url) {
+      return _axios2.default.all(daysUrl.map(function (url) {
         return _axios2.default.get('http://gd2.mlb.com/components/game/mlb/year_' + url + '/grid.json');
       })).then(function (info) {
-        console.log(info[0].data.data.games.game);
-        for (var _day in info) {
-          console.log(_day.data);
-          var daysGames = [];
+        //console.log(info[0].data.data.games.game);
+        for (var _i2 = 0; _i2 < Object.keys(info).length; _i2++) {
           /*let data = day.data.data.games.game;
           for (let game in data) {
            daysGames.push(data[game].home_name_abbrev);
           }*/
-          finalCities[_day] = daysGames;
+          finalCities[_i2] = info[_i2].data.data.games.game;
         }
+        return finalCities;
       });
-      console.log(finalCities);
-      return finalCities;
+    }
+  }, {
+    key: 'condenseParks',
+    value: function condenseParks(allParks) {
+      var condensedParks = [];
+      for (var i = 0; i < Object.keys(allParks).length; i++) {
+        for (var n = 0; n < Object.keys(allParks[i]).length; n++) {
+          if (condensedParks.indexOf(allParks[i][n].home_name_abbrev) < 0) {
+            condensedParks.push(allParks[i][n].home_name_abbrev);
+          }
+        }
+      }
+      console.log(condensedParks);
+      return condensedParks;
     }
   }]);
 
@@ -30440,13 +30458,16 @@ var FiveDayLeague = function (_React$Component) {
   _createClass(FiveDayLeague, [{
     key: 'componentDidMount',
     value: function componentDidMount() {
-      _darkSkyHelper2.default.getParks(this.state.days).then(function (allParks) {
+      _darkSkyHelper2.default.getParks(this.state.days).then(function (dailyParks) {
+        this.setState({ dailyParks: dailyParks });
+        var allParks = _darkSkyHelper2.default.condenseParks(dailyParks);
         return _darkSkyHelper2.default.getWeather(allParks);
-      }).then(function (info) {
+      }.bind(this)).then(function (info) {
         console.log(info);
         var sortedCities = {};
         for (var i = 0; i < this.state.days; i++) {
-          sortedCities[i] = _darkSkyHelper2.default.sortCities(info, allParks, i);
+          console.log(info);
+          sortedCities[i] = _darkSkyHelper2.default.sortCities(info, this.state.dailyParks[i], i);
         }
         this.setState({ sortedCities: sortedCities });
         return info;

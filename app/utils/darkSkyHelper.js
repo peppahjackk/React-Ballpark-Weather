@@ -6,9 +6,16 @@ export default class getWeatherData {
   // Requests weather data for given ballparks using proxy server
   static getWeather(cities) {
     let parksRequested = [],
+      initialParks = [],
       lastPark = 0,
       allData = {};
-    parksRequested = cities;
+    initialParks = cities;
+    for (let i = 0; i < initialParks.length; i++) {
+      if (['ARI','HOU','MIA','MIL','SEA','TB','TOR'].indexOf(initialParks[i]) === -1) {
+        parksRequested.push(initialParks[i]);
+      }
+    }
+    console.log(parksRequested);
     let numParks = parksRequested.length;
     parksRequested = JSON.stringify(parksRequested);
     return axios.post('./proxy.php', {
@@ -112,23 +119,32 @@ export default class getWeatherData {
       }
       daysUrl.push(year+urlMonth+month+urlDay+day);
     }
-    axios.all(daysUrl.map(function(url) {
+    return axios.all(daysUrl.map(function(url) {
       return axios.get('http://gd2.mlb.com/components/game/mlb/year_'+url+'/grid.json')
     }))    
       .then(function(info) {
-        console.log(info[0].data.data.games.game);
-        for (let day in info) {
-          console.log(day.data);
-          let daysGames = [];
+        //console.log(info[0].data.data.games.game);
+        for (let i = 0; i < Object.keys(info).length; i++) {
           /*let data = day.data.data.games.game;
           for (let game in data) {
            daysGames.push(data[game].home_name_abbrev);
           }*/
-          finalCities[day] = daysGames;
+          finalCities[i] = info[i].data.data.games.game;
         }
-        
+      return finalCities;
       })
-    console.log(finalCities);
-    return finalCities;
+  }
+  
+  static condenseParks(allParks) {
+    let condensedParks = [];
+    for (let i = 0; i < Object.keys(allParks).length; i++) {
+      for (let n = 0; n < Object.keys(allParks[i]).length; n++) {
+        if (condensedParks.indexOf(allParks[i][n].home_name_abbrev) < 0) {
+          condensedParks.push(allParks[i][n].home_name_abbrev)
+        }
+      }
+    }
+    console.log(condensedParks);
+    return condensedParks;
   }
 }
