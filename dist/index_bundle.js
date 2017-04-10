@@ -16180,7 +16180,6 @@ var getWeatherData = function () {
           parksRequested.push(initialParks[i]);
         }
       }
-      console.log(parksRequested);
       var numParks = parksRequested.length;
       parksRequested = JSON.stringify(parksRequested);
       return _axios2.default.post('./proxy.php', {
@@ -16202,7 +16201,6 @@ var getWeatherData = function () {
         } else {
           allData[parksRequested[0]] = weatherData;
         }
-        console.log(allData);
         return allData;
       }).catch(function (error) {
         console.log(error);
@@ -16257,10 +16255,16 @@ var getWeatherData = function () {
   }, {
     key: 'sortCities',
     value: function sortCities(info, cities, day) {
+      console.log(cities);
       var sortedCities = cities.sort(function (a, b) {
-        //console.log(info[a]);
-        return info[b].daily.data[day].precipProbability - info[a].daily.data[day].precipProbability;
+        if (['ARI', 'HOU', 'MIA', 'MIL', 'SEA', 'TB', 'TOR'].indexOf(b.home_name_abbrev) > -1) {
+          return -1;
+        } else if (['ARI', 'HOU', 'MIA', 'MIL', 'SEA', 'TB', 'TOR'].indexOf(a.home_name_abbrev) > -1) {
+          return 1;
+        }
+        return info[b.home_name_abbrev].daily.data[day].precipProbability - info[a.home_name_abbrev].daily.data[day].precipProbability;
       });
+      console.log('sorted');
       return sortedCities.slice(0);
     }
   }, {
@@ -16310,7 +16314,6 @@ var getWeatherData = function () {
           }
         }
       }
-      console.log(condensedParks);
       return condensedParks;
     }
   }]);
@@ -30463,10 +30466,8 @@ var FiveDayLeague = function (_React$Component) {
         var allParks = _darkSkyHelper2.default.condenseParks(dailyParks);
         return _darkSkyHelper2.default.getWeather(allParks);
       }.bind(this)).then(function (info) {
-        console.log(info);
         var sortedCities = {};
         for (var i = 0; i < this.state.days; i++) {
-          console.log(info);
           sortedCities[i] = _darkSkyHelper2.default.sortCities(info, this.state.dailyParks[i], i);
         }
         this.setState({ sortedCities: sortedCities });
