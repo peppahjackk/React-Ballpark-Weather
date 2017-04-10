@@ -89,7 +89,6 @@ export default class getWeatherData {
   }
   
   static sortCities(info, cities, day) {
-    console.log(cities);
     let sortedCities = cities.sort(function(a,b) {
       if (['ARI','HOU','MIA','MIL','SEA','TB','TOR'].indexOf(b.home_name_abbrev) > -1) {
         return -1;
@@ -98,7 +97,6 @@ export default class getWeatherData {
       }
       return info[b.home_name_abbrev].daily.data[day].precipProbability - info[a.home_name_abbrev].daily.data[day].precipProbability;
     })
-    console.log('sorted');
     return sortedCities.slice(0);
   }
   
