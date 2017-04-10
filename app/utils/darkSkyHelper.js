@@ -15,7 +15,6 @@ export default class getWeatherData {
         parksRequested.push(initialParks[i]);
       }
     }
-    console.log(parksRequested);
     let numParks = parksRequested.length;
     parksRequested = JSON.stringify(parksRequested);
     return axios.post('./proxy.php', {
@@ -38,7 +37,6 @@ export default class getWeatherData {
         } else {
           allData[parksRequested[0]] = weatherData;
         }
-      console.log(allData);
         return allData;
       })
       .catch(function(error) {
@@ -92,8 +90,12 @@ export default class getWeatherData {
   
   static sortCities(info, cities, day) {
     let sortedCities = cities.sort(function(a,b) {
-      //console.log(info[a]);
-      return info[b].daily.data[day].precipProbability - info[a].daily.data[day].precipProbability;
+      if (['ARI','HOU','MIA','MIL','SEA','TB','TOR'].indexOf(b.home_name_abbrev) > -1) {
+        return -1;
+      } else if ((['ARI','HOU','MIA','MIL','SEA','TB','TOR'].indexOf(a.home_name_abbrev) > -1)) {
+        return 1;
+      }
+      return info[b.home_name_abbrev].daily.data[day].precipProbability - info[a.home_name_abbrev].daily.data[day].precipProbability;
     })
     return sortedCities.slice(0);
   }
@@ -144,7 +146,6 @@ export default class getWeatherData {
         }
       }
     }
-    console.log(condensedParks);
     return condensedParks;
   }
 }
