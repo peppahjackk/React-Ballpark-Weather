@@ -16,30 +16,28 @@ export default class FiveDayLeague extends React.Component {
   }
   
   componentDidMount() {
+    // Obtain game data for the next X days
     darkSkyHelper.getParks(this.state.days)
     .then(function(dailyParks) {
-      let allParks = darkSkyHelper.condenseParks(dailyParks);      
       this.setState({
-        dailyParks: dailyParks,
-        allParks: allParks
+        dailyParks: dailyParks
       })
+      // Condense total list of active ballparks for the next X days
+      let allParks = darkSkyHelper.condenseParks(dailyParks);
       return darkSkyHelper.getWeather(allParks)
     }.bind(this))
     .then(function(info) {
-      let sortedCities = {};
+      let sortedParks = {};
       for (let i = 0; i < this.state.days; i++) {
-        sortedCities[i] = darkSkyHelper.sortCities(info,this.state.dailyParks[i],i);
+        sortedParks[i] = darkSkyHelper.sortParks(info,this.state.dailyParks[i],i);
       }
      this.setState({
-       sortedCities: sortedCities,
+       sortedParks: sortedParks,
        weatherData: info
      });
-      console.log(this.state.weatherData);
-      console.log(this.state.sortedCities);
      return darkSkyHelper.formatWeather(info, this.state.days, this.props.parks);
     }.bind(this))
     .then(function(dateInfo) {
-      console.log(dateInfo);
       this.setState({
         dateInfo,
         isLoading: false
@@ -55,7 +53,7 @@ export default class FiveDayLeague extends React.Component {
      let eachDay =[];
     if (this.state.isLoading === false) {
     for (var i = 0; i < this.state.days; i++) {
-      eachDay.push(<MultiParkDetails key={i} cities={this.state.sortedCities[i]} data={this.state.weatherData} dateInfo={this.state.dateInfo} cols={5} day={i}></MultiParkDetails>);
+      eachDay.push(<MultiParkDetails key={i} parks={this.state.sortedParks[i]} data={this.state.weatherData} dateInfo={this.state.dateInfo} cols={5} day={i}></MultiParkDetails>);
     }}
     return ( this.state.isLoading === true
             ? <Loading days={this.state.days} header={this.props.header} subheader={this.props.subheader} />

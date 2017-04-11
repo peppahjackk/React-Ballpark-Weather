@@ -7,7 +7,7 @@ ini_set("error_log", "/tmp/php-error.log");
 
 // GPS Coordinates of 23 non-roofed MLB stadiums as of 2017
 $ballparks = [
-  'ATL' => '33.89,84.468',
+  'ATL' => '33.89,-84.468',
   'BAL' => '39.283964,-76.621618',
   'BOS' => '42.346619,-71.096961',
   'CHC' => '41.947856,-87.655887',
