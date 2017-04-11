@@ -65,14 +65,14 @@ export default class getWeatherData {
     let numPark = Object.keys(info).length;
     // Obtain and set weekday(s) and date(s)
     for (let i = 0; i < numDays; i++) {
-      latest = info[cities[0]].daily;
+      latest = info[cities[0].toUpperCase()].daily;
       let dayData = latest.data[i];
       let day = new Date(parseInt(dayData.time + '000'));
       weatherData['Day' + i] = weekdays[day.getDay()];
       weatherData['Day' + i + 'Date'] = dateManip.prettifyDate(latest.data[i].time);
     }
     // Formats weather for each park into a single object
-    for (let n = 0; n < numPark; n++) {
+    /*for (let n = 0; n < numPark; n++) {
       latest = info[cities[n]].daily;
       // Formats weather data for each requested day
       for (let i = 0; i < numDays; i++) {
@@ -84,7 +84,7 @@ export default class getWeatherData {
           weatherData[cities[n] + 'Day' + i + 'PrecipType'] = dayData.precipType;
         }
       }
-    }
+    } */
     return weatherData;
   }
   
@@ -135,6 +135,9 @@ export default class getWeatherData {
         }
       return finalCities;
       })
+      .catch(function(error) {
+        console.log(error);
+      });
   }
   
   static condenseParks(allParks) {
