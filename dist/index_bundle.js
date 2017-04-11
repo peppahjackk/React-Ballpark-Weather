@@ -16062,6 +16062,15 @@ var MultiParkDetails = function (_React$Component) {
     value: function render() {
       var _this2 = this;
 
+      var domeParks = [],
+          outdoorParks = [];
+      for (var i = 0; i < this.props.cities.length; i++) {
+        if (['ARI', 'HOU', 'MIA', 'MIL', 'SEA', 'TB', 'TOR'].indexOf(this.props.cities[i].home_name_abbrev) > -1) {
+          domeParks.push(this.props.cities[i]);
+        } else {
+          outdoorParks.push(this.props.cities[i]);
+        }
+      }
       return _react2.default.createElement(
         'div',
         { style: _styles2.default.details },
@@ -16078,13 +16087,23 @@ var MultiParkDetails = function (_React$Component) {
         _react2.default.createElement(
           'ul',
           { style: _styles2.default.list },
-          this.props.cities.map(function (park) {
+          outdoorParks.map(function (park) {
             return _react2.default.createElement(
               'li',
               { key: park.home_name_abbrev + _this2.props.day },
               park.home_team_name,
               ' ',
-              _this2.props.data[park.home_name_abbrev].daily.data[_this2.props.day].precipProbability
+              Math.round(_this2.props.data[park.home_name_abbrev].daily.data[_this2.props.day].precipProbability * 100),
+              '% ',
+              _this2.props.data[park.home_name_abbrev].daily.data[_this2.props.day].precipType || 'rain'
+            );
+          }),
+          domeParks.map(function (park) {
+            return _react2.default.createElement(
+              'li',
+              { key: park.home_name_abbrev + _this2.props.day },
+              park.home_team_name,
+              ' DOME'
             );
           })
         )
