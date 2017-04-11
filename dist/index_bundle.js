@@ -16068,23 +16068,23 @@ var MultiParkDetails = function (_React$Component) {
         _react2.default.createElement(
           _semanticUiReact.Header,
           { as: 'h3', style: _styles2.default.infoHeader },
-          this.props.data['Day' + this.props.day]
+          this.props.dateInfo['Day' + this.props.day]
         ),
         _react2.default.createElement(
           _semanticUiReact.Header,
           { as: 'h4', style: _styles2.default.infoSubHeader },
-          this.props.data['Day' + this.props.day + 'Date']
+          this.props.dateInfo['Day' + this.props.day + 'Date']
         ),
         _react2.default.createElement(
           'ul',
           { style: _styles2.default.list },
-          this.props.cities[this.props.day].map(function (park) {
+          this.props.cities.map(function (park) {
             return _react2.default.createElement(
               'li',
-              { key: park + _this2.props.day },
-              park,
+              { key: park.home_name_abbrev + _this2.props.day },
+              park.home_team_name,
               ' ',
-              _this2.props.data[park + 'Day' + _this2.props.day + 'PrecipPercent']
+              _this2.props.data[park.home_name_abbrev].daily.data[_this2.props.day].precipProbability
             );
           })
         )
@@ -16230,32 +16230,31 @@ var getWeatherData = function () {
       var numPark = Object.keys(info).length;
       // Obtain and set weekday(s) and date(s)
       for (var i = 0; i < numDays; i++) {
-        latest = info[cities[0]].daily;
+        latest = info[cities[0].toUpperCase()].daily;
         var dayData = latest.data[i];
         var day = new Date(parseInt(dayData.time + '000'));
         weatherData['Day' + i] = weekdays[day.getDay()];
         weatherData['Day' + i + 'Date'] = _dateManipulation2.default.prettifyDate(latest.data[i].time);
       }
       // Formats weather for each park into a single object
-      for (var n = 0; n < numPark; n++) {
+      /*for (let n = 0; n < numPark; n++) {
         latest = info[cities[n]].daily;
         // Formats weather data for each requested day
-        for (var _i = 0; _i < numDays; _i++) {
-          var _dayData = latest.data[_i];
-          weatherData[cities[n] + 'Day' + _i + 'Summary'] = latest.data[_i].summary;
+        for (let i = 0; i < numDays; i++) {
+          let dayData = latest.data[i];
+          weatherData[cities[n] + 'Day' + i + 'Summary'] = latest.data[i].summary;
           // Formats precipitation data if applicable
-          if (latest.data[_i].precipType) {
-            weatherData[cities[n] + 'Day' + _i + 'PrecipPercent'] = Math.round(_dayData.precipProbability * 100) + '% chance of ' + _dayData.precipType;
-            weatherData[cities[n] + 'Day' + _i + 'PrecipType'] = _dayData.precipType;
+          if (latest.data[i].precipType) {
+            weatherData[cities[n] + 'Day' + i + 'PrecipPercent'] = Math.round(dayData.precipProbability * 100) + '% chance of ' + dayData.precipType;
+            weatherData[cities[n] + 'Day' + i + 'PrecipType'] = dayData.precipType;
           }
         }
-      }
+      } */
       return weatherData;
     }
   }, {
     key: 'sortCities',
     value: function sortCities(info, cities, day) {
-      console.log(cities);
       var sortedCities = cities.sort(function (a, b) {
         if (['ARI', 'HOU', 'MIA', 'MIL', 'SEA', 'TB', 'TOR'].indexOf(b.home_name_abbrev) > -1) {
           return -1;
@@ -16264,7 +16263,6 @@ var getWeatherData = function () {
         }
         return info[b.home_name_abbrev].daily.data[day].precipProbability - info[a.home_name_abbrev].daily.data[day].precipProbability;
       });
-      console.log('sorted');
       return sortedCities.slice(0);
     }
   }, {
@@ -16293,14 +16291,16 @@ var getWeatherData = function () {
         return _axios2.default.get('http://gd2.mlb.com/components/game/mlb/year_' + url + '/grid.json');
       })).then(function (info) {
         //console.log(info[0].data.data.games.game);
-        for (var _i2 = 0; _i2 < Object.keys(info).length; _i2++) {
+        for (var _i = 0; _i < Object.keys(info).length; _i++) {
           /*let data = day.data.data.games.game;
           for (let game in data) {
            daysGames.push(data[game].home_name_abbrev);
           }*/
-          finalCities[_i2] = info[_i2].data.data.games.game;
+          finalCities[_i] = info[_i].data.data.games.game;
         }
         return finalCities;
+      }).catch(function (error) {
+        console.log(error);
       });
     }
   }, {
@@ -30462,25 +30462,33 @@ var FiveDayLeague = function (_React$Component) {
     key: 'componentDidMount',
     value: function componentDidMount() {
       _darkSkyHelper2.default.getParks(this.state.days).then(function (dailyParks) {
-        this.setState({ dailyParks: dailyParks });
         var allParks = _darkSkyHelper2.default.condenseParks(dailyParks);
+        this.setState({
+          dailyParks: dailyParks,
+          allParks: allParks
+        });
         return _darkSkyHelper2.default.getWeather(allParks);
       }.bind(this)).then(function (info) {
         var sortedCities = {};
         for (var i = 0; i < this.state.days; i++) {
           sortedCities[i] = _darkSkyHelper2.default.sortCities(info, this.state.dailyParks[i], i);
         }
-        this.setState({ sortedCities: sortedCities });
-        return info;
-      }.bind(this)).then(function (info) {
-        return _darkSkyHelper2.default.formatWeather(info, this.state.days, this.props.parks);
-      }.bind(this)).then(function (weatherData) {
         this.setState({
-          weatherData: weatherData,
+          sortedCities: sortedCities,
+          weatherData: info
+        });
+        console.log(this.state.weatherData);
+        console.log(this.state.sortedCities);
+        return _darkSkyHelper2.default.formatWeather(info, this.state.days, this.props.parks);
+      }.bind(this)).then(function (dateInfo) {
+        console.log(dateInfo);
+        this.setState({
+          dateInfo: dateInfo,
           isLoading: false
         });
-        console.log(this.state);
-      }.bind(this));
+      }.bind(this)).catch(function (error) {
+        console.log(error);
+      });
     }
   }, {
     key: 'render',
@@ -30488,7 +30496,7 @@ var FiveDayLeague = function (_React$Component) {
       var eachDay = [];
       if (this.state.isLoading === false) {
         for (var i = 0; i < this.state.days; i++) {
-          eachDay.push(_react2.default.createElement(_MultiParkDetails2.default, { key: i, cities: this.state.sortedCities, data: this.state.weatherData, cols: 5, day: i }));
+          eachDay.push(_react2.default.createElement(_MultiParkDetails2.default, { key: i, cities: this.state.sortedCities[i], data: this.state.weatherData, dateInfo: this.state.dateInfo, cols: 5, day: i }));
         }
       }
       return this.state.isLoading === true ? _react2.default.createElement(_Loading2.default, { days: this.state.days, header: this.props.header, subheader: this.props.subheader }) : _react2.default.createElement(

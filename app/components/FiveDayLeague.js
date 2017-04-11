@@ -18,8 +18,11 @@ export default class FiveDayLeague extends React.Component {
   componentDidMount() {
     darkSkyHelper.getParks(this.state.days)
     .then(function(dailyParks) {
-      this.setState({dailyParks: dailyParks})
-      let allParks = darkSkyHelper.condenseParks(dailyParks);
+      let allParks = darkSkyHelper.condenseParks(dailyParks);      
+      this.setState({
+        dailyParks: dailyParks,
+        allParks: allParks
+      })
       return darkSkyHelper.getWeather(allParks)
     }.bind(this))
     .then(function(info) {
@@ -27,26 +30,32 @@ export default class FiveDayLeague extends React.Component {
       for (let i = 0; i < this.state.days; i++) {
         sortedCities[i] = darkSkyHelper.sortCities(info,this.state.dailyParks[i],i);
       }
-     this.setState({sortedCities: sortedCities});
-     return info;
+     this.setState({
+       sortedCities: sortedCities,
+       weatherData: info
+     });
+      console.log(this.state.weatherData);
+      console.log(this.state.sortedCities);
+     return darkSkyHelper.formatWeather(info, this.state.days, this.props.parks);
     }.bind(this))
-    .then(function(info) {
-      return darkSkyHelper.formatWeather(info, this.state.days, this.props.parks);
-    }.bind(this))
-    .then(function(weatherData) {
+    .then(function(dateInfo) {
+      console.log(dateInfo);
       this.setState({
-        weatherData,
+        dateInfo,
         isLoading: false
       });
-     console.log(this.state);
+     
     }.bind(this))
+    .catch(function(error) {
+        console.log(error);
+      });
   }
   
    render() {
      let eachDay =[];
     if (this.state.isLoading === false) {
     for (var i = 0; i < this.state.days; i++) {
-      eachDay.push(<MultiParkDetails key={i} cities={this.state.sortedCities} data={this.state.weatherData} cols={5} day={i}></MultiParkDetails>);
+      eachDay.push(<MultiParkDetails key={i} cities={this.state.sortedCities[i]} data={this.state.weatherData} dateInfo={this.state.dateInfo} cols={5} day={i}></MultiParkDetails>);
     }}
     return ( this.state.isLoading === true
             ? <Loading days={this.state.days} header={this.props.header} subheader={this.props.subheader} />
