@@ -16064,11 +16064,11 @@ var MultiParkDetails = function (_React$Component) {
 
       var domeParks = [],
           outdoorParks = [];
-      for (var i = 0; i < this.props.cities.length; i++) {
-        if (['ARI', 'HOU', 'MIA', 'MIL', 'SEA', 'TB', 'TOR'].indexOf(this.props.cities[i].home_name_abbrev) > -1) {
-          domeParks.push(this.props.cities[i]);
+      for (var i = 0; i < this.props.parks.length; i++) {
+        if (['ARI', 'HOU', 'MIA', 'MIL', 'SEA', 'TB', 'TOR'].indexOf(this.props.parks[i].home_name_abbrev) > -1) {
+          domeParks.push(this.props.parks[i]);
         } else {
-          outdoorParks.push(this.props.cities[i]);
+          outdoorParks.push(this.props.parks[i]);
         }
       }
       return _react2.default.createElement(
@@ -16091,7 +16091,9 @@ var MultiParkDetails = function (_React$Component) {
             return _react2.default.createElement(
               'li',
               { key: park.home_name_abbrev + _this2.props.day },
-              park.home_team_name,
+              park.away_name_abbrev,
+              ' vs ',
+              park.home_name_abbrev,
               ' ',
               Math.round(_this2.props.data[park.home_name_abbrev].daily.data[_this2.props.day].precipProbability * 100),
               '% ',
@@ -16102,7 +16104,9 @@ var MultiParkDetails = function (_React$Component) {
             return _react2.default.createElement(
               'li',
               { key: park.home_name_abbrev + _this2.props.day },
-              park.home_team_name,
+              park.away_name_abbrev,
+              ' vs ',
+              park.home_name_abbrev,
               ' DOME'
             );
           })
@@ -16188,12 +16192,12 @@ var getWeatherData = function () {
     key: 'getWeather',
 
     // Requests weather data for given ballparks using proxy server
-    value: function getWeather(cities) {
+    value: function getWeather(parks) {
       var parksRequested = [],
           initialParks = [],
           lastPark = 0,
           allData = {};
-      initialParks = cities;
+      initialParks = parks;
       for (var i = 0; i < initialParks.length; i++) {
         if (['ARI', 'HOU', 'MIA', 'MIL', 'SEA', 'TB', 'TOR'].indexOf(initialParks[i]) === -1) {
           parksRequested.push(initialParks[i]);
@@ -16213,6 +16217,7 @@ var getWeatherData = function () {
             endParkData = weatherData.indexOf('}}', lastPark) + 2;
             if (endParkData > 0) {
               var data = weatherData.substring(lastPark, endParkData);
+              console.log(data);
               allData[parksRequested[i]] = JSON.parse(data);
               lastPark = endParkData;
             }
@@ -16230,9 +16235,8 @@ var getWeatherData = function () {
 
   }, {
     key: 'formatWeather',
-    value: function formatWeather(info, days, cities) {
+    value: function formatWeather(info, days, park) {
       var weatherData = {},
-          totalWeather = {},
           precipType = '',
           numDays = void 0,
           latest = void 0;
@@ -16247,34 +16251,21 @@ var getWeatherData = function () {
         numDays = days;
       }
       var numPark = Object.keys(info).length;
+      console.log(park);
       // Obtain and set weekday(s) and date(s)
       for (var i = 0; i < numDays; i++) {
-        latest = info[cities[0].toUpperCase()].daily;
+        latest = info[park[home_name_abbrev].toUpperCase()].daily;
         var dayData = latest.data[i];
         var day = new Date(parseInt(dayData.time + '000'));
         weatherData['Day' + i] = weekdays[day.getDay()];
         weatherData['Day' + i + 'Date'] = _dateManipulation2.default.prettifyDate(latest.data[i].time);
       }
-      // Formats weather for each park into a single object
-      /*for (let n = 0; n < numPark; n++) {
-        latest = info[cities[n]].daily;
-        // Formats weather data for each requested day
-        for (let i = 0; i < numDays; i++) {
-          let dayData = latest.data[i];
-          weatherData[cities[n] + 'Day' + i + 'Summary'] = latest.data[i].summary;
-          // Formats precipitation data if applicable
-          if (latest.data[i].precipType) {
-            weatherData[cities[n] + 'Day' + i + 'PrecipPercent'] = Math.round(dayData.precipProbability * 100) + '% chance of ' + dayData.precipType;
-            weatherData[cities[n] + 'Day' + i + 'PrecipType'] = dayData.precipType;
-          }
-        }
-      } */
       return weatherData;
     }
   }, {
-    key: 'sortCities',
-    value: function sortCities(info, cities, day) {
-      var sortedCities = cities.sort(function (a, b) {
+    key: 'sortParks',
+    value: function sortParks(info, parks, day) {
+      var sortedParks = parks.sort(function (a, b) {
         if (['ARI', 'HOU', 'MIA', 'MIL', 'SEA', 'TB', 'TOR'].indexOf(b.home_name_abbrev) > -1) {
           return -1;
         } else if (['ARI', 'HOU', 'MIA', 'MIL', 'SEA', 'TB', 'TOR'].indexOf(a.home_name_abbrev) > -1) {
@@ -16282,12 +16273,12 @@ var getWeatherData = function () {
         }
         return info[b.home_name_abbrev].daily.data[day].precipProbability - info[a.home_name_abbrev].daily.data[day].precipProbability;
       });
-      return sortedCities.slice(0);
+      return sortedParks.slice(0);
     }
   }, {
     key: 'getParks',
     value: function getParks(days) {
-      var finalCities = {},
+      var finalParks = {},
           urlMonth = '/month_',
           urlDay = '/day_',
           daysUrl = [];
@@ -16309,15 +16300,10 @@ var getWeatherData = function () {
       return _axios2.default.all(daysUrl.map(function (url) {
         return _axios2.default.get('http://gd2.mlb.com/components/game/mlb/year_' + url + '/grid.json');
       })).then(function (info) {
-        //console.log(info[0].data.data.games.game);
         for (var _i = 0; _i < Object.keys(info).length; _i++) {
-          /*let data = day.data.data.games.game;
-          for (let game in data) {
-           daysGames.push(data[game].home_name_abbrev);
-          }*/
-          finalCities[_i] = info[_i].data.data.games.game;
+          finalParks[_i] = info[_i].data.data.games.game;
         }
-        return finalCities;
+        return finalParks;
       }).catch(function (error) {
         console.log(error);
       });
@@ -30480,27 +30466,25 @@ var FiveDayLeague = function (_React$Component) {
   _createClass(FiveDayLeague, [{
     key: 'componentDidMount',
     value: function componentDidMount() {
+      // Obtain game data for the next X days
       _darkSkyHelper2.default.getParks(this.state.days).then(function (dailyParks) {
-        var allParks = _darkSkyHelper2.default.condenseParks(dailyParks);
         this.setState({
-          dailyParks: dailyParks,
-          allParks: allParks
+          dailyParks: dailyParks
         });
+        // Condense total list of active ballparks for the next X days
+        var allParks = _darkSkyHelper2.default.condenseParks(dailyParks);
         return _darkSkyHelper2.default.getWeather(allParks);
       }.bind(this)).then(function (info) {
-        var sortedCities = {};
+        var sortedParks = {};
         for (var i = 0; i < this.state.days; i++) {
-          sortedCities[i] = _darkSkyHelper2.default.sortCities(info, this.state.dailyParks[i], i);
+          sortedParks[i] = _darkSkyHelper2.default.sortParks(info, this.state.dailyParks[i], i);
         }
         this.setState({
-          sortedCities: sortedCities,
+          sortedParks: sortedParks,
           weatherData: info
         });
-        console.log(this.state.weatherData);
-        console.log(this.state.sortedCities);
         return _darkSkyHelper2.default.formatWeather(info, this.state.days, this.props.parks);
       }.bind(this)).then(function (dateInfo) {
-        console.log(dateInfo);
         this.setState({
           dateInfo: dateInfo,
           isLoading: false
@@ -30515,7 +30499,7 @@ var FiveDayLeague = function (_React$Component) {
       var eachDay = [];
       if (this.state.isLoading === false) {
         for (var i = 0; i < this.state.days; i++) {
-          eachDay.push(_react2.default.createElement(_MultiParkDetails2.default, { key: i, cities: this.state.sortedCities[i], data: this.state.weatherData, dateInfo: this.state.dateInfo, cols: 5, day: i }));
+          eachDay.push(_react2.default.createElement(_MultiParkDetails2.default, { key: i, parks: this.state.sortedParks[i], data: this.state.weatherData, dateInfo: this.state.dateInfo, cols: 5, day: i }));
         }
       }
       return this.state.isLoading === true ? _react2.default.createElement(_Loading2.default, { days: this.state.days, header: this.props.header, subheader: this.props.subheader }) : _react2.default.createElement(
