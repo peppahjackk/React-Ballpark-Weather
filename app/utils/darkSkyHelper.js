@@ -46,12 +46,12 @@ export default class getWeatherData {
   }
 
   // Returns an object containing the weather information for the requested amount of days
-  static formatWeather(info, days, park) {
-    let weatherData = {},
-      precipType = '',
+  static formatDateInfo(info, days, park) {
+    let dateInfo = {},
       numDays,
       latest;
     const weekdays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+    // Sets number of days: minimum 1, maximum 8
     if (!days) {
       numdays = 1;
     } else if (days < 1) {
@@ -61,19 +61,15 @@ export default class getWeatherData {
     } else {
       numDays = days;
     }
-    let numPark = Object.keys(info).length;
-    let aPark = park[0].home_name_abbrev;
-    console.log(park);
     // Obtain and set weekday(s) and date(s)
     for (let i = 0; i < numDays; i++) {
-      console.log(info);
-      latest = info[aPark].daily;
+      latest = info[park[0].home_name_abbrev].daily;
       let dayData = latest.data[i];
       let day = new Date(parseInt(dayData.time + '000'));
-      weatherData['Day' + i] = weekdays[day.getDay()];
-      weatherData['Day' + i + 'Date'] = dateManip.prettifyDate(latest.data[i].time);
+      dateInfo['Day' + i] = weekdays[day.getDay()];
+      dateInfo['Day' + i + 'Date'] = dateManip.prettifyDate(latest.data[i].time);
     }
-    return weatherData;
+    return dateInfo;
   }
   
   static sortParks(info, parks, day) {

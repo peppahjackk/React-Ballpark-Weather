@@ -35,7 +35,7 @@ export default class FiveDayLeague extends React.Component {
        sortedParks: sortedParks,
        weatherData: info
      });
-     return darkSkyHelper.formatWeather(info, this.state.days, this.state.sortedParks[0]);
+     return darkSkyHelper.formatDateInfo(info, this.state.days, this.state.sortedParks[0]);
     }.bind(this))
     .then(function(dateInfo) {
       this.setState({

@@ -16233,13 +16233,13 @@ var getWeatherData = function () {
     // Returns an object containing the weather information for the requested amount of days
 
   }, {
-    key: 'formatWeather',
-    value: function formatWeather(info, days, park) {
-      var weatherData = {},
-          precipType = '',
+    key: 'formatDateInfo',
+    value: function formatDateInfo(info, days, park) {
+      var dateInfo = {},
           numDays = void 0,
           latest = void 0;
       var weekdays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+      // Sets number of days: minimum 1, maximum 8
       if (!days) {
         numdays = 1;
       } else if (days < 1) {
@@ -16249,19 +16249,15 @@ var getWeatherData = function () {
       } else {
         numDays = days;
       }
-      var numPark = Object.keys(info).length;
-      var aPark = park[0].home_name_abbrev;
-      console.log(park);
       // Obtain and set weekday(s) and date(s)
       for (var i = 0; i < numDays; i++) {
-        console.log(info);
-        latest = info[aPark].daily;
+        latest = info[park[0].home_name_abbrev].daily;
         var dayData = latest.data[i];
         var day = new Date(parseInt(dayData.time + '000'));
-        weatherData['Day' + i] = weekdays[day.getDay()];
-        weatherData['Day' + i + 'Date'] = _dateManipulation2.default.prettifyDate(latest.data[i].time);
+        dateInfo['Day' + i] = weekdays[day.getDay()];
+        dateInfo['Day' + i + 'Date'] = _dateManipulation2.default.prettifyDate(latest.data[i].time);
       }
-      return weatherData;
+      return dateInfo;
     }
   }, {
     key: 'sortParks',
@@ -30484,7 +30480,7 @@ var FiveDayLeague = function (_React$Component) {
           sortedParks: sortedParks,
           weatherData: info
         });
-        return _darkSkyHelper2.default.formatWeather(info, this.state.days, this.state.sortedParks[0]);
+        return _darkSkyHelper2.default.formatDateInfo(info, this.state.days, this.state.sortedParks[0]);
       }.bind(this)).then(function (dateInfo) {
         this.setState({
           dateInfo: dateInfo,
@@ -30587,7 +30583,7 @@ var Home = function (_React$Component) {
     value: function render() {
       return (
         //<ThreeDay header='Cincinnati, OH' parks={['cin','laa','nya','col','was','tex','cle']}></ThreeDay>
-        _react2.default.createElement(_FiveDayLeague2.default, { header: 'Ballpark Weather', parks: ['cin', 'laa', 'nya', 'col', 'was', 'tex', 'cle'] })
+        _react2.default.createElement(_FiveDayLeague2.default, { header: 'Ballpark Weather' })
       );
     }
   }]);
