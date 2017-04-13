@@ -30,7 +30,6 @@ export default class getWeatherData {
             endParkData = weatherData.indexOf('}}', lastPark) + 2;
             if (endParkData > 0) {
               var data = weatherData.substring(lastPark, endParkData);
-              console.log(data);
               allData[parksRequested[i]] = JSON.parse(data);
               lastPark = endParkData;
             }
@@ -63,10 +62,12 @@ export default class getWeatherData {
       numDays = days;
     }
     let numPark = Object.keys(info).length;
+    let aPark = park[0].home_name_abbrev;
     console.log(park);
     // Obtain and set weekday(s) and date(s)
     for (let i = 0; i < numDays; i++) {
-      latest = info[park[home_name_abbrev].toUpperCase()].daily;
+      console.log(info);
+      latest = info[aPark].daily;
       let dayData = latest.data[i];
       let day = new Date(parseInt(dayData.time + '000'));
       weatherData['Day' + i] = weekdays[day.getDay()];
