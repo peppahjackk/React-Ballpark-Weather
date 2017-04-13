@@ -16217,7 +16217,6 @@ var getWeatherData = function () {
             endParkData = weatherData.indexOf('}}', lastPark) + 2;
             if (endParkData > 0) {
               var data = weatherData.substring(lastPark, endParkData);
-              console.log(data);
               allData[parksRequested[i]] = JSON.parse(data);
               lastPark = endParkData;
             }
@@ -16251,10 +16250,12 @@ var getWeatherData = function () {
         numDays = days;
       }
       var numPark = Object.keys(info).length;
+      var aPark = park[0].home_name_abbrev;
       console.log(park);
       // Obtain and set weekday(s) and date(s)
       for (var i = 0; i < numDays; i++) {
-        latest = info[park[home_name_abbrev].toUpperCase()].daily;
+        console.log(info);
+        latest = info[aPark].daily;
         var dayData = latest.data[i];
         var day = new Date(parseInt(dayData.time + '000'));
         weatherData['Day' + i] = weekdays[day.getDay()];
@@ -30483,7 +30484,7 @@ var FiveDayLeague = function (_React$Component) {
           sortedParks: sortedParks,
           weatherData: info
         });
-        return _darkSkyHelper2.default.formatWeather(info, this.state.days, this.props.parks);
+        return _darkSkyHelper2.default.formatWeather(info, this.state.days, this.state.sortedParks[0]);
       }.bind(this)).then(function (dateInfo) {
         this.setState({
           dateInfo: dateInfo,
