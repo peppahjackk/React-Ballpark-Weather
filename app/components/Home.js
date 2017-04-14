@@ -7,7 +7,6 @@ import FiveDayLeague from './FiveDayLeague'
 export default class Home extends React.Component {
   render() {
     return (
-      //<ThreeDay header='Cincinnati, OH' parks={['cin','laa','nya','col','was','tex','cle']}></ThreeDay>
       <FiveDayLeague header='Ballpark Weather'></FiveDayLeague>
     )
   }

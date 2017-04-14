@@ -16,15 +16,17 @@ export default class MultiParkDetails extends React.Component {
         outdoorParks.push(this.props.parks[i]);
       }
     }
+    
+    console.log(outdoorParks);
     return (
-      <div style={styles.details}>
+      <Grid.Column style={styles.details}>
         <Header as='h3' style={styles.infoHeader}>{this.props.dateInfo['Day'+this.props.day]}</Header>
         <Header as='h4' style={styles.infoSubHeader}>{this.props.dateInfo['Day'+this.props.day+'Date']}</Header>
         <ul style={styles.list}>
           {outdoorParks.map((park) => <li key={park.home_name_abbrev+this.props.day}>{park.away_name_abbrev} vs {park.home_name_abbrev} {Math.round(this.props.data[park.home_name_abbrev].daily.data[this.props.day].precipProbability * 100)}% {this.props.data[park.home_name_abbrev].daily.data[this.props.day].precipType || 'rain'}</li>)}
           {domeParks.map((park) => <li key={park.home_name_abbrev+this.props.day}>{park.away_name_abbrev} vs {park.home_name_abbrev} DOME</li>)}
-        </ul>
-      </div>
+        <div style={styles.ulGrass}></div></ul>
+      </Grid.Column>
     )
   }
 }
