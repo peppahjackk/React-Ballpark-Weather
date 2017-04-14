@@ -28,7 +28,6 @@ export default class FiveDayLeague extends React.Component {
       return darkSkyHelper.getWeather(allParks)
     }.bind(this))
     .then(function(info) {
-      console.log('with regular Data');
       let sortedParks = {};
       for (let i = 0; i < this.state.days; i++) {
         sortedParks[i] = darkSkyHelper.sortParks(info,this.state.dailyParks[i],i);

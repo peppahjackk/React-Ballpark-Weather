@@ -20,7 +20,6 @@ export default class getWeatherData {
         parkRequest: parksRequested
       })
       .then(function(msg) {
-      console.log(msg);
         let weatherData = msg.data;
         parksRequested = JSON.parse(parksRequested);
         if (parksRequested.length > 1) {
