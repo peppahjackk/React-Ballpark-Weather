@@ -5,12 +5,13 @@ import MultiParkDetails from './MultiParkDetails'
 import Loading from './Loading'
 import PageHeader from './PageHeader'
 import dateManip from '../utils/dateManipulation'
+import styles from '../styles'
 
 export default class FiveDayLeague extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      days: 5,
+      days: 3,
       isLoading: true
     }
   }
@@ -27,6 +28,7 @@ export default class FiveDayLeague extends React.Component {
       return darkSkyHelper.getWeather(allParks)
     }.bind(this))
     .then(function(info) {
+      console.log('with regular Data');
       let sortedParks = {};
       for (let i = 0; i < this.state.days; i++) {
         sortedParks[i] = darkSkyHelper.sortParks(info,this.state.dailyParks[i],i);
@@ -58,17 +60,14 @@ export default class FiveDayLeague extends React.Component {
     return ( this.state.isLoading === true
             ? <Loading days={this.state.days} header={this.props.header} subheader={this.props.subheader} />
             : <Container>
-                <Grid columns={this.state.days} centered>
-                  <PageHeader header={this.props.header} subheader={this.props.subheader} cols={this.state.days}></PageHeader>
-                  <Grid.Row>
-                    <Grid.Column width={this.state.days}>
-                      <h1>Map</h1>
-                    </Grid.Column>
-                  </Grid.Row>
-            <Grid.Row>
-            {eachDay}
-      </Grid.Row>
-      </Grid>
+                <Grid columns={this.state.days} centered style={styles.fullGrid}>
+                   <Grid.Row>
+                     <PageHeader header={this.props.header} subheader={this.props.subheader} cols={this.state.days}></PageHeader>
+                   </Grid.Row>
+                   <Grid.Row>
+                     {eachDay}
+                   </Grid.Row>
+                 </Grid>
               </Container>
     )
   }
