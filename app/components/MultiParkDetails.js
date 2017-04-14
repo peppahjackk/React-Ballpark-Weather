@@ -16,8 +16,6 @@ export default class MultiParkDetails extends React.Component {
         outdoorParks.push(this.props.parks[i]);
       }
     }
-    
-    console.log(outdoorParks);
     return (
       <Grid.Column style={styles.details}>
         <Header as='h3' style={styles.infoHeader}>{this.props.dateInfo['Day'+this.props.day]}</Header>
