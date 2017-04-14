@@ -11,19 +11,19 @@ export default class PageHeader extends Component {
   
   render() {
     return(
-      <div>
-      <Grid.Row columns={this.props.cols}>
-        <Grid.Column width={this.props.cols}>
-          <Header as='h1'>{this.props.header}</Header>
-        </Grid.Column>
-      </Grid.Row>
-      
-      <Grid.Row columns={this.props.cols}>
-        <Grid.Column width={this.props.cols}>
-          <Header as='h2'>{this.props.subheader}</Header>
-        </Grid.Column>
-      </Grid.Row>
-      </div>
+      <Grid.Column verticalAlign='middle'>
+        <Grid.Row columns={this.props.cols}>
+          <Grid.Column width={this.props.cols}>
+            <Header as='h1'>{this.props.header}</Header>
+          </Grid.Column>
+        </Grid.Row>
+
+        <Grid.Row columns={this.props.cols}>
+          <Grid.Column width={this.props.cols}>
+            <Header as='h2'>{this.props.subheader}</Header>
+          </Grid.Column>
+        </Grid.Row>
+      </Grid.Column>
     )
   }
 }
