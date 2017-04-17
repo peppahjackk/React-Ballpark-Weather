@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Grid, Header } from 'semantic-ui-react'
-
+import styles from '../styles'
 let date = new Date();
 
 
@@ -11,19 +11,19 @@ export default class PageHeader extends Component {
   
   render() {
     return(
-      <Grid.Column verticalAlign='middle'>
-        <Grid.Row columns={this.props.cols}>
-          <Grid.Column width={this.props.cols}>
-            <Header as='h1'>{this.props.header}</Header>
-          </Grid.Column>
-        </Grid.Row>
+        <Grid.Column width={this.props.cols}>
+          <Grid.Row>
+            <Grid.Column>
+              <img src="images/bpw-logo.png" alt="Ballpark Weather Logo" style={styles.headerImg} />
+            </Grid.Column>
+          </Grid.Row>
 
-        <Grid.Row columns={this.props.cols}>
-          <Grid.Column width={this.props.cols}>
-            <Header as='h2'>{this.props.subheader}</Header>
-          </Grid.Column>
-        </Grid.Row>
-      </Grid.Column>
+          <Grid.Row columns={this.props.cols}>
+            <Grid.Column width={this.props.cols}>
+              <Header as='h2'>{this.props.subheader}</Header>
+            </Grid.Column>
+          </Grid.Row>
+        </Grid.Column>
     )
   }
 }
@@ -31,5 +31,5 @@ export default class PageHeader extends Component {
 PageHeader.defaultProps = {
   header: 'Today',
   subheader: date.toDateString(),
-  cols: 16
+  cols: 12
 }

@@ -6895,6 +6895,11 @@ var styles = {
     marginBottom: 0,
     color: neutralDk
   },
+  headerImg: {
+    width: '50%',
+    maxWidth: '500px',
+    minWidth: '200px'
+  },
   infoSubHeader: {
     marginTop: 0,
     color: neutralDk
@@ -9863,6 +9868,10 @@ var _react2 = _interopRequireDefault(_react);
 
 var _semanticUiReact = __webpack_require__(55);
 
+var _styles = __webpack_require__(99);
+
+var _styles2 = _interopRequireDefault(_styles);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -9887,18 +9896,14 @@ var PageHeader = function (_Component) {
     value: function render() {
       return _react2.default.createElement(
         _semanticUiReact.Grid.Column,
-        { verticalAlign: 'middle' },
+        { width: this.props.cols },
         _react2.default.createElement(
           _semanticUiReact.Grid.Row,
-          { columns: this.props.cols },
+          null,
           _react2.default.createElement(
             _semanticUiReact.Grid.Column,
-            { width: this.props.cols },
-            _react2.default.createElement(
-              _semanticUiReact.Header,
-              { as: 'h1' },
-              this.props.header
-            )
+            null,
+            _react2.default.createElement('img', { src: 'images/bpw-logo.png', alt: 'Ballpark Weather Logo', style: _styles2.default.headerImg })
           )
         ),
         _react2.default.createElement(
@@ -9927,7 +9932,7 @@ exports.default = PageHeader;
 PageHeader.defaultProps = {
   header: 'Today',
   subheader: date.toDateString(),
-  cols: 16
+  cols: 12
 };
 
 /***/ }),
@@ -16127,7 +16132,7 @@ var MultiParkDetails = function (_React$Component) {
       }
       return _react2.default.createElement(
         _semanticUiReact.Grid.Column,
-        { style: _styles2.default.details },
+        { width: Math.round(this.props.cols / this.props.days), style: _styles2.default.details },
         _react2.default.createElement(
           _semanticUiReact.Header,
           { as: 'h3', style: _styles2.default.infoHeader },
@@ -30517,26 +30522,13 @@ var FiveDayLeague = function (_React$Component) {
       var eachDay = [];
       if (this.state.isLoading === false) {
         for (var i = 0; i < this.state.days; i++) {
-          eachDay.push(_react2.default.createElement(_MultiParkDetails2.default, { key: i, parks: this.state.sortedParks[i], data: this.state.weatherData, dateInfo: this.state.dateInfo, cols: 5, day: i }));
+          eachDay.push(_react2.default.createElement(_MultiParkDetails2.default, { key: i, parks: this.state.sortedParks[i], data: this.state.weatherData, dateInfo: this.state.dateInfo, cols: this.props.cols, days: this.state.days, day: i }));
         }
       }
       return this.state.isLoading === true ? _react2.default.createElement(_Loading2.default, { days: this.state.days, header: this.props.header, subheader: this.props.subheader }) : _react2.default.createElement(
-        _semanticUiReact.Container,
-        null,
-        _react2.default.createElement(
-          _semanticUiReact.Grid,
-          { columns: this.state.days, centered: true, style: _styles2.default.fullGrid },
-          _react2.default.createElement(
-            _semanticUiReact.Grid.Row,
-            null,
-            _react2.default.createElement(_PageHeader2.default, { header: this.props.header, subheader: this.props.subheader, cols: this.state.days })
-          ),
-          _react2.default.createElement(
-            _semanticUiReact.Grid.Row,
-            null,
-            eachDay
-          )
-        )
+        _semanticUiReact.Grid.Row,
+        { columns: '12' },
+        eachDay
       );
     }
   }]);
@@ -30565,13 +30557,17 @@ var _react2 = _interopRequireDefault(_react);
 
 var _semanticUiReact = __webpack_require__(55);
 
-var _ThreeDay = __webpack_require__(481);
+var _PageHeader = __webpack_require__(150);
 
-var _ThreeDay2 = _interopRequireDefault(_ThreeDay);
+var _PageHeader2 = _interopRequireDefault(_PageHeader);
 
 var _FiveDayLeague = __webpack_require__(476);
 
 var _FiveDayLeague2 = _interopRequireDefault(_FiveDayLeague);
+
+var _styles = __webpack_require__(99);
+
+var _styles2 = _interopRequireDefault(_styles);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -30593,7 +30589,20 @@ var Home = function (_React$Component) {
   _createClass(Home, [{
     key: 'render',
     value: function render() {
-      return _react2.default.createElement(_FiveDayLeague2.default, { header: 'Ballpark Weather' });
+      return _react2.default.createElement(
+        _semanticUiReact.Container,
+        null,
+        _react2.default.createElement(
+          _semanticUiReact.Grid,
+          { columns: '12', centered: true, style: _styles2.default.fullGrid },
+          _react2.default.createElement(
+            _semanticUiReact.Grid.Row,
+            { columns: '12' },
+            _react2.default.createElement(_PageHeader2.default, { cols: '12' })
+          ),
+          _react2.default.createElement(_FiveDayLeague2.default, { cols: '12', header: 'Ballpark Weather' })
+        )
+      );
     }
   }]);
 
@@ -30650,16 +30659,12 @@ var Loading = function (_React$Component) {
     key: 'render',
     value: function render() {
       return _react2.default.createElement(
-        _semanticUiReact.Container,
+        _semanticUiReact.Grid.Row,
         null,
         _react2.default.createElement(
-          _semanticUiReact.Grid,
-          { columns: this.props.days, centered: true, style: _styles2.default.fullGrid },
-          _react2.default.createElement(
-            _semanticUiReact.Loader,
-            { active: true, size: 'large' },
-            'Loading'
-          )
+          _semanticUiReact.Loader,
+          { active: true, size: 'large' },
+          'Grilling Hot Dogs...'
         )
       );
     }
@@ -30825,233 +30830,8 @@ var Nav = function (_Component) {
 exports.default = Nav;
 
 /***/ }),
-/* 481 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _react = __webpack_require__(1);
-
-var _react2 = _interopRequireDefault(_react);
-
-var _semanticUiReact = __webpack_require__(55);
-
-var _PageHeader = __webpack_require__(150);
-
-var _PageHeader2 = _interopRequireDefault(_PageHeader);
-
-var _darkSkyHelper = __webpack_require__(254);
-
-var _darkSkyHelper2 = _interopRequireDefault(_darkSkyHelper);
-
-var _WeatherDetails = __webpack_require__(482);
-
-var _WeatherDetails2 = _interopRequireDefault(_WeatherDetails);
-
-var _MultiParkDetails = __webpack_require__(253);
-
-var _MultiParkDetails2 = _interopRequireDefault(_MultiParkDetails);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var ThreeDay = function (_Component) {
-  _inherits(ThreeDay, _Component);
-
-  function ThreeDay(props) {
-    _classCallCheck(this, ThreeDay);
-
-    var _this = _possibleConstructorReturn(this, (ThreeDay.__proto__ || Object.getPrototypeOf(ThreeDay)).call(this, props));
-
-    _this.state = {
-      days: 3,
-      isLoading: true
-    };
-    return _this;
-  }
-
-  _createClass(ThreeDay, [{
-    key: 'componentDidMount',
-    value: function componentDidMount() {
-      _darkSkyHelper2.default.getWeather(this.props.parks).then(function (info) {
-        var sortedCities = _darkSkyHelper2.default.sortCities(info, this.props.parks);
-        this.setState({ sortedCities: sortedCities });
-        return info;
-      }.bind(this)).then(function (info) {
-        return _darkSkyHelper2.default.formatWeather(info, this.state.days, this.props.parks);
-      }.bind(this)).then(function (weatherData) {
-        this.setState({
-          weatherData: weatherData,
-          isLoading: false
-        });
-        console.log(this.state);
-      }.bind(this));
-    }
-  }, {
-    key: 'render',
-    value: function render() {
-      return this.state.isLoading === true ? _react2.default.createElement(
-        _semanticUiReact.Container,
-        null,
-        _react2.default.createElement(
-          _semanticUiReact.Grid,
-          { columns: this.state.days, centered: true },
-          _react2.default.createElement(_PageHeader2.default, { header: this.props.header, subheader: this.props.subheader, cols: 3 }),
-          _react2.default.createElement(
-            _semanticUiReact.Grid.Row,
-            null,
-            _react2.default.createElement(
-              _semanticUiReact.Grid.Column,
-              null,
-              _react2.default.createElement(
-                _semanticUiReact.Header,
-                { as: 'h2' },
-                'Loading'
-              )
-            )
-          )
-        )
-      ) : _react2.default.createElement(
-        _semanticUiReact.Container,
-        null,
-        _react2.default.createElement(
-          _semanticUiReact.Grid,
-          { columns: this.state.days, centered: true },
-          _react2.default.createElement(_PageHeader2.default, { header: this.props.header, subheader: this.props.subheader, cols: 3 }),
-          _react2.default.createElement(
-            _semanticUiReact.Grid.Row,
-            null,
-            _react2.default.createElement(
-              _semanticUiReact.Grid.Column,
-              { width: this.state.days },
-              _react2.default.createElement(
-                'h1',
-                null,
-                'Map'
-              )
-            )
-          ),
-          _react2.default.createElement(
-            _semanticUiReact.Grid.Row,
-            null,
-            _react2.default.createElement(_MultiParkDetails2.default, { cities: this.state.sortedCities, data: this.state.weatherData, day: '0' })
-          ),
-          _react2.default.createElement(
-            _semanticUiReact.Grid.Row,
-            null,
-            _react2.default.createElement(_WeatherDetails2.default, { day: this.state.Day0, date: this.state.Day0Date, precipPercent: this.state[this.props.parks[0] + 'Day0PrecipPercent'], summary: this.state[this.props.parks[0] + 'Day0Summary'] }),
-            _react2.default.createElement(_WeatherDetails2.default, { day: this.state.Day1, date: this.state.Day1Date, precipPercent: this.state[this.props.parks[0] + 'Day1PrecipPercent'], summary: this.state[this.props.parks[0] + 'Day1Summary'] }),
-            _react2.default.createElement(_WeatherDetails2.default, { day: this.state.Day2, date: this.state.Day2Date, precipPercent: this.state[this.props.parks[0] + 'Day2PrecipPercent'], summary: this.state[this.props.parks[0] + 'Day2Summary'] })
-          )
-        )
-      );
-    }
-  }]);
-
-  return ThreeDay;
-}(_react.Component);
-
-exports.default = ThreeDay;
-
-
-ThreeDay.defaultProps = {
-  header: 'Baseball Weather',
-  subheader: 'Three Day Forecast'
-};
-
-/***/ }),
-/* 482 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _react = __webpack_require__(1);
-
-var _react2 = _interopRequireDefault(_react);
-
-var _semanticUiReact = __webpack_require__(55);
-
-var _styles = __webpack_require__(99);
-
-var _styles2 = _interopRequireDefault(_styles);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var WeatherDetails = function (_React$Component) {
-  _inherits(WeatherDetails, _React$Component);
-
-  function WeatherDetails(props) {
-    _classCallCheck(this, WeatherDetails);
-
-    return _possibleConstructorReturn(this, (WeatherDetails.__proto__ || Object.getPrototypeOf(WeatherDetails)).call(this, props));
-  }
-
-  _createClass(WeatherDetails, [{
-    key: 'render',
-    value: function render() {
-      return _react2.default.createElement(
-        _semanticUiReact.Grid.Column,
-        null,
-        _react2.default.createElement(
-          _semanticUiReact.Header,
-          { as: 'h3', style: _styles2.default.infoHeader },
-          this.props.day
-        ),
-        _react2.default.createElement(
-          'p',
-          null,
-          this.props.date
-        ),
-        _react2.default.createElement(
-          'p',
-          { style: _styles2.default.bold },
-          this.props.precipPercent
-        ),
-        _react2.default.createElement(
-          'p',
-          null,
-          this.props.summary
-        )
-      );
-    }
-  }]);
-
-  return WeatherDetails;
-}(_react2.default.Component);
-
-exports.default = WeatherDetails;
-
-
-WeatherDetails.defaultProps = {
-  precipPercent: '0% chance of rain'
-};
-
-/***/ }),
+/* 481 */,
+/* 482 */,
 /* 483 */
 /***/ (function(module, exports, __webpack_require__) {
 

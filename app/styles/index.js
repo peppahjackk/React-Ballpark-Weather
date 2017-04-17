@@ -16,6 +16,11 @@ var styles = {
     marginBottom: 0,
     color: neutralDk
   },
+  headerImg: {
+    width: '50%',
+    maxWidth: '500px',
+    minWidth: '200px'
+  },
   infoSubHeader: {
     marginTop: 0,
     color: neutralDk

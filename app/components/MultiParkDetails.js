@@ -17,7 +17,7 @@ export default class MultiParkDetails extends React.Component {
       }
     }
     return (
-      <Grid.Column style={styles.details}>
+      <Grid.Column width={Math.round(this.props.cols/this.props.days)} style={styles.details}>
         <Header as='h3' style={styles.infoHeader}>{this.props.dateInfo['Day'+this.props.day]}</Header>
         <Header as='h4' style={styles.infoSubHeader}>{this.props.dateInfo['Day'+this.props.day+'Date']}</Header>
         <ul style={styles.list}>
