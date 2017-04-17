@@ -10,11 +10,9 @@ export default class Loading extends React.Component {
   
   render() {
     return (
-      <Container>
-        <Grid columns={this.props.days} centered style={styles.fullGrid}>
-          <Loader active size='large'>Loading</Loader>
-        </Grid>
-      </Container>
+          <Grid.Row>
+            <Loader active size='large'>Grilling Hot Dogs...</Loader>
+          </Grid.Row>
     )
   }
 }

@@ -54,20 +54,13 @@ export default class FiveDayLeague extends React.Component {
      let eachDay =[];
     if (this.state.isLoading === false) {
     for (var i = 0; i < this.state.days; i++) {
-      eachDay.push(<MultiParkDetails key={i} parks={this.state.sortedParks[i]} data={this.state.weatherData} dateInfo={this.state.dateInfo} cols={5} day={i}></MultiParkDetails>);
+      eachDay.push(<MultiParkDetails key={i} parks={this.state.sortedParks[i]} data={this.state.weatherData} dateInfo={this.state.dateInfo} cols={this.props.cols} days={this.state.days} day={i}></MultiParkDetails>);
     }}
     return ( this.state.isLoading === true
             ? <Loading days={this.state.days} header={this.props.header} subheader={this.props.subheader} />
-            : <Container>
-                <Grid columns={this.state.days} centered style={styles.fullGrid}>
-                   <Grid.Row>
-                     <PageHeader header={this.props.header} subheader={this.props.subheader} cols={this.state.days}></PageHeader>
-                   </Grid.Row>
-                   <Grid.Row>
-                     {eachDay}
-                   </Grid.Row>
-                 </Grid>
-              </Container>
+            : <Grid.Row columns='12'>
+                {eachDay}
+              </Grid.Row>
     )
   }
 }
