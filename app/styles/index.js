@@ -25,8 +25,7 @@ var styles = {
     marginTop: 0,
     color: neutralDk
   },
-  list: {
-    listStyleType: 'none',
+  detailsContainer: {
     padding: ".5rem .5rem 2.5rem",
     border: "2.5px solid" + neutralDk,
     borderRadius: "4px",
@@ -34,6 +33,20 @@ var styles = {
     background: 'url("images/grass40.png") repeat-x scroll left bottom transparent',
     backgroundColor: neutralLgt,
     position: 'relative'
+  },
+  list: {
+    listStyleType: 'none',
+    padding: 0
+  },
+  highChance: {
+    fontWeight: 'bold',
+    fontSize: '1.25em'
+  },
+  lowChance: {
+    columnCount: 2,
+    WebkitColumnCount: 2,
+    MozColumnCount: 2,
+    color: '#999'
   },
   details: {
     padding: '.5em'
