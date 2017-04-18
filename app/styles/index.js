@@ -3,8 +3,12 @@ var secondary = '#477998';
 var tertiary = '#931621';
 var neutralLgt = '#FCF7F8';
 var neutralDk = '#3C3744';
+var greenDk = '#2F4D2E';
 
 var styles = {
+  app: {
+    backgroundColor: '#C6E8FD'
+  },
   fullGrid: {
     height: '100vh',
     margin: '0px'
@@ -17,7 +21,7 @@ var styles = {
     color: neutralDk
   },
   headerImg: {
-    width: '50%',
+    width: '35%',
     maxWidth: '500px',
     minWidth: '200px'
   },
@@ -26,26 +30,36 @@ var styles = {
     color: neutralDk
   },
   detailsContainer: {
-    padding: ".5rem .5rem 2.5rem",
-    border: "2.5px solid" + neutralDk,
+    padding: ".5rem",
+    border: "2.5px solid white",
     borderRadius: "4px",
     margin: '1em 1em 0',
-    background: 'url("images/grass40.png") repeat-x scroll left bottom transparent',
-    backgroundColor: neutralLgt,
+    backgroundColor: greenDk,
     position: 'relative'
   },
   list: {
     listStyleType: 'none',
-    padding: 0
+    padding: 0,
+    margin: '.5rem',
+    borderStyle: 'solid',
+    borderWidth: '2px 2px 0px 2px',
+    borderColor: 'white'
   },
   highChance: {
     fontWeight: 'bold',
-    fontSize: '1.25em'
+    fontSize: '1.25em',
+    color: 'white'
   },
   lowChance: {
     columnCount: 2,
     WebkitColumnCount: 2,
     MozColumnCount: 2,
+    columnGap: '4px',
+    WebkitColumnGap: '4px',
+    MozColumnGap: '4px',
+    columnRule: '4px outset white',
+    WebkitColumnRule:'4px outset white',
+    MozColumnRule:'4px outset white',
     color: '#999'
   },
   details: {
@@ -58,6 +72,9 @@ var styles = {
     width: '100%',
     bottom: '0',
     left: '0'
+  },
+  listItem: {
+    borderBottom: '2px solid white'
   }
 };
 
