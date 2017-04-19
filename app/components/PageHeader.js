@@ -14,7 +14,7 @@ export default class PageHeader extends Component {
         <Grid.Column width={this.props.cols}>
           <Grid.Row>
             <Grid.Column>
-              <img src="images/bpw-logo.png" alt="Ballpark Weather Logo" style={styles.headerImg} />
+              <img src="images/bpw-logo-v2.png" alt="Ballpark Weather Logo" style={styles.headerImg} />
             </Grid.Column>
           </Grid.Row>
 
