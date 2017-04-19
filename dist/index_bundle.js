@@ -9933,7 +9933,7 @@ var PageHeader = function (_Component) {
           _react2.default.createElement(
             _semanticUiReact.Grid.Column,
             null,
-            _react2.default.createElement('img', { src: 'images/bpw-logo.png', alt: 'Ballpark Weather Logo', style: _styles2.default.headerImg })
+            _react2.default.createElement('img', { src: 'images/bpw-logo-v2.png', alt: 'Ballpark Weather Logo', style: _styles2.default.headerImg })
           )
         ),
         _react2.default.createElement(
