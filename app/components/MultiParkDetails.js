@@ -23,12 +23,14 @@ export default class MultiParkDetails extends React.Component {
       emptyPark.push('-');
     }
     return (
-      <Grid.Column style={styles.details}>
-        <Header as='h3' style={styles.infoHeader}>{this.props.dateInfo['Day'+this.props.day]}</Header>
-        <Header as='h4' style={styles.infoSubHeader}>{this.props.dateInfo['Day'+this.props.day+'Date']}</Header>
+      <Grid.Column>
+        <div style={styles.detailsContainer}>
+          <Header as='h3' style={styles.infoHeader}>{this.props.dateInfo['Day'+this.props.day]}</Header>
+          <Header as='h4' style={styles.infoSubHeader}>{this.props.dateInfo['Day'+this.props.day+'Date']}</Header>
+        </div>
           <div style={styles.detailsContainer}>
             <ul style={Object.assign({}, styles.list, styles.highChance)}>
-            {outdoorParks.map((park) => <li key={park.home_name_abbrev+this.props.day} style={styles.listItem}>{park.away_name_abbrev} vs {park.home_name_abbrev} {Math.round(this.props.data[park.home_name_abbrev].daily.data[this.props.day].precipProbability * 100)}% {this.props.data[park.home_name_abbrev].daily.data[this.props.day].precipType || 'rain'}</li>)} </ul>
+            {outdoorParks.map((park) => <li key={park.home_name_abbrev+this.props.day} style={Object.assign({}, styles.listItem, styles.highChanceItem)}>{park.away_name_abbrev} vs {park.home_name_abbrev} {Math.round(this.props.data[park.home_name_abbrev].daily.data[this.props.day].precipProbability * 100)}% {this.props.data[park.home_name_abbrev].daily.data[this.props.day].precipType || 'rain'}</li>)} </ul>
             <ul style={Object.assign({}, styles.list, styles.lowChance)}>
               {lowChanceParks.map((park) => <li key={park.home_name_abbrev+this.props.day} style={styles.listItem}>{park.away_name_abbrev} vs {park.home_name_abbrev} {Math.round(this.props.data[park.home_name_abbrev].daily.data[this.props.day].precipProbability * 100)}%</li>)}
             {domeParks.map((park) => <li key={park.home_name_abbrev+this.props.day} style={styles.listItem}>{park.away_name_abbrev} vs {park.home_name_abbrev} DOME</li>)}

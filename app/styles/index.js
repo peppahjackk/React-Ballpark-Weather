@@ -23,7 +23,11 @@ var styles = {
   },
   infoHeader: {
     marginBottom: 0,
-    color: neutralDk
+    color: 'white'
+  },
+  infoSubHeader: {
+    marginTop: 0,
+    color: 'white'
   },
   headerImg: {
     width: '33.3333%',
@@ -31,16 +35,19 @@ var styles = {
     minWidth: '200px',
     padding: '.5rem'
   },
-  infoSubHeader: {
-    marginTop: 0,
-    color: neutralDk
-  },
   detailsContainer: {
     padding: ".5rem",
     border: "2.5px solid white",
     borderRadius: "4px",
-    margin: '1em 0 0',
+    margin: '0 0 .5rem',
     backgroundColor: greenDk,
+    
+    background: '#436040', /* Old browsers */
+    background: '-moz-linear-gradient(top, #436040 0%, #2f4d2e 100%)', /* FF3.6-15 */
+    background: '-webkit-linear-gradient(top, #436040 0%,#2f4d2e 100%)', /* Chrome10-25,Safari5.1-6 */
+    background: 'linear-gradient(to bottom, #436040 0%,#2f4d2e 100%)', /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+    filter: "progid:DXImageTransform.Microsoft.gradient( startColorstr='#436040', endColorstr='#2f4d2e',GradientType=0 )", /* IE6-9 */
+    
     position: 'relative'
   },
   list: {
@@ -55,6 +62,9 @@ var styles = {
     fontWeight: 'bold',
     fontSize: '1.25em',
     color: 'white'
+  },
+  highChanceItem: {
+    padding: '0.25rem 0'
   },
   lowChance: {
     columnCount: 2,
@@ -72,7 +82,8 @@ var styles = {
     padding: '.5em'
   },
   detailsRow: {
-    height: '100%'
+    height: '100%',
+    padding: '0 0 .5rem'
   },
   ulGrass: {
     position: 'absolute',

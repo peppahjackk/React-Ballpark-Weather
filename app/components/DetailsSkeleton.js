@@ -9,9 +9,11 @@ export default class DetailsSkeleton extends React.Component {
   
   render() {
     return (
-      <Grid.Column style={styles.details}>
-        <Header as='h3' style={styles.infoHeader}>Weekday</Header>
-        <Header as='h4' style={styles.infoSubHeader}>Date</Header>
+      <Grid.Column>
+        <div style={styles.detailsContainer}>
+          <Header as='h3' style={styles.infoHeader}>Weekday</Header>
+          <Header as='h4' style={styles.infoSubHeader}>Date</Header>
+        </div>
         <div style={Object.assign({}, styles.detailsContainer, styles.skeleton)}>
           
         </div>
