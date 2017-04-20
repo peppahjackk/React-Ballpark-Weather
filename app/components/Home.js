@@ -8,12 +8,12 @@ import styles from '../styles'
 export default class Home extends React.Component {
   render() {
     return (
-      <Container>
-        <Grid columns='12' centered style={styles.fullGrid}>
-          <Grid.Row columns='12'>    
-            <PageHeader cols='12'></PageHeader>
+      <Container style={styles.container}>
+        <Grid columns='16' centered style={styles.fullGrid}>
+          <Grid.Row columns='16'>    
+            <PageHeader cols='16'></PageHeader>
           </Grid.Row>
-          <FiveDayLeague cols='12' header='Ballpark Weather'></FiveDayLeague>
+          <FiveDayLeague cols='16' header='Ballpark Weather'></FiveDayLeague>
         </Grid>
       </Container>
     )

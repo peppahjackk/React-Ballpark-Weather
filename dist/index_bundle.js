@@ -4507,20 +4507,26 @@ var styles = {
     backgroundColor: '#C6E8FD'
   },
   fullGrid: {
-    height: '100vh',
     margin: '0px'
+  },
+  container: {
+    height: '100vh'
   },
   bold: {
     fontWeight: 'bold'
+  },
+  skeleton: {
+    minHeight: '250px'
   },
   infoHeader: {
     marginBottom: 0,
     color: neutralDk
   },
   headerImg: {
-    width: '35%',
+    width: '33.3333%',
     maxWidth: '500px',
-    minWidth: '200px'
+    minWidth: '200px',
+    padding: '.5rem'
   },
   infoSubHeader: {
     marginTop: 0,
@@ -4530,7 +4536,7 @@ var styles = {
     padding: ".5rem",
     border: "2.5px solid white",
     borderRadius: "4px",
-    margin: '1em 1em 0',
+    margin: '1em 0 0',
     backgroundColor: greenDk,
     position: 'relative'
   },
@@ -4561,6 +4567,9 @@ var styles = {
   },
   details: {
     padding: '.5em'
+  },
+  detailsRow: {
+    height: '100%'
   },
   ulGrass: {
     position: 'absolute',
@@ -9934,11 +9943,7 @@ var PageHeader = function (_Component) {
             _semanticUiReact.Grid.Column,
             null,
             _react2.default.createElement('img', { src: 'images/bpw-logo-v2.png', alt: 'Ballpark Weather Logo', style: _styles2.default.headerImg })
-          )
-        ),
-        _react2.default.createElement(
-          _semanticUiReact.Grid.Row,
-          { columns: this.props.cols },
+          ),
           _react2.default.createElement(
             _semanticUiReact.Grid.Column,
             { width: this.props.cols },
@@ -30286,7 +30291,7 @@ var FiveDayLeague = function (_React$Component) {
       }
       return this.state.isLoading === true ? _react2.default.createElement(_Loading2.default, { days: this.state.days, header: this.props.header, subheader: this.props.subheader }) : _react2.default.createElement(
         _semanticUiReact.Grid.Row,
-        { columns: '3' },
+        { columns: '3', style: _styles2.default.detailsRow },
         eachDay
       );
     }
@@ -30350,16 +30355,16 @@ var Home = function (_React$Component) {
     value: function render() {
       return _react2.default.createElement(
         _semanticUiReact.Container,
-        null,
+        { style: _styles2.default.container },
         _react2.default.createElement(
           _semanticUiReact.Grid,
-          { columns: '12', centered: true, style: _styles2.default.fullGrid },
+          { columns: '16', centered: true, style: _styles2.default.fullGrid },
           _react2.default.createElement(
             _semanticUiReact.Grid.Row,
-            { columns: '12' },
-            _react2.default.createElement(_PageHeader2.default, { cols: '12' })
+            { columns: '16' },
+            _react2.default.createElement(_PageHeader2.default, { cols: '16' })
           ),
-          _react2.default.createElement(_FiveDayLeague2.default, { cols: '12', header: 'Ballpark Weather' })
+          _react2.default.createElement(_FiveDayLeague2.default, { cols: '16', header: 'Ballpark Weather' })
         )
       );
     }
@@ -30393,6 +30398,10 @@ var _PageHeader = __webpack_require__(150);
 
 var _PageHeader2 = _interopRequireDefault(_PageHeader);
 
+var _DetailsSkeleton = __webpack_require__(911);
+
+var _DetailsSkeleton2 = _interopRequireDefault(_DetailsSkeleton);
+
 var _styles = __webpack_require__(65);
 
 var _styles2 = _interopRequireDefault(_styles);
@@ -30419,12 +30428,19 @@ var Loading = function (_React$Component) {
     value: function render() {
       return _react2.default.createElement(
         _semanticUiReact.Grid.Row,
-        null,
+        { columns: 3 },
         _react2.default.createElement(
-          _semanticUiReact.Loader,
-          { active: true, size: 'large' },
-          'Grilling Hot Dogs...'
-        )
+          _semanticUiReact.Dimmer,
+          { active: true },
+          _react2.default.createElement(
+            _semanticUiReact.Loader,
+            { active: true, size: 'large' },
+            'Grilling Hot Dogs...'
+          )
+        ),
+        _react2.default.createElement(_DetailsSkeleton2.default, null),
+        _react2.default.createElement(_DetailsSkeleton2.default, null),
+        _react2.default.createElement(_DetailsSkeleton2.default, null)
       );
     }
   }]);
@@ -63505,6 +63521,73 @@ module.exports = g;
 
 module.exports = __webpack_require__(455);
 
+
+/***/ }),
+/* 910 */,
+/* 911 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(1);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _semanticUiReact = __webpack_require__(81);
+
+var _styles = __webpack_require__(65);
+
+var _styles2 = _interopRequireDefault(_styles);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var DetailsSkeleton = function (_React$Component) {
+  _inherits(DetailsSkeleton, _React$Component);
+
+  function DetailsSkeleton(props) {
+    _classCallCheck(this, DetailsSkeleton);
+
+    return _possibleConstructorReturn(this, (DetailsSkeleton.__proto__ || Object.getPrototypeOf(DetailsSkeleton)).call(this, props));
+  }
+
+  _createClass(DetailsSkeleton, [{
+    key: 'render',
+    value: function render() {
+      return _react2.default.createElement(
+        _semanticUiReact.Grid.Column,
+        { style: _styles2.default.details },
+        _react2.default.createElement(
+          _semanticUiReact.Header,
+          { as: 'h3', style: _styles2.default.infoHeader },
+          'Weekday'
+        ),
+        _react2.default.createElement(
+          _semanticUiReact.Header,
+          { as: 'h4', style: _styles2.default.infoSubHeader },
+          'Date'
+        ),
+        _react2.default.createElement('div', { style: Object.assign({}, _styles2.default.detailsContainer, _styles2.default.skeleton) })
+      );
+    }
+  }]);
+
+  return DetailsSkeleton;
+}(_react2.default.Component);
+
+exports.default = DetailsSkeleton;
 
 /***/ })
 /******/ ]);
