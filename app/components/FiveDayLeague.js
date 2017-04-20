@@ -58,7 +58,7 @@ export default class FiveDayLeague extends React.Component {
     }}
     return ( this.state.isLoading === true
             ? <Loading days={this.state.days} header={this.props.header} subheader={this.props.subheader} />
-            : <Grid.Row columns='3'>
+            : <Grid.Row columns='3' style={styles.detailsRow}>
                 {eachDay}
               </Grid.Row>
     )

@@ -1,6 +1,7 @@
 import React from 'react'
-import { Container, Grid, Header, Loader } from 'semantic-ui-react'
+import { Container, Grid, Header, Loader, Segment, Dimmer } from 'semantic-ui-react'
 import PageHeader from './PageHeader'
+import DetailsSkeleton from './DetailsSkeleton'
 import styles from '../styles'
 
 export default class Loading extends React.Component {
@@ -10,8 +11,13 @@ export default class Loading extends React.Component {
   
   render() {
     return (
-          <Grid.Row>
-            <Loader active size='large'>Grilling Hot Dogs...</Loader>
+          <Grid.Row columns={3}>
+            <Dimmer active>
+              <Loader active size='large'>Grilling Hot Dogs...</Loader>
+            </Dimmer>
+            <DetailsSkeleton />
+            <DetailsSkeleton />
+            <DetailsSkeleton />   
           </Grid.Row>
     )
   }

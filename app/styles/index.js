@@ -10,20 +10,26 @@ var styles = {
     backgroundColor: '#C6E8FD'
   },
   fullGrid: {
-    height: '100vh',
     margin: '0px'
+  },
+  container: {
+    height: '100vh'
   },
   bold: {
     fontWeight: 'bold'
+  },
+  skeleton: {
+    minHeight: '250px'
   },
   infoHeader: {
     marginBottom: 0,
     color: neutralDk
   },
   headerImg: {
-    width: '35%',
+    width: '33.3333%',
     maxWidth: '500px',
-    minWidth: '200px'
+    minWidth: '200px',
+    padding: '.5rem'
   },
   infoSubHeader: {
     marginTop: 0,
@@ -33,7 +39,7 @@ var styles = {
     padding: ".5rem",
     border: "2.5px solid white",
     borderRadius: "4px",
-    margin: '1em 1em 0',
+    margin: '1em 0 0',
     backgroundColor: greenDk,
     position: 'relative'
   },
@@ -64,6 +70,9 @@ var styles = {
   },
   details: {
     padding: '.5em'
+  },
+  detailsRow: {
+    height: '100%'
   },
   ulGrass: {
     position: 'absolute',
