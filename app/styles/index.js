@@ -4,6 +4,7 @@ var tertiary = '#931621';
 var neutralLgt = '#FCF7F8';
 var neutralDk = '#3C3744';
 var greenDk = '#2F4D2E';
+var white = '#EDEDED';
 
 var styles = {
   app: {
@@ -27,6 +28,7 @@ var styles = {
   },
   infoSubHeader: {
     marginTop: 0,
+    marginBottom: 0,
     color: 'white'
   },
   headerImg: {
@@ -47,17 +49,25 @@ var styles = {
     filter: "progid:DXImageTransform.Microsoft.gradient( startColorstr='#436040', endColorstr='#2f4d2e',GradientType=0 )", /* IE6-9 */
     position: 'relative'
   },
+  precipTable: {
+    background: 'none',
+    color: white,
+    border: '1px solid ' + white
+  },
+  precipTHead: {
+    background: 'none',
+  },
+  precipCell: {
+    padding: '.5rem'
+  },
   list: {
     listStyleType: 'none',
     padding: 0,
     margin: '.5rem',
-    borderStyle: 'solid',
-    borderWidth: '2px 2px 0px 2px',
-    borderColor: 'white'
   },
   highChance: {
     fontSize: '1.25em',
-    color: 'white'
+    color: white
   },
   highChanceItem: {
     padding: '0.25rem 0'
@@ -69,9 +79,6 @@ var styles = {
     columnGap: '4px',
     WebkitColumnGap: '4px',
     MozColumnGap: '4px',
-    columnRule: '4px outset white',
-    WebkitColumnRule:'4px outset white',
-    MozColumnRule:'4px outset white',
     color: '#999'
   },
   details: {
@@ -88,9 +95,6 @@ var styles = {
     width: '100%',
     bottom: '0',
     left: '0'
-  },
-  listItem: {
-    borderBottom: '2px solid white'
   }
 };
 

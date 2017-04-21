@@ -3866,6 +3866,7 @@ var tertiary = '#931621';
 var neutralLgt = '#FCF7F8';
 var neutralDk = '#3C3744';
 var greenDk = '#2F4D2E';
+var white = '#EDEDED';
 
 var styles = {
   app: {
@@ -3889,6 +3890,7 @@ var styles = {
   },
   infoSubHeader: {
     marginTop: 0,
+    marginBottom: 0,
     color: 'white'
   },
   headerImg: {
@@ -3903,17 +3905,25 @@ var styles = {
     borderRadius: "4px",
     margin: '0 0 .5rem',
     background: '#436040' }, _defineProperty(_detailsContainer, 'background', '-moz-linear-gradient(top, #436040 0%, #2f4d2e 100%)'), _defineProperty(_detailsContainer, 'background', '-webkit-linear-gradient(top, #436040 0%,#2f4d2e 100%)'), _defineProperty(_detailsContainer, 'background', 'linear-gradient(to bottom, #436040 0%,#2f4d2e 100%)'), _defineProperty(_detailsContainer, 'filter', "progid:DXImageTransform.Microsoft.gradient( startColorstr='#436040', endColorstr='#2f4d2e',GradientType=0 )"), _defineProperty(_detailsContainer, 'position', 'relative'), _detailsContainer),
+  precipTable: {
+    background: 'none',
+    color: white,
+    border: '1px solid ' + white
+  },
+  precipTHead: {
+    background: 'none'
+  },
+  precipCell: {
+    padding: '.5rem'
+  },
   list: {
     listStyleType: 'none',
     padding: 0,
-    margin: '.5rem',
-    borderStyle: 'solid',
-    borderWidth: '2px 2px 0px 2px',
-    borderColor: 'white'
+    margin: '.5rem'
   },
   highChance: {
     fontSize: '1.25em',
-    color: 'white'
+    color: white
   },
   highChanceItem: {
     padding: '0.25rem 0'
@@ -3925,9 +3935,6 @@ var styles = {
     columnGap: '4px',
     WebkitColumnGap: '4px',
     MozColumnGap: '4px',
-    columnRule: '4px outset white',
-    WebkitColumnRule: '4px outset white',
-    MozColumnRule: '4px outset white',
     color: '#999'
   },
   details: {
@@ -3944,9 +3951,6 @@ var styles = {
     width: '100%',
     bottom: '0',
     left: '0'
-  },
-  listItem: {
-    borderBottom: '2px solid white'
   }
 };
 
@@ -30596,6 +30600,18 @@ var _styles = __webpack_require__(56);
 
 var _styles2 = _interopRequireDefault(_styles);
 
+var _PrecipPercent = __webpack_require__(911);
+
+var _PrecipPercent2 = _interopRequireDefault(_PrecipPercent);
+
+var _PrecipType = __webpack_require__(912);
+
+var _PrecipType2 = _interopRequireDefault(_PrecipType);
+
+var _LowChancePrecip = __webpack_require__(913);
+
+var _LowChancePrecip2 = _interopRequireDefault(_LowChancePrecip);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -30619,7 +30635,7 @@ var MultiParkDetails = function (_React$Component) {
       var _this2 = this;
 
       var domeParks = [],
-          outdoorParks = [],
+          highChanceParks = [],
           lowChanceParks = [],
           emptyPark = [];
       for (var i = 0; i < this.props.parks.length; i++) {
@@ -30628,7 +30644,7 @@ var MultiParkDetails = function (_React$Component) {
         } else if (this.props.data[this.props.parks[i].home_name_abbrev].daily.data[this.props.day].precipProbability < .4) {
           lowChanceParks.push(this.props.parks[i]);
         } else {
-          outdoorParks.push(this.props.parks[i]);
+          highChanceParks.push(this.props.parks[i]);
         }
       }
       var lowChanceNum = lowChanceParks.length + domeParks.length;
@@ -30656,22 +30672,55 @@ var MultiParkDetails = function (_React$Component) {
           'div',
           { style: _styles2.default.detailsContainer },
           _react2.default.createElement(
-            'ul',
-            { style: Object.assign({}, _styles2.default.list, _styles2.default.highChance) },
-            outdoorParks.map(function (park) {
-              return _react2.default.createElement(
-                'li',
-                { key: park.home_name_abbrev + _this2.props.day, style: Object.assign({}, _styles2.default.listItem, _styles2.default.highChanceItem) },
-                park.away_name_abbrev,
-                ' vs ',
-                park.home_name_abbrev,
-                ' ',
-                Math.round(_this2.props.data[park.home_name_abbrev].daily.data[_this2.props.day].precipProbability * 100),
-                '% ',
-                _this2.props.data[park.home_name_abbrev].daily.data[_this2.props.day].precipType || 'rain'
-              );
-            }),
-            ' '
+            _semanticUiReact.Table,
+            { celled: true, style: _styles2.default.precipTable },
+            _react2.default.createElement(
+              _semanticUiReact.Table.Header,
+              { style: _styles2.default.precipTHead },
+              _react2.default.createElement(
+                _semanticUiReact.Table.Row,
+                null,
+                _react2.default.createElement(
+                  _semanticUiReact.Table.HeaderCell,
+                  null,
+                  'Matchup'
+                ),
+                _react2.default.createElement(
+                  _semanticUiReact.Table.HeaderCell,
+                  null,
+                  'Precip %'
+                ),
+                _react2.default.createElement(
+                  _semanticUiReact.Table.HeaderCell,
+                  null,
+                  'Type'
+                )
+              )
+            ),
+            _react2.default.createElement(
+              _semanticUiReact.Table.Body,
+              null,
+              highChanceParks.map(function (park) {
+                return _react2.default.createElement(
+                  _semanticUiReact.Table.Row,
+                  { key: park.home_name_abbrev + _this2.props.day },
+                  _react2.default.createElement(
+                    _semanticUiReact.Table.Cell,
+                    { style: _styles2.default.precipCell },
+                    park.home_name_abbrev,
+                    ' vs ',
+                    park.away_name_abbrev
+                  ),
+                  _react2.default.createElement(_PrecipPercent2.default, { data: _this2.props.data[park.home_name_abbrev], day: _this2.props.day }),
+                  _react2.default.createElement(_PrecipType2.default, { data: _this2.props.data[park.home_name_abbrev], day: _this2.props.day })
+                );
+              })
+            )
+          ),
+          _react2.default.createElement(
+            _semanticUiReact.Header,
+            { as: 'h4', style: _styles2.default.infoSubHeader },
+            'Low/No Chance Parks'
           ),
           _react2.default.createElement(
             'ul',
@@ -63587,6 +63636,174 @@ module.exports = g;
 
 module.exports = __webpack_require__(455);
 
+
+/***/ }),
+/* 911 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(1);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _semanticUiReact = __webpack_require__(66);
+
+var _styles = __webpack_require__(56);
+
+var _styles2 = _interopRequireDefault(_styles);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var PrecipPercent = function (_React$Component) {
+  _inherits(PrecipPercent, _React$Component);
+
+  function PrecipPercent(props) {
+    _classCallCheck(this, PrecipPercent);
+
+    return _possibleConstructorReturn(this, (PrecipPercent.__proto__ || Object.getPrototypeOf(PrecipPercent)).call(this, props));
+  }
+
+  _createClass(PrecipPercent, [{
+    key: 'render',
+    value: function render() {
+      return _react2.default.createElement(
+        _semanticUiReact.Table.Cell,
+        { style: _styles2.default.precipCell },
+        Math.round(this.props.data.daily.data[this.props.day].precipProbability * 100),
+        ' %'
+      );
+    }
+  }]);
+
+  return PrecipPercent;
+}(_react2.default.Component);
+
+exports.default = PrecipPercent;
+
+/***/ }),
+/* 912 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(1);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _semanticUiReact = __webpack_require__(66);
+
+var _styles = __webpack_require__(56);
+
+var _styles2 = _interopRequireDefault(_styles);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var PrecipPercent = function (_React$Component) {
+  _inherits(PrecipPercent, _React$Component);
+
+  function PrecipPercent(props) {
+    _classCallCheck(this, PrecipPercent);
+
+    return _possibleConstructorReturn(this, (PrecipPercent.__proto__ || Object.getPrototypeOf(PrecipPercent)).call(this, props));
+  }
+
+  _createClass(PrecipPercent, [{
+    key: 'render',
+    value: function render() {
+      return _react2.default.createElement(
+        _semanticUiReact.Table.Cell,
+        { style: _styles2.default.precipCell },
+        this.props.data.daily.data[this.props.day].precipType || 'rain'
+      );
+    }
+  }]);
+
+  return PrecipPercent;
+}(_react2.default.Component);
+
+exports.default = PrecipPercent;
+
+/***/ }),
+/* 913 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(1);
+
+var _react2 = _interopRequireDefault(_react);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var LowChancePrecip = function (_React$Component) {
+  _inherits(LowChancePrecip, _React$Component);
+
+  function LowChancePrecip(props) {
+    _classCallCheck(this, LowChancePrecip);
+
+    return _possibleConstructorReturn(this, (LowChancePrecip.__proto__ || Object.getPrototypeOf(LowChancePrecip)).call(this, props));
+  }
+
+  _createClass(LowChancePrecip, [{
+    key: 'render',
+    value: function render() {
+      return _react2.default.createElement(
+        'span',
+        null,
+        this.props.gameData.away_name_abbrev,
+        ' vs ',
+        this.props.gameData.home_name_abbrev,
+        ' (',
+        Math.round(this.props.weatherData.daily.data[this.props.day].precipProbability * 100),
+        '%), '
+      );
+    }
+  }]);
+
+  return LowChancePrecip;
+}(_react2.default.Component);
+
+exports.default = LowChancePrecip;
 
 /***/ })
 /******/ ]);
