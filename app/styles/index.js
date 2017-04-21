@@ -57,13 +57,9 @@ var styles = {
   precipTHead: {
     background: 'none',
   },
-  precipCell: {
-    padding: '.5rem'
-  },
   list: {
     listStyleType: 'none',
-    padding: 0,
-    margin: '.5rem',
+    padding: '0',
   },
   highChance: {
     fontSize: '1.25em',
@@ -79,7 +75,8 @@ var styles = {
     columnGap: '4px',
     WebkitColumnGap: '4px',
     MozColumnGap: '4px',
-    color: '#999'
+    color: '#999',
+    margin: '.5rem 0'
   },
   details: {
     padding: '.5em'
