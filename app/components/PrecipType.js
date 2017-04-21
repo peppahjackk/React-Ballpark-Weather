@@ -9,7 +9,7 @@ export default class PrecipPercent extends React.Component {
   
   render() {
     return(
-      <Table.Cell style={styles.precipCell}>
+      <Table.Cell>
         {this.props.data.daily.data[this.props.day].precipType || 'rain'}
       </Table.Cell>
     )
