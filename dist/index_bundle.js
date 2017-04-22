@@ -2629,6 +2629,9 @@ var styles = {
   highChanceItem: {
     padding: '0.25rem 0'
   },
+  noHighChanceHeader: {
+    padding: '0.5rem 0 0'
+  },
   lowChance: {
     columnCount: 2,
     WebkitColumnCount: 2,
@@ -30689,7 +30692,8 @@ var MultiParkDetails = function (_React$Component) {
       var domeParks = [],
           highChanceParks = [],
           lowChanceParks = [],
-          emptyPark = [];
+          emptyPark = [],
+          highChanceTable = void 0;
       for (var i = 0; i < this.props.parks.length; i++) {
         if (['ARI', 'HOU', 'MIA', 'MIL', 'SEA', 'TB', 'TOR'].indexOf(this.props.parks[i].home_name_abbrev) > -1) {
           domeParks.push(this.props.parks[i]);
@@ -30698,6 +30702,66 @@ var MultiParkDetails = function (_React$Component) {
         } else {
           highChanceParks.push(this.props.parks[i]);
         }
+      }
+      if (highChanceParks.length) {
+        highChanceTable = _react2.default.createElement(
+          _semanticUiReact.Table,
+          { celled: true, compact: true, unstackable: true, style: _styles2.default.precipTable },
+          _react2.default.createElement(
+            _semanticUiReact.Table.Header,
+            { style: _styles2.default.precipTHead },
+            _react2.default.createElement(
+              _semanticUiReact.Table.Row,
+              null,
+              _react2.default.createElement(
+                _semanticUiReact.Table.HeaderCell,
+                null,
+                'Matchup'
+              ),
+              _react2.default.createElement(
+                _semanticUiReact.Table.HeaderCell,
+                null,
+                'Precip %'
+              ),
+              _react2.default.createElement(
+                _semanticUiReact.Table.HeaderCell,
+                null,
+                'Type'
+              )
+            )
+          ),
+          _react2.default.createElement(
+            _semanticUiReact.Table.Body,
+            null,
+            highChanceParks.map(function (park) {
+              return _react2.default.createElement(
+                _semanticUiReact.Table.Row,
+                { key: park.home_name_abbrev + _this2.props.day },
+                _react2.default.createElement(
+                  _semanticUiReact.Table.Cell,
+                  null,
+                  park.away_name_abbrev,
+                  ' vs ',
+                  park.home_name_abbrev
+                ),
+                _react2.default.createElement(_PrecipPercent2.default, { data: _this2.props.data[park.home_name_abbrev], day: _this2.props.day }),
+                _react2.default.createElement(_PrecipType2.default, { data: _this2.props.data[park.home_name_abbrev], day: _this2.props.day })
+              );
+            })
+          )
+        );
+      } else {
+        highChanceTable = _react2.default.createElement(
+          'div',
+          null,
+          _react2.default.createElement(
+            _semanticUiReact.Header,
+            { as: 'h3', style: Object.assign({}, _styles2.default.infoHeader, _styles2.default.noHighChanceHeader) },
+            'No parks have a high chance of precipitation!'
+          ),
+          ' ',
+          _react2.default.createElement(_semanticUiReact.Divider, null)
+        );
       }
       var lowChanceNum = lowChanceParks.length + domeParks.length;
       if (lowChanceNum % 2) {
@@ -30723,52 +30787,7 @@ var MultiParkDetails = function (_React$Component) {
         _react2.default.createElement(
           'div',
           { style: _styles2.default.detailsContainer },
-          _react2.default.createElement(
-            _semanticUiReact.Table,
-            { celled: true, compact: true, unstackable: true, style: _styles2.default.precipTable },
-            _react2.default.createElement(
-              _semanticUiReact.Table.Header,
-              { style: _styles2.default.precipTHead },
-              _react2.default.createElement(
-                _semanticUiReact.Table.Row,
-                null,
-                _react2.default.createElement(
-                  _semanticUiReact.Table.HeaderCell,
-                  null,
-                  'Matchup'
-                ),
-                _react2.default.createElement(
-                  _semanticUiReact.Table.HeaderCell,
-                  null,
-                  'Precip %'
-                ),
-                _react2.default.createElement(
-                  _semanticUiReact.Table.HeaderCell,
-                  null,
-                  'Type'
-                )
-              )
-            ),
-            _react2.default.createElement(
-              _semanticUiReact.Table.Body,
-              null,
-              highChanceParks.map(function (park) {
-                return _react2.default.createElement(
-                  _semanticUiReact.Table.Row,
-                  { key: park.home_name_abbrev + _this2.props.day },
-                  _react2.default.createElement(
-                    _semanticUiReact.Table.Cell,
-                    null,
-                    park.away_name_abbrev,
-                    ' vs ',
-                    park.home_name_abbrev
-                  ),
-                  _react2.default.createElement(_PrecipPercent2.default, { data: _this2.props.data[park.home_name_abbrev], day: _this2.props.day }),
-                  _react2.default.createElement(_PrecipType2.default, { data: _this2.props.data[park.home_name_abbrev], day: _this2.props.day })
-                );
-              })
-            )
-          ),
+          highChanceTable,
           _react2.default.createElement(
             _semanticUiReact.Header,
             { as: 'h4', style: _styles2.default.infoSubHeader },
