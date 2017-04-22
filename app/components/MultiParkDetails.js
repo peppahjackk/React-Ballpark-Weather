@@ -1,5 +1,5 @@
 import React from 'react'
-import { Grid, Header, Table } from 'semantic-ui-react'
+import { Grid, Header, Table, Divider } from 'semantic-ui-react'
 import styles from '../styles'
 import PrecipPercent from './PrecipPercent'
 import PrecipType from './PrecipType'
@@ -11,7 +11,7 @@ export default class MultiParkDetails extends React.Component {
   }
   
   render() {
-    let domeParks = [], highChanceParks = [], lowChanceParks = [], emptyPark = [];
+    let domeParks = [], highChanceParks = [], lowChanceParks = [], emptyPark = [], highChanceTable;
     for (let i = 0; i < this.props.parks.length; i++) {
       if (['ARI','HOU','MIA','MIL','SEA','TB','TOR'].indexOf(this.props.parks[i].home_name_abbrev) > -1) {
         domeParks.push(this.props.parks[i]);
@@ -21,18 +21,8 @@ export default class MultiParkDetails extends React.Component {
         highChanceParks.push(this.props.parks[i]);
       }
     }
-    let lowChanceNum = lowChanceParks.length + domeParks.length;
-    if (lowChanceNum % 2) {
-      emptyPark.push('-');
-    }
-    return (
-      <Grid.Column tablet={16} mobile={16} computer={5}>
-        <div style={styles.detailsContainer}>
-          <Header as='h3' style={styles.infoHeader}>{this.props.dateInfo['Day'+this.props.day]}</Header>
-          <Header as='h4' style={styles.infoSubHeader}>{this.props.dateInfo['Day'+this.props.day+'Date']}</Header>
-        </div>
-          <div style={styles.detailsContainer}>
-            <Table celled compact unstackable style={styles.precipTable}>
+    if (highChanceParks.length) {
+      highChanceTable = <Table celled compact unstackable style={styles.precipTable}>
               <Table.Header style={styles.precipTHead}>
                 <Table.Row>
                   <Table.HeaderCell>Matchup</Table.HeaderCell>
@@ -51,6 +41,21 @@ export default class MultiParkDetails extends React.Component {
                )}
             </Table.Body>
           </Table>
+    } else {
+      highChanceTable = <div><Header as='h3' style={Object.assign({}, styles.infoHeader,styles.noHighChanceHeader)}>No parks have a high chance of precipitation!</Header> <Divider /></div>
+    }
+    let lowChanceNum = lowChanceParks.length + domeParks.length;
+    if (lowChanceNum % 2) {
+      emptyPark.push('-');
+    }
+    return (
+      <Grid.Column tablet={16} mobile={16} computer={5}>
+        <div style={styles.detailsContainer}>
+          <Header as='h3' style={styles.infoHeader}>{this.props.dateInfo['Day'+this.props.day]}</Header>
+          <Header as='h4' style={styles.infoSubHeader}>{this.props.dateInfo['Day'+this.props.day+'Date']}</Header>
+        </div>
+          <div style={styles.detailsContainer}>
+            {highChanceTable}
             <Header as='h4' style={styles.infoSubHeader}>Low or No Chance Parks</Header>
             <ul style={Object.assign({}, styles.list, styles.lowChance)}>
               {lowChanceParks.map((park) => <li key={park.home_name_abbrev+this.props.day} style={styles.listItem}>{park.away_name_abbrev} vs {park.home_name_abbrev} {Math.round(this.props.data[park.home_name_abbrev].daily.data[this.props.day].precipProbability * 100)}%</li>)}
