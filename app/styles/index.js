@@ -39,7 +39,7 @@ var styles = {
   },
   detailsContainer: {
     padding: ".5rem",
-    border: "7.5px solid white",
+    border: "6px solid white",
     borderRadius: "4px",
     margin: '0 0 .5rem',
     background: '#436040', /* Old browsers */
