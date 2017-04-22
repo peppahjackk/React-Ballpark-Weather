@@ -2606,7 +2606,7 @@ var styles = {
   },
   detailsContainer: (_detailsContainer = {
     padding: ".5rem",
-    border: "7.5px solid white",
+    border: "6px solid white",
     borderRadius: "4px",
     margin: '0 0 .5rem',
     background: '#436040' }, _defineProperty(_detailsContainer, 'background', '-moz-linear-gradient(top, #436040 0%, #2f4d2e 100%)'), _defineProperty(_detailsContainer, 'background', '-webkit-linear-gradient(top, #436040 0%,#2f4d2e 100%)'), _defineProperty(_detailsContainer, 'background', 'linear-gradient(to bottom, #436040 0%,#2f4d2e 100%)'), _defineProperty(_detailsContainer, 'filter', "progid:DXImageTransform.Microsoft.gradient( startColorstr='#436040', endColorstr='#2f4d2e',GradientType=0 )"), _defineProperty(_detailsContainer, 'position', 'relative'), _detailsContainer),
