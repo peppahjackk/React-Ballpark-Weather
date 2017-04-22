@@ -68,6 +68,9 @@ var styles = {
   highChanceItem: {
     padding: '0.25rem 0'
   },
+  noHighChanceHeader: {
+    padding: '0.5rem 0 0'  
+  },
   lowChance: {
     columnCount: 2,
     WebkitColumnCount: 2,
