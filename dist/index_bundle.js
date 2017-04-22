@@ -30759,9 +30759,9 @@ var MultiParkDetails = function (_React$Component) {
                   _react2.default.createElement(
                     _semanticUiReact.Table.Cell,
                     null,
-                    park.home_name_abbrev,
+                    park.away_name_abbrev,
                     ' vs ',
-                    park.away_name_abbrev
+                    park.home_name_abbrev
                   ),
                   _react2.default.createElement(_PrecipPercent2.default, { data: _this2.props.data[park.home_name_abbrev], day: _this2.props.day }),
                   _react2.default.createElement(_PrecipType2.default, { data: _this2.props.data[park.home_name_abbrev], day: _this2.props.day })

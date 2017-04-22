@@ -44,7 +44,7 @@ export default class MultiParkDetails extends React.Component {
             <Table.Body>
               {highChanceParks.map((park) =>
                 <Table.Row key={park.home_name_abbrev+this.props.day}>
-                  <Table.Cell>{park.home_name_abbrev} vs {park.away_name_abbrev}</Table.Cell>
+                  <Table.Cell>{park.away_name_abbrev} vs {park.home_name_abbrev}</Table.Cell>
                   <PrecipPercent data={this.props.data[park.home_name_abbrev]} day={this.props.day}/>
                   <PrecipType data={this.props.data[park.home_name_abbrev]} day={this.props.day} />
                 </Table.Row>
