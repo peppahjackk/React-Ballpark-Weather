@@ -33,8 +33,8 @@ var styles = {
   },
   headerImg: {
     width: '33.3333%',
-    maxWidth: '500px',
-    minWidth: '200px',
+    maxWidth: '700px',
+    minWidth: '300px',
     padding: '.5rem'
   },
   detailsContainer: {

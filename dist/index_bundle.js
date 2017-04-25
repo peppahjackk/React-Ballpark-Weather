@@ -2600,8 +2600,8 @@ var styles = {
   },
   headerImg: {
     width: '33.3333%',
-    maxWidth: '500px',
-    minWidth: '200px',
+    maxWidth: '700px',
+    minWidth: '300px',
     padding: '.5rem'
   },
   detailsContainer: (_detailsContainer = {
@@ -9951,7 +9951,7 @@ var PageHeader = function (_Component) {
           _react2.default.createElement(
             _semanticUiReact.Grid.Column,
             null,
-            _react2.default.createElement('img', { src: 'images/bpw-logo-v2.png', alt: 'Ballpark Weather Logo', style: _styles2.default.headerImg })
+            _react2.default.createElement('img', { src: 'images/bpw-logo-green-v3.png', alt: 'Ballpark Weather Logo', style: _styles2.default.headerImg })
           )
         )
       );
