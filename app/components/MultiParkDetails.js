@@ -52,11 +52,11 @@ export default class MultiParkDetails extends React.Component {
       <Grid.Column tablet={16} mobile={16} computer={5}>
         <div style={styles.detailsContainer}>
           <Header as='h3' style={styles.infoHeader}>{this.props.dateInfo['Day'+this.props.day]}</Header>
-          <Header as='h4' style={styles.infoSubHeader}>{this.props.dateInfo['Day'+this.props.day+'Date']}</Header>
+          <Header as='h4' style={Object.assign({},styles.infoHeader,styles.noMarginTop)}>{this.props.dateInfo['Day'+this.props.day+'Date']}</Header>
         </div>
-          <div style={styles.detailsContainer}>
+        <div style={styles.detailsContainer}>
             {highChanceTable}
-            <Header as='h4' style={styles.infoSubHeader}>Low or No Chance Parks</Header>
+            <Header as='h4' style={Object.assign({},styles.infoHeader,styles.noMarginTop)}>Low or No Chance Parks</Header>
             <ul style={Object.assign({}, styles.list, styles.lowChance)}>
               {lowChanceParks.map((park) => <li key={park.home_name_abbrev+this.props.day} style={styles.listItem}>{park.away_name_abbrev} vs {park.home_name_abbrev} {Math.round(this.props.data[park.home_name_abbrev].daily.data[this.props.day].precipProbability * 100)}%</li>)}
             {domeParks.map((park) => <li key={park.home_name_abbrev+this.props.day} style={styles.listItem}>{park.away_name_abbrev} vs {park.home_name_abbrev} - %</li>)}
