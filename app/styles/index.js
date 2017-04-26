@@ -24,24 +24,26 @@ var styles = {
   },
   infoHeader: {
     marginBottom: 0,
-    color: 'white'
+    color: 'white',
+    fontFamily: 'Roboto, sans-serif'
   },
   infoSubHeader: {
-    marginTop: 0,
     marginBottom: 0,
-    color: 'white'
+    color: 'white',
+    fontFamily: 'Roboto, sans-serif',
+    fontWeight: '400'
   },
   headerImg: {
     width: '33.3333%',
-    maxWidth: '500px',
-    minWidth: '200px',
-    padding: '.5rem'
+    maxWidth: '700px',
+    minWidth: '300px',
+    padding: '1rem .5rem .5rem'
   },
   detailsContainer: {
     padding: ".5rem",
     border: "6px solid white",
     borderRadius: "4px",
-    margin: '0 0 .5rem',
+    margin: '2rem 0 1.5rem',
     background: '#436040', /* Old browsers */
     background: '-moz-linear-gradient(top, #436040 0%, #2f4d2e 100%)', /* FF3.6-15 */
     background: '-webkit-linear-gradient(top, #436040 0%,#2f4d2e 100%)', /* Chrome10-25,Safari5.1-6 */
@@ -52,7 +54,8 @@ var styles = {
   precipTable: {
     background: 'none',
     color: white,
-    border: '1px solid ' + white
+    border: '1px solid ' + white,
+    fontFamily: 'Roboto, sans-serif'
   },
   precipTHead: {
     background: 'none',
@@ -60,6 +63,7 @@ var styles = {
   list: {
     listStyleType: 'none',
     padding: '0',
+    fontFamily: 'Roboto, sans-serif'
   },
   highChance: {
     fontSize: '1.25em',
@@ -68,6 +72,9 @@ var styles = {
   highChanceItem: {
     padding: '0.25rem 0'
   },
+  noHighChanceHeader: {
+    padding: '0.5rem 0 0'  
+  },
   lowChance: {
     columnCount: 2,
     WebkitColumnCount: 2,
@@ -75,7 +82,7 @@ var styles = {
     columnGap: '4px',
     WebkitColumnGap: '4px',
     MozColumnGap: '4px',
-    color: '#999',
+    color: 'rgb(167,167,167)',
     margin: '.5rem 0'
   },
   details: {
@@ -92,6 +99,9 @@ var styles = {
     width: '100%',
     bottom: '0',
     left: '0'
+  },
+  noMarginTop: {
+    marginTop: 0
   }
 };
 

@@ -12,10 +12,12 @@ export default class Loading extends React.Component {
   render() {
     return (
           <Grid.Row columns={3} style={styles.detailsRow}>
-              <Loader active inverted size='large'>Grilling Hot Dogs...</Loader>
-            <DetailsSkeleton />
-            <DetailsSkeleton />
-            <DetailsSkeleton />   
+            <Dimmer active>
+              <Loader active inverted size='large'>Grilling Hot Dogs...</Loader></Dimmer>
+              <DetailsSkeleton />
+              <DetailsSkeleton />
+              <DetailsSkeleton /> 
+            
           </Grid.Row>
     )
   }
