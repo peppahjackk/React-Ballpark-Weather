@@ -2591,36 +2591,40 @@ var styles = {
   },
   infoHeader: {
     marginBottom: 0,
-    color: 'white'
+    color: 'white',
+    fontFamily: 'Roboto, sans-serif'
   },
   infoSubHeader: {
-    marginTop: 0,
     marginBottom: 0,
-    color: 'white'
+    color: 'white',
+    fontFamily: 'Roboto, sans-serif',
+    fontWeight: '400'
   },
   headerImg: {
     width: '33.3333%',
-    maxWidth: '500px',
-    minWidth: '200px',
-    padding: '.5rem'
+    maxWidth: '700px',
+    minWidth: '300px',
+    padding: '1rem .5rem .5rem'
   },
   detailsContainer: (_detailsContainer = {
     padding: ".5rem",
     border: "6px solid white",
     borderRadius: "4px",
-    margin: '0 0 .5rem',
+    margin: '2rem 0 1.5rem',
     background: '#436040' }, _defineProperty(_detailsContainer, 'background', '-moz-linear-gradient(top, #436040 0%, #2f4d2e 100%)'), _defineProperty(_detailsContainer, 'background', '-webkit-linear-gradient(top, #436040 0%,#2f4d2e 100%)'), _defineProperty(_detailsContainer, 'background', 'linear-gradient(to bottom, #436040 0%,#2f4d2e 100%)'), _defineProperty(_detailsContainer, 'filter', "progid:DXImageTransform.Microsoft.gradient( startColorstr='#436040', endColorstr='#2f4d2e',GradientType=0 )"), _defineProperty(_detailsContainer, 'position', 'relative'), _detailsContainer),
   precipTable: {
     background: 'none',
     color: white,
-    border: '1px solid ' + white
+    border: '1px solid ' + white,
+    fontFamily: 'Roboto, sans-serif'
   },
   precipTHead: {
     background: 'none'
   },
   list: {
     listStyleType: 'none',
-    padding: '0'
+    padding: '0',
+    fontFamily: 'Roboto, sans-serif'
   },
   highChance: {
     fontSize: '1.25em',
@@ -2629,6 +2633,9 @@ var styles = {
   highChanceItem: {
     padding: '0.25rem 0'
   },
+  noHighChanceHeader: {
+    padding: '0.5rem 0 0'
+  },
   lowChance: {
     columnCount: 2,
     WebkitColumnCount: 2,
@@ -2636,7 +2643,7 @@ var styles = {
     columnGap: '4px',
     WebkitColumnGap: '4px',
     MozColumnGap: '4px',
-    color: '#999',
+    color: 'rgb(167,167,167)',
     margin: '.5rem 0'
   },
   details: {
@@ -2653,6 +2660,9 @@ var styles = {
     width: '100%',
     bottom: '0',
     left: '0'
+  },
+  noMarginTop: {
+    marginTop: 0
   }
 };
 
@@ -9948,7 +9958,7 @@ var PageHeader = function (_Component) {
           _react2.default.createElement(
             _semanticUiReact.Grid.Column,
             null,
-            _react2.default.createElement('img', { src: 'images/bpw-logo-v2.png', alt: 'Ballpark Weather Logo', style: _styles2.default.headerImg })
+            _react2.default.createElement('img', { src: 'images/bpw-logo-green-v3.png', alt: 'Ballpark Weather Logo', style: _styles2.default.headerImg })
           )
         )
       );
@@ -30226,7 +30236,7 @@ var DetailsSkeleton = function (_React$Component) {
     value: function render() {
       return _react2.default.createElement(
         _semanticUiReact.Grid.Column,
-        null,
+        { tablet: 16, mobile: 16, computer: 5 },
         _react2.default.createElement(
           'div',
           { style: _styles2.default.detailsContainer },
@@ -30237,11 +30247,84 @@ var DetailsSkeleton = function (_React$Component) {
           ),
           _react2.default.createElement(
             _semanticUiReact.Header,
-            { as: 'h4', style: _styles2.default.infoSubHeader },
+            { as: 'h4', style: Object.assign({}, _styles2.default.infoSubHeader, _styles2.default.noMarginTop) },
             'Date'
           )
         ),
-        _react2.default.createElement('div', { style: Object.assign({}, _styles2.default.detailsContainer, _styles2.default.skeleton) })
+        _react2.default.createElement(
+          'div',
+          { style: Object.assign({}, _styles2.default.detailsContainer, _styles2.default.skeleton) },
+          _react2.default.createElement(
+            _semanticUiReact.Table,
+            { celled: true, compact: true, unstackable: true, style: _styles2.default.precipTable },
+            _react2.default.createElement(
+              _semanticUiReact.Table.Header,
+              { style: _styles2.default.precipTHead },
+              _react2.default.createElement(
+                _semanticUiReact.Table.Row,
+                null,
+                _react2.default.createElement(
+                  _semanticUiReact.Table.HeaderCell,
+                  null,
+                  'Matchup'
+                ),
+                _react2.default.createElement(
+                  _semanticUiReact.Table.HeaderCell,
+                  null,
+                  'Precip %'
+                ),
+                _react2.default.createElement(
+                  _semanticUiReact.Table.HeaderCell,
+                  null,
+                  'Type'
+                )
+              ),
+              _react2.default.createElement(
+                _semanticUiReact.Table.Row,
+                null,
+                _react2.default.createElement(
+                  _semanticUiReact.Table.Cell,
+                  null,
+                  '-'
+                ),
+                _react2.default.createElement(
+                  _semanticUiReact.Table.Cell,
+                  null,
+                  '-'
+                ),
+                _react2.default.createElement(
+                  _semanticUiReact.Table.Cell,
+                  null,
+                  '-'
+                )
+              ),
+              _react2.default.createElement(
+                _semanticUiReact.Table.Row,
+                null,
+                _react2.default.createElement(
+                  _semanticUiReact.Table.Cell,
+                  null,
+                  '-'
+                ),
+                _react2.default.createElement(
+                  _semanticUiReact.Table.Cell,
+                  null,
+                  '-'
+                ),
+                _react2.default.createElement(
+                  _semanticUiReact.Table.Cell,
+                  null,
+                  '-'
+                )
+              )
+            )
+          ),
+          _react2.default.createElement(
+            _semanticUiReact.Header,
+            { as: 'h4', style: Object.assign({}, _styles2.default.infoHeader, _styles2.default.noMarginTop) },
+            'Low or No Chance Parks'
+          )
+        )
       );
     }
   }]);
@@ -30497,9 +30580,13 @@ var Loading = function (_React$Component) {
         _semanticUiReact.Grid.Row,
         { columns: 3, style: _styles2.default.detailsRow },
         _react2.default.createElement(
-          _semanticUiReact.Loader,
-          { active: true, inverted: true, size: 'large' },
-          'Grilling Hot Dogs...'
+          _semanticUiReact.Dimmer,
+          { active: true },
+          _react2.default.createElement(
+            _semanticUiReact.Loader,
+            { active: true, inverted: true, size: 'large' },
+            'Grilling Hot Dogs...'
+          )
         ),
         _react2.default.createElement(_DetailsSkeleton2.default, null),
         _react2.default.createElement(_DetailsSkeleton2.default, null),
@@ -30689,7 +30776,8 @@ var MultiParkDetails = function (_React$Component) {
       var domeParks = [],
           highChanceParks = [],
           lowChanceParks = [],
-          emptyPark = [];
+          emptyPark = [],
+          highChanceTable = void 0;
       for (var i = 0; i < this.props.parks.length; i++) {
         if (['ARI', 'HOU', 'MIA', 'MIL', 'SEA', 'TB', 'TOR'].indexOf(this.props.parks[i].home_name_abbrev) > -1) {
           domeParks.push(this.props.parks[i]);
@@ -30698,6 +30786,66 @@ var MultiParkDetails = function (_React$Component) {
         } else {
           highChanceParks.push(this.props.parks[i]);
         }
+      }
+      if (highChanceParks.length) {
+        highChanceTable = _react2.default.createElement(
+          _semanticUiReact.Table,
+          { celled: true, compact: true, unstackable: true, style: _styles2.default.precipTable },
+          _react2.default.createElement(
+            _semanticUiReact.Table.Header,
+            { style: _styles2.default.precipTHead },
+            _react2.default.createElement(
+              _semanticUiReact.Table.Row,
+              null,
+              _react2.default.createElement(
+                _semanticUiReact.Table.HeaderCell,
+                null,
+                'Matchup'
+              ),
+              _react2.default.createElement(
+                _semanticUiReact.Table.HeaderCell,
+                null,
+                'Precip %'
+              ),
+              _react2.default.createElement(
+                _semanticUiReact.Table.HeaderCell,
+                null,
+                'Type'
+              )
+            )
+          ),
+          _react2.default.createElement(
+            _semanticUiReact.Table.Body,
+            null,
+            highChanceParks.map(function (park) {
+              return _react2.default.createElement(
+                _semanticUiReact.Table.Row,
+                { key: park.home_name_abbrev + _this2.props.day },
+                _react2.default.createElement(
+                  _semanticUiReact.Table.Cell,
+                  null,
+                  park.away_name_abbrev,
+                  ' vs ',
+                  park.home_name_abbrev
+                ),
+                _react2.default.createElement(_PrecipPercent2.default, { data: _this2.props.data[park.home_name_abbrev], day: _this2.props.day }),
+                _react2.default.createElement(_PrecipType2.default, { data: _this2.props.data[park.home_name_abbrev], day: _this2.props.day })
+              );
+            })
+          )
+        );
+      } else {
+        highChanceTable = _react2.default.createElement(
+          'div',
+          null,
+          _react2.default.createElement(
+            _semanticUiReact.Header,
+            { as: 'h3', style: Object.assign({}, _styles2.default.infoHeader, _styles2.default.noHighChanceHeader) },
+            'No parks have a high chance of precipitation!'
+          ),
+          ' ',
+          _react2.default.createElement(_semanticUiReact.Divider, null)
+        );
       }
       var lowChanceNum = lowChanceParks.length + domeParks.length;
       if (lowChanceNum % 2) {
@@ -30716,62 +30864,17 @@ var MultiParkDetails = function (_React$Component) {
           ),
           _react2.default.createElement(
             _semanticUiReact.Header,
-            { as: 'h4', style: _styles2.default.infoSubHeader },
+            { as: 'h4', style: Object.assign({}, _styles2.default.infoSubHeader, _styles2.default.noMarginTop) },
             this.props.dateInfo['Day' + this.props.day + 'Date']
           )
         ),
         _react2.default.createElement(
           'div',
           { style: _styles2.default.detailsContainer },
-          _react2.default.createElement(
-            _semanticUiReact.Table,
-            { celled: true, compact: true, unstackable: true, style: _styles2.default.precipTable },
-            _react2.default.createElement(
-              _semanticUiReact.Table.Header,
-              { style: _styles2.default.precipTHead },
-              _react2.default.createElement(
-                _semanticUiReact.Table.Row,
-                null,
-                _react2.default.createElement(
-                  _semanticUiReact.Table.HeaderCell,
-                  null,
-                  'Matchup'
-                ),
-                _react2.default.createElement(
-                  _semanticUiReact.Table.HeaderCell,
-                  null,
-                  'Precip %'
-                ),
-                _react2.default.createElement(
-                  _semanticUiReact.Table.HeaderCell,
-                  null,
-                  'Type'
-                )
-              )
-            ),
-            _react2.default.createElement(
-              _semanticUiReact.Table.Body,
-              null,
-              highChanceParks.map(function (park) {
-                return _react2.default.createElement(
-                  _semanticUiReact.Table.Row,
-                  { key: park.home_name_abbrev + _this2.props.day },
-                  _react2.default.createElement(
-                    _semanticUiReact.Table.Cell,
-                    null,
-                    park.away_name_abbrev,
-                    ' vs ',
-                    park.home_name_abbrev
-                  ),
-                  _react2.default.createElement(_PrecipPercent2.default, { data: _this2.props.data[park.home_name_abbrev], day: _this2.props.day }),
-                  _react2.default.createElement(_PrecipType2.default, { data: _this2.props.data[park.home_name_abbrev], day: _this2.props.day })
-                );
-              })
-            )
-          ),
+          highChanceTable,
           _react2.default.createElement(
             _semanticUiReact.Header,
-            { as: 'h4', style: _styles2.default.infoSubHeader },
+            { as: 'h4', style: Object.assign({}, _styles2.default.infoHeader, _styles2.default.noMarginTop) },
             'Low or No Chance Parks'
           ),
           _react2.default.createElement(
