@@ -52,7 +52,7 @@ export default class MultiParkDetails extends React.Component {
       <Grid.Column tablet={16} mobile={16} computer={5}>
         <div style={styles.detailsContainer}>
           <Header as='h3' style={styles.infoHeader}>{this.props.dateInfo['Day'+this.props.day]}</Header>
-          <Header as='h4' style={Object.assign({},styles.infoHeader,styles.noMarginTop)}>{this.props.dateInfo['Day'+this.props.day+'Date']}</Header>
+          <Header as='h4' style={Object.assign({},styles.infoSubHeader,styles.noMarginTop)}>{this.props.dateInfo['Day'+this.props.day+'Date']}</Header>
         </div>
         <div style={styles.detailsContainer}>
             {highChanceTable}
