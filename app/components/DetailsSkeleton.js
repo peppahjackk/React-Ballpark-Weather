@@ -12,7 +12,7 @@ export default class DetailsSkeleton extends React.Component {
       <Grid.Column tablet={16} mobile={16} computer={5}>
         <div style={styles.detailsContainer}>
           <Header as='h3' style={styles.infoHeader}>Weekday</Header>
-          <Header as='h4' style={Object.assign({},styles.infoHeader,styles.noMarginTop)}>Date</Header>
+          <Header as='h4' style={Object.assign({}, styles.infoSubHeader,styles.noMarginTop)}>Date</Header>
         </div>
         <div style={Object.assign({}, styles.detailsContainer, styles.skeleton)}>
           <Table celled compact unstackable style={styles.precipTable}>

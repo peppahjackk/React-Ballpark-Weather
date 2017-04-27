@@ -30247,7 +30247,7 @@ var DetailsSkeleton = function (_React$Component) {
           ),
           _react2.default.createElement(
             _semanticUiReact.Header,
-            { as: 'h4', style: Object.assign({}, _styles2.default.infoHeader, _styles2.default.noMarginTop) },
+            { as: 'h4', style: Object.assign({}, _styles2.default.infoSubHeader, _styles2.default.noMarginTop) },
             'Date'
           )
         ),
@@ -30864,7 +30864,7 @@ var MultiParkDetails = function (_React$Component) {
           ),
           _react2.default.createElement(
             _semanticUiReact.Header,
-            { as: 'h4', style: Object.assign({}, _styles2.default.infoHeader, _styles2.default.noMarginTop) },
+            { as: 'h4', style: Object.assign({}, _styles2.default.infoSubHeader, _styles2.default.noMarginTop) },
             this.props.dateInfo['Day' + this.props.day + 'Date']
           )
         ),
