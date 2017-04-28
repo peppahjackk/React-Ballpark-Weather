@@ -30373,6 +30373,10 @@ var _dateManipulation = __webpack_require__(253);
 
 var _dateManipulation2 = _interopRequireDefault(_dateManipulation);
 
+var _mlbHelper = __webpack_require__(914);
+
+var _mlbHelper2 = _interopRequireDefault(_mlbHelper);
+
 var _styles = __webpack_require__(37);
 
 var _styles2 = _interopRequireDefault(_styles);
@@ -30408,9 +30412,15 @@ var FiveDayLeague = function (_React$Component) {
         this.setState({
           dailyParks: dailyParks
         });
+        console.log(this.state);
+        console.log(dailyParks[0][0].event_time);
+        var times1 = _mlbHelper2.default.convertTime(dailyParks[0][0]);
+        var times2 = _mlbHelper2.default.convertTime(dailyParks[0][11]);
+        var times3 = _mlbHelper2.default.convertTime(dailyParks[0][12]);
+        var times4 = _mlbHelper2.default.convertTime(dailyParks[0][13]);
         // Condense total list of active ballparks for the next X days
         var allParks = _darkSkyHelper2.default.condenseParks(dailyParks);
-        return _darkSkyHelper2.default.getWeather(allParks);
+        //return darkSkyHelper.getWeather(allParks)
       }.bind(this)).then(function (info) {
         var sortedParks = {};
         for (var i = 0; i < this.state.days; i++) {
@@ -63904,6 +63914,68 @@ module.exports = g;
 
 module.exports = __webpack_require__(455);
 
+
+/***/ }),
+/* 914 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var mlbHelper = function () {
+  function mlbHelper() {
+    _classCallCheck(this, mlbHelper);
+  }
+
+  _createClass(mlbHelper, null, [{
+    key: 'convertTime',
+    value: function convertTime(game) {
+      var hours = void 0,
+          minutes = void 0;
+      var time = game.event_time;
+      if (time.indexOf(':') == 1) {
+        hours = parseInt(time.substr(0, 1));
+        minutes = parseInt(time.substr(2, 2));
+      } else {
+        hours = parseInt(time.substr(0, 2));
+        minutes = parseInt(time.substr(3, 2));
+      }
+
+      if (time.indexOf('PM') && time.substr(0, 2) != 12) {
+        hours += 12;
+      }
+      var d = new Date(2017, 3, 28, hours, minutes);
+      var ms = parseInt(d.getTime());
+      var hr = 3600000;
+      console.log(ms + '' + game.home_name_abbrev);
+      switch (game.home_name_abbrev) {
+        case 'CHC' || 'CWS' || 'MIL' || 'TEX' || 'HOU' || 'STL' || 'KC' || 'MIN':
+          ms -= hr * 1;
+          break;
+        case 'COL' || 'ARI':
+          ms -= hr * 2;
+          break;
+        case 'LAD' || 'LAA' || 'SD' || 'OAK' || 'SF' || 'SEA':
+          ms -= hr * 3;
+          break;
+      }
+      console.log(ms + '' + game.home_name_abbrev);
+      return;
+    }
+  }]);
+
+  return mlbHelper;
+}();
+
+exports.default = mlbHelper;
 
 /***/ })
 /******/ ]);

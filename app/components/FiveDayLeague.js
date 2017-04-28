@@ -5,6 +5,7 @@ import MultiParkDetails from './MultiParkDetails'
 import Loading from './Loading'
 import PageHeader from './PageHeader'
 import dateManip from '../utils/dateManipulation'
+import mlbHelper from '../utils/mlbHelper'
 import styles from '../styles'
 
 export default class FiveDayLeague extends React.Component {
@@ -23,9 +24,15 @@ export default class FiveDayLeague extends React.Component {
       this.setState({
         dailyParks: dailyParks
       })
+      console.log(this.state);
+      console.log(dailyParks[0][0].event_time);
+      let times1 = mlbHelper.convertTime(dailyParks[0][0]);
+      let times2 = mlbHelper.convertTime(dailyParks[0][11]);
+      let times3 = mlbHelper.convertTime(dailyParks[0][12]);
+      let times4 = mlbHelper.convertTime(dailyParks[0][13]);
       // Condense total list of active ballparks for the next X days
       let allParks = darkSkyHelper.condenseParks(dailyParks);
-      return darkSkyHelper.getWeather(allParks)
+      //return darkSkyHelper.getWeather(allParks)
     }.bind(this))
     .then(function(info) {
       let sortedParks = {};
