@@ -3,7 +3,13 @@ export default class dateManip {
     const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
                 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
     let chosenDate = new Date(parseInt(time + '000'));
-    return months[chosenDate.getUTCMonth()] + ' ' + chosenDate.getUTCDate() + ', ' + chosenDate.getUTCFullYear();
+    let dateObj = {
+      month: months[chosenDate.getUTCMonth()],
+      monthNum: chosenDate.getUTCMonth(),
+      day: chosenDate.getUTCDate(),
+      year: chosenDate.getUTCFullYear()
+    }
+    return dateObj;
   }
   
   static prettifyTime(time) {

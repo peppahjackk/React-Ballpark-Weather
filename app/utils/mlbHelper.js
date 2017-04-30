@@ -15,7 +15,7 @@ export default class mlbHelper {
       hours += 12;
     }
     // Creates date object at game time
-    const d = new Date(2017,3,28,hours,minutes);
+    const d = new Date(dateInfo['Day'+day+'Date'].year,dateInfo['Day'+day+'Date'].monthNum,dateInfo['Day'+day+'Date'].day,hours,minutes);
     // Obtains game time in ms
     let ms = parseInt(d.getTime());
     const hr = 3600000;
