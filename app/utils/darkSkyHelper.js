@@ -9,6 +9,7 @@ export default class getWeatherData {
       lastPark = 0,
       allData = {};
     initialParks = parks;
+    // Adds only outdoor parks to weather request array
     for (let i = 0; i < initialParks.length; i++) {
       if (['ARI','HOU','MIA','MIL','SEA','TB','TOR'].indexOf(initialParks[i]) === -1) {
         parksRequested.push(initialParks[i]);
@@ -16,6 +17,7 @@ export default class getWeatherData {
     }
     let numParks = parksRequested.length;
     parksRequested = JSON.stringify(parksRequested);
+    // Calls php script to fetch weather data via API call(s)
     return axios.post('./proxy.php', {
         parkRequest: parksRequested
       })
@@ -71,6 +73,7 @@ export default class getWeatherData {
     return dateInfo;
   }
   
+  // Sorts an array of weather objects by precipitation chance for the requested day
   static sortParks(info, parks, day) {
     let sortedParks = parks.sort(function(a,b) {
       if (['ARI','HOU','MIA','MIL','SEA','TB','TOR'].indexOf(b.home_name_abbrev) > -1) {
@@ -82,7 +85,7 @@ export default class getWeatherData {
     })
     return sortedParks.slice(0);
   }
-  
+  // Calls MLB data to retrieve game info for the requested amount of days
   static getParks(days) {
     let finalParks = {},
         urlMonth='/month_',
@@ -92,6 +95,7 @@ export default class getWeatherData {
     for (let i = 0; i < days; i++) {
       urlMonth='/month_',
       urlDay='/day_';
+      // Creates date object for the next X amount of days
       let currentDay = new Date(today.getTime() + (86400000 * i));
       let year = currentDay.getFullYear();
       let month = (currentDay.getMonth()+1);
@@ -102,12 +106,15 @@ export default class getWeatherData {
       if (day < 10) {
         urlDay='/day_0';
       }
+      // Adds requested day's URL to array
       daysUrl.push(year+urlMonth+month+urlDay+day);
     }
+    // Maps through URL array to get obtain game data for next X amount of days
     return axios.all(daysUrl.map(function(url) {
       return axios.get('http://gd2.mlb.com/components/game/mlb/year_'+url+'/grid.json')
     }))    
       .then(function(info) {
+        // Iterates through each day and adds game data to final object
         for (let i = 0; i < Object.keys(info).length; i++) {
           finalParks[i] = info[i].data.data.games.game;
         }
@@ -120,6 +127,7 @@ export default class getWeatherData {
   
   static condenseParks(allParks) {
     let condensedParks = [];
+    // Reduces each park being played in the next X amount of days to one instance each
     for (let i = 0; i < Object.keys(allParks).length; i++) {
       for (let n = 0; n < Object.keys(allParks[i]).length; n++) {
         if (condensedParks.indexOf(allParks[i][n].home_name_abbrev) < 0) {
