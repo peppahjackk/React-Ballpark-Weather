@@ -73,22 +73,44 @@ export default class getWeatherData {
     return dateInfo;
   }
   
-  // Sorts an array of weather objects by precipitation chance for the requested day
-  static sortParks(info, parks, day, gameTimes) {
+  static extractGameTimes(gameTimes) {
     let parksPlus = {};
     for (let game in gameTimes) {
       parksPlus[gameTimes[game].park] = gameTimes[game].time;
     }
-    console.log(parksPlus);
+    //console.log(parksPlus);
+    return parksPlus;
+  }
+  
+  static checkHourlyPrecip(info, parksPlus, day, game) {
+    // Sets initial precipitation percentage to the overall chance for the day
+    let precipitationPercentage = [false,info[game.home_name_abbrev].daily.data[day].precipProbability];
+    // If the game is less than 48 hours away pull weather data from the hour nearest game time
+      if (parksPlus[game.home_name_abbrev] - (info[game.home_name_abbrev].currently.time * 1000) < 172800000) {
+        Object.keys(info[game.home_name_abbrev].hourly.data).map(function(hour) {
+          if (info[game.home_name_abbrev].hourly.data[hour].time - parksPlus[game.home_name_abbrev] <= 3600000 || info[game.home_name_abbrev].hourly.data[hour].time - parksPlus[game.home_name_abbrev] >= -360000) {
+            precipitationPercentage = [true,hour.precipProbability];
+          }
+        })
+      }
+    return precipitationPercentage;
+  }
+  
+  // Sorts an array of weather objects by precipitation chance for the requested day
+  static sortParks(info, parks, day, parksPlus) {
     let sortedParks = parks.sort(function(a,b) {
+      // Pushes any DOME park to the bottom of the list
       if (['ARI','HOU','MIA','MIL','SEA','TB','TOR'].indexOf(b.home_name_abbrev) > -1) {
         return -1;
       } else if ((['ARI','HOU','MIA','MIL','SEA','TB','TOR'].indexOf(a.home_name_abbrev) > -1)) {
         return 1;
       }
-      let precipitationPercentageA = info[a.home_name_abbrev].daily.data[day].precipProbability;
-      let precipitationPercentageB = info[b.home_name_abbrev].daily.data[day].precipProbability;
-      if (parksPlus[a.home_name_abbrev] - (info[a.home_name_abbrev].currently.time * 1000) < 172800000) {
+
+      let precipitationPercentageA = this.checkHourlyPrecip(info, parksPlus, day, a);
+      let precipitationPercentageB = this.checkHourlyPrecip(info, parksPlus, day, b);
+      //let precipitationPercentageB = info[b.home_name_abbrev].daily.data[day].precipProbability;
+      // If the game is less than 48 hours away pull game time data from the nearest hour
+      /* if (parksPlus[a.home_name_abbrev] - (info[a.home_name_abbrev].currently.time * 1000) < 172800000) {
         Object.keys(info[a.home_name_abbrev].hourly.data).map(function(hour) {
           if (info[a.home_name_abbrev].hourly.data[hour].time - parksPlus[a.home_name_abbrev] <= 3600000 || info[a.home_name_abbrev].hourly.data[hour].time - parksPlus[a.home_name_abbrev] >= -360000) {
             precipitationPercentageA = hour.precipProbability;
@@ -98,7 +120,7 @@ export default class getWeatherData {
             precipitationPercentageB = hour.precipProbability;
           }
         })
-      }
+      } */
       /* let aGameTime = gameTimes.filter(function(game) {
           if (game.park == a.home_name_abbrev) {
             return game.time
@@ -111,8 +133,8 @@ export default class getWeatherData {
         });
       console.log(aGameTime[0].park + ' ' + bGameTime[0].park); */
       
-      return precipitationPercentageB - precipitationPercentageA;
-    })
+      return precipitationPercentageB[1] - precipitationPercentageA[1];
+    }.bind(this))
     return sortedParks.slice(0);
   }
   // Calls MLB data to retrieve game info for the requested amount of days

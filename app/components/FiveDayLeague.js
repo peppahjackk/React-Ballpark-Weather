@@ -43,10 +43,11 @@ export default class FiveDayLeague extends React.Component {
           return mlbHelper.convertTime(this.state.dailyParks[day][game], this.state.weatherData[game.home_name_abbrev], day, dateInfo)
         }.bind(this)) 
       }.bind(this));
-      let sortedParks = {};
+      let sortedParks = {}, parksGameTime = {};
       // Sort parks for each day in order of precipitation chance
       for (let i = 0; i < this.state.days; i++) {
-        sortedParks[i] = darkSkyHelper.sortParks(this.state.weatherData,this.state.dailyParks[i],i,gameTimesMs[i]);
+        parksGameTime[i] = darkSkyHelper.extractGameTimes(gameTimesMs[i]);
+        sortedParks[i] = darkSkyHelper.sortParks(this.state.weatherData,this.state.dailyParks[i],i,parksGameTime[i]);
       }
       this.setState({
         dateInfo,

@@ -15,7 +15,7 @@ export default class MultiParkDetails extends React.Component {
     for (let i = 0; i < this.props.parks.length; i++) {
       if (['ARI','HOU','MIA','MIL','SEA','TB','TOR'].indexOf(this.props.parks[i].home_name_abbrev) > -1) {
         domeParks.push(this.props.parks[i]);
-      } else if (this.props.data[this.props.parks[i].home_name_abbrev].daily.data[this.props.day].precipProbability < .4) {
+      } else if (this.props.data[this.props.parks[i].home_name_abbrev].daily.data[this.props.day].precipProbability < 0.4) {
         lowChanceParks.push(this.props.parks[i]);
       } else {
         highChanceParks.push(this.props.parks[i]);
