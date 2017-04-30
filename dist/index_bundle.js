@@ -16143,7 +16143,13 @@ var dateManip = function () {
     value: function prettifyDate(time) {
       var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
       var chosenDate = new Date(parseInt(time + '000'));
-      return months[chosenDate.getUTCMonth()] + ' ' + chosenDate.getUTCDate() + ', ' + chosenDate.getUTCFullYear();
+      var dateObj = {
+        month: months[chosenDate.getUTCMonth()],
+        monthNum: chosenDate.getUTCMonth(),
+        day: chosenDate.getUTCDate(),
+        year: chosenDate.getUTCFullYear()
+      };
+      return dateObj;
     }
   }, {
     key: 'prettifyTime',
@@ -30432,7 +30438,7 @@ var FiveDayLeague = function (_React$Component) {
         var sortedParks = {};
         // Sort parks for each day in order of precipitation chance
         for (var i = 0; i < this.state.days; i++) {
-          sortedParks[i] = _darkSkyHelper2.default.sortParks(this.state.weatherData, this.state.dailyParks[i], i);
+          sortedParks[i] = _darkSkyHelper2.default.sortParks(this.state.weatherData, this.state.dailyParks[i], i, gameTimesMs[i]);
         }
         this.setState({
           dateInfo: dateInfo,
@@ -30881,7 +30887,10 @@ var MultiParkDetails = function (_React$Component) {
           _react2.default.createElement(
             _semanticUiReact.Header,
             { as: 'h4', style: Object.assign({}, _styles2.default.infoSubHeader, _styles2.default.noMarginTop) },
-            this.props.dateInfo['Day' + this.props.day + 'Date']
+            this.props.dateInfo['Day' + this.props.day + 'Date'].month,
+            '  ',
+            this.props.dateInfo['Day' + this.props.day + 'Date'].day + ' ',
+            this.props.dateInfo['Day' + this.props.day + 'Date'].year
           )
         ),
         _react2.default.createElement(
@@ -31320,8 +31329,19 @@ var getWeatherData = function () {
 
   }, {
     key: 'sortParks',
-    value: function sortParks(info, parks, day) {
+    value: function sortParks(info, parks, day, gameTimes) {
       var sortedParks = parks.sort(function (a, b) {
+        /* let aGameTime = gameTimes.filter(function(game) {
+            if (game.park == a.home_name_abbrev) {
+              return game.time
+            }
+          });
+        let bGameTime = gameTimes.filter(function(game) {
+            if (game.park == b.home_name_abbrev) {
+              return game.time
+            }
+          });
+        console.log(aGameTime[0].park + ' ' + bGameTime[0].park); */
         if (['ARI', 'HOU', 'MIA', 'MIL', 'SEA', 'TB', 'TOR'].indexOf(b.home_name_abbrev) > -1) {
           return -1;
         } else if (['ARI', 'HOU', 'MIA', 'MIL', 'SEA', 'TB', 'TOR'].indexOf(a.home_name_abbrev) > -1) {
@@ -31430,7 +31450,7 @@ var mlbHelper = function () {
         hours += 12;
       }
       // Creates date object at game time
-      var d = new Date(2017, 3, 28, hours, minutes);
+      var d = new Date(dateInfo['Day' + day + 'Date'].year, dateInfo['Day' + day + 'Date'].monthNum, dateInfo['Day' + day + 'Date'].day, hours, minutes);
       // Obtains game time in ms
       var ms = parseInt(d.getTime());
       var hr = 3600000;

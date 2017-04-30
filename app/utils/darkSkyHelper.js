@@ -74,8 +74,19 @@ export default class getWeatherData {
   }
   
   // Sorts an array of weather objects by precipitation chance for the requested day
-  static sortParks(info, parks, day) {
+  static sortParks(info, parks, day, gameTimes) {
     let sortedParks = parks.sort(function(a,b) {
+      /* let aGameTime = gameTimes.filter(function(game) {
+          if (game.park == a.home_name_abbrev) {
+            return game.time
+          }
+        });
+      let bGameTime = gameTimes.filter(function(game) {
+          if (game.park == b.home_name_abbrev) {
+            return game.time
+          }
+        });
+      console.log(aGameTime[0].park + ' ' + bGameTime[0].park); */
       if (['ARI','HOU','MIA','MIL','SEA','TB','TOR'].indexOf(b.home_name_abbrev) > -1) {
         return -1;
       } else if ((['ARI','HOU','MIA','MIL','SEA','TB','TOR'].indexOf(a.home_name_abbrev) > -1)) {

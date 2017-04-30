@@ -46,7 +46,7 @@ export default class FiveDayLeague extends React.Component {
       let sortedParks = {};
       // Sort parks for each day in order of precipitation chance
       for (let i = 0; i < this.state.days; i++) {
-        sortedParks[i] = darkSkyHelper.sortParks(this.state.weatherData,this.state.dailyParks[i],i);
+        sortedParks[i] = darkSkyHelper.sortParks(this.state.weatherData,this.state.dailyParks[i],i,gameTimesMs[i]);
       }
       this.setState({
         dateInfo,
