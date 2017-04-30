@@ -31330,7 +31330,30 @@ var getWeatherData = function () {
   }, {
     key: 'sortParks',
     value: function sortParks(info, parks, day, gameTimes) {
+      var parksPlus = {};
+      for (var game in gameTimes) {
+        parksPlus[gameTimes[game].park] = gameTimes[game].time;
+      }
+      console.log(parksPlus);
       var sortedParks = parks.sort(function (a, b) {
+        if (['ARI', 'HOU', 'MIA', 'MIL', 'SEA', 'TB', 'TOR'].indexOf(b.home_name_abbrev) > -1) {
+          return -1;
+        } else if (['ARI', 'HOU', 'MIA', 'MIL', 'SEA', 'TB', 'TOR'].indexOf(a.home_name_abbrev) > -1) {
+          return 1;
+        }
+        var precipitationPercentageA = info[a.home_name_abbrev].daily.data[day].precipProbability;
+        var precipitationPercentageB = info[b.home_name_abbrev].daily.data[day].precipProbability;
+        if (parksPlus[a.home_name_abbrev] - info[a.home_name_abbrev].currently.time * 1000 < 172800000) {
+          Object.keys(info[a.home_name_abbrev].hourly.data).map(function (hour) {
+            if (info[a.home_name_abbrev].hourly.data[hour].time - parksPlus[a.home_name_abbrev] <= 3600000 || info[a.home_name_abbrev].hourly.data[hour].time - parksPlus[a.home_name_abbrev] >= -360000) {
+              precipitationPercentageA = hour.precipProbability;
+            }
+
+            if (info[b.home_name_abbrev].hourly.data[hour].time - parksPlus[b.home_name_abbrev] <= 3600000 || info[b.home_name_abbrev].hourly.data[hour].time - parksPlus[b.home_name_abbrev] >= -360000) {
+              precipitationPercentageB = hour.precipProbability;
+            }
+          });
+        }
         /* let aGameTime = gameTimes.filter(function(game) {
             if (game.park == a.home_name_abbrev) {
               return game.time
@@ -31342,12 +31365,8 @@ var getWeatherData = function () {
             }
           });
         console.log(aGameTime[0].park + ' ' + bGameTime[0].park); */
-        if (['ARI', 'HOU', 'MIA', 'MIL', 'SEA', 'TB', 'TOR'].indexOf(b.home_name_abbrev) > -1) {
-          return -1;
-        } else if (['ARI', 'HOU', 'MIA', 'MIL', 'SEA', 'TB', 'TOR'].indexOf(a.home_name_abbrev) > -1) {
-          return 1;
-        }
-        return info[b.home_name_abbrev].daily.data[day].precipProbability - info[a.home_name_abbrev].daily.data[day].precipProbability;
+
+        return precipitationPercentageB - precipitationPercentageA;
       });
       return sortedParks.slice(0);
     }
