@@ -35,15 +35,14 @@ var styles = {
   },
   headerImg: {
     width: '33.3333%',
-    maxWidth: '700px',
-    minWidth: '300px',
-    padding: '1rem .5rem .5rem'
+    width: '300px',
+    padding: '0 .5rem'
   },
   detailsContainer: {
     padding: ".5rem",
     border: "6px solid white",
     borderRadius: "4px",
-    margin: '2rem 0 1.5rem',
+    margin: '1.5rem 0 1rem',
     background: '#436040', /* Old browsers */
     background: '-moz-linear-gradient(top, #436040 0%, #2f4d2e 100%)', /* FF3.6-15 */
     background: '-webkit-linear-gradient(top, #436040 0%,#2f4d2e 100%)', /* Chrome10-25,Safari5.1-6 */
