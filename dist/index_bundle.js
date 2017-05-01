@@ -2634,7 +2634,7 @@ var styles = {
     padding: '0.25rem 0'
   },
   noHighChanceHeader: {
-    padding: '0.5rem 0 0'
+    padding: '1rem 0.5rem 0'
   },
   lowChance: {
     columnCount: 2,
@@ -2644,7 +2644,8 @@ var styles = {
     WebkitColumnGap: '4px',
     MozColumnGap: '4px',
     color: 'rgb(167,167,167)',
-    margin: '.5rem 0'
+    margin: '.5rem 0',
+    fontSize: '0.95rem'
   },
   details: {
     padding: '.5em'
@@ -30329,6 +30330,11 @@ var DetailsSkeleton = function (_React$Component) {
             _semanticUiReact.Header,
             { as: 'h4', style: Object.assign({}, _styles2.default.infoHeader, _styles2.default.noMarginTop) },
             'Low or No Chance Parks'
+          ),
+          _react2.default.createElement(
+            'p',
+            { style: _styles2.default.infoSubHeader },
+            '* indicates game time data'
           )
         )
       );
@@ -30429,7 +30435,6 @@ var FiveDayLeague = function (_React$Component) {
         // Set the days and dates for details component headers 
         return _darkSkyHelper2.default.formatDateInfo(info, this.state.days, this.state.dailyParks[0]);
       }.bind(this)).then(function (dateInfo) {
-        console.log(this.state);
         var gameTimesMs = Object.keys(this.state.dailyParks).map(function (day) {
           return Object.keys(this.state.dailyParks[day]).map(function (game) {
             return _mlbHelper2.default.convertTime(this.state.dailyParks[day][game], this.state.weatherData[game.home_name_abbrev], day, dateInfo);
@@ -30449,7 +30454,6 @@ var FiveDayLeague = function (_React$Component) {
           precipData: parksGameTime,
           isLoading: false
         });
-        console.log(this.state);
       }.bind(this)).catch(function (error) {
         console.log(error);
       });
@@ -30812,15 +30816,6 @@ var MultiParkDetails = function (_React$Component) {
           lowChanceParks.push(this.props.parks[park]);
         }
       }.bind(this));
-      /*for (let i = 0; i < this.props.parks.length; i++) {
-        if (['ARI','HOU','MIA','MIL','SEA','TB','TOR'].indexOf(this.props.parks[i].home_name_abbrev) > -1) {
-          domeParks.push(this.props.parks[i]);
-        } else if (this.props.data[this.props.parks[i].home_name_abbrev].daily.data[this.props.day].precipProbability < 0.4) {
-          lowChanceParks.push(this.props.parks[i]);
-        } else {
-          highChanceParks.push(this.props.parks[i]);
-        }
-      } */
       if (highChanceParks.length) {
         highChanceTable = _react2.default.createElement(
           _semanticUiReact.Table,
@@ -30862,7 +30857,11 @@ var MultiParkDetails = function (_React$Component) {
                   ' vs ',
                   park.home_name_abbrev
                 ),
-                _react2.default.createElement(_PrecipPercent2.default, { park: park.home_name_abbrev, precipData: _this2.props.precipData }),
+                _react2.default.createElement(
+                  _semanticUiReact.Table.Cell,
+                  null,
+                  _react2.default.createElement(_PrecipPercent2.default, { park: park.home_name_abbrev, precipData: _this2.props.precipData })
+                ),
                 _react2.default.createElement(_PrecipType2.default, { data: _this2.props.data[park.home_name_abbrev], day: _this2.props.day })
               );
             })
@@ -30874,7 +30873,7 @@ var MultiParkDetails = function (_React$Component) {
           null,
           _react2.default.createElement(
             _semanticUiReact.Header,
-            { as: 'h3', style: Object.assign({}, _styles2.default.infoHeader, _styles2.default.noHighChanceHeader) },
+            { as: 'h3', style: Object.assign({}, _styles2.default.infoSubHeader, _styles2.default.noHighChanceHeader) },
             'No parks have a high chance of precipitation!'
           ),
           ' ',
@@ -30925,8 +30924,7 @@ var MultiParkDetails = function (_React$Component) {
                 ' vs ',
                 park.home_name_abbrev,
                 ' ',
-                Math.round(_this2.props.precipData[park.home_name_abbrev][1] * 100),
-                '%'
+                _react2.default.createElement(_PrecipPercent2.default, { park: park.home_name_abbrev, precipData: _this2.props.precipData })
               );
             }),
             domeParks.map(function (park) {
@@ -30936,7 +30934,7 @@ var MultiParkDetails = function (_React$Component) {
                 park.away_name_abbrev,
                 ' vs ',
                 park.home_name_abbrev,
-                ' - %'
+                ' -%'
               );
             }),
             emptyPark.map(function (park) {
@@ -30946,6 +30944,11 @@ var MultiParkDetails = function (_React$Component) {
                 '-'
               );
             })
+          ),
+          _react2.default.createElement(
+            'p',
+            { style: _styles2.default.infoSubHeader },
+            '* indicates game time data'
           )
         )
       );
@@ -31067,8 +31070,6 @@ var _react = __webpack_require__(1);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _semanticUiReact = __webpack_require__(43);
-
 var _styles = __webpack_require__(37);
 
 var _styles2 = _interopRequireDefault(_styles);
@@ -31093,11 +31094,16 @@ var PrecipPercent = function (_React$Component) {
   _createClass(PrecipPercent, [{
     key: 'render',
     value: function render() {
+      var gameTime = void 0;
+      if (this.props.precipData[this.props.park][0]) {
+        gameTime = '*';
+      }
       return _react2.default.createElement(
-        _semanticUiReact.Table.Cell,
+        'span',
         null,
         Math.round(this.props.precipData[this.props.park][1] * 100),
-        ' %'
+        '%',
+        gameTime
       );
     }
   }]);
@@ -31369,7 +31375,6 @@ var getWeatherData = function () {
         }
         return;
       });
-      console.log(precipitationPercentage);
       return precipitationPercentage;
     }
 

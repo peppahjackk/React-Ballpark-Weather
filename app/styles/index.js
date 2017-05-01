@@ -73,7 +73,7 @@ var styles = {
     padding: '0.25rem 0'
   },
   noHighChanceHeader: {
-    padding: '0.5rem 0 0'  
+    padding: '1rem 0.5rem 0'  
   },
   lowChance: {
     columnCount: 2,
@@ -83,7 +83,8 @@ var styles = {
     WebkitColumnGap: '4px',
     MozColumnGap: '4px',
     color: 'rgb(167,167,167)',
-    margin: '.5rem 0'
+    margin: '.5rem 0',
+    fontSize: '0.95rem'
   },
   details: {
     padding: '.5em'

@@ -37,7 +37,6 @@ export default class FiveDayLeague extends React.Component {
      return darkSkyHelper.formatDateInfo(info, this.state.days, this.state.dailyParks[0]);
     }.bind(this))
     .then(function(dateInfo) {
-      console.log(this.state);
       let gameTimesMs = Object.keys(this.state.dailyParks).map(function(day) {
         return Object.keys(this.state.dailyParks[day]).map(function(game) {
           return mlbHelper.convertTime(this.state.dailyParks[day][game], this.state.weatherData[game.home_name_abbrev], day, dateInfo)
@@ -56,7 +55,6 @@ export default class FiveDayLeague extends React.Component {
         precipData: parksGameTime,
         isLoading: false
       });
-      console.log(this.state);
     }.bind(this))
     .catch(function(error) {
         console.log(error);
