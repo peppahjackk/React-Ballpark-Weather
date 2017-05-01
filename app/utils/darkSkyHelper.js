@@ -78,29 +78,37 @@ export default class getWeatherData {
     for (let game in gameTimes) {
       parksPlus[gameTimes[game].park] = gameTimes[game].time;
     }
-    console.log(parksPlus);
     return parksPlus;
   }
   
   static checkHourlyPrecip(info, day, games) {
-    let parksPrecip = Object.keys(games).map(function(game) {
+    let precipitationPercentage = {};
+    Object.keys(games).map(function(game) {
+      
+      if (['ARI','HOU','MIA','MIL','SEA','TB','TOR'].indexOf(game) > -1) {
+        precipitationPercentage[game] = [false,0];
+        return;
+      }
       // Sets initial precipitation percentage to the overall chance for the day
-      let precipitationPercentage = [false,info[game.home_name_abbrev].daily.data[day].precipProbability];
+      precipitationPercentage[game] = [false,info[game].daily.data[day].precipProbability];
       // If the game is less than 48 hours away pull weather data from the hour nearest game time
       if (games[game] - (info[game].currently.time * 1000) < 172800000) {
-        Object.keys(info[game].hourly.data).map(function(hour) {
-          if (info[game].hourly.data[hour].time - games[game] <= 3600000 || info[game].hourly.data[hour].time - games[game] >= -360000) {
-            precipitationPercentage = [true,hour.precipProbability];
+        Object.keys(info[game].hourly.data).filter(function(hour) {
+          if ((-3600000 <= (info[game].hourly.data[hour].time * 1000) - games[game] && (info[game].hourly.data[hour].time * 1000) - games[game] <= 360000)) {
+            precipitationPercentage[game] = [true,info[game].hourly.data[hour].precipProbability];
+            return;
           }
+          return false;
         })
       }
-      return precipitationPercentage;
+      return;
     });
-    return parksPrecip;
+    console.log(precipitationPercentage);
+    return precipitationPercentage;
   }
   
   // Sorts an array of weather objects by precipitation chance for the requested day
-  static sortParks(info, parks, day, parksPlus) {
+  static sortParks(parks, day, parksPlus) {
     let sortedParks = parks.sort(function(a,b) {
       // Pushes any DOME park to the bottom of the list
       if (['ARI','HOU','MIA','MIL','SEA','TB','TOR'].indexOf(b.home_name_abbrev) > -1) {
@@ -108,35 +116,7 @@ export default class getWeatherData {
       } else if ((['ARI','HOU','MIA','MIL','SEA','TB','TOR'].indexOf(a.home_name_abbrev) > -1)) {
         return 1;
       }
-
-      //let precipitationPercentageA = this.checkHourlyPrecip(info, parksPlus, day, a);
-      //let precipitationPercentageB = this.checkHourlyPrecip(info, parksPlus, day, b);
-      //let precipitationPercentageB = info[b.home_name_abbrev].daily.data[day].precipProbability;
-      // If the game is less than 48 hours away pull game time data from the nearest hour
-      /* if (parksPlus[a.home_name_abbrev] - (info[a.home_name_abbrev].currently.time * 1000) < 172800000) {
-        Object.keys(info[a.home_name_abbrev].hourly.data).map(function(hour) {
-          if (info[a.home_name_abbrev].hourly.data[hour].time - parksPlus[a.home_name_abbrev] <= 3600000 || info[a.home_name_abbrev].hourly.data[hour].time - parksPlus[a.home_name_abbrev] >= -360000) {
-            precipitationPercentageA = hour.precipProbability;
-          }
-          
-          if (info[b.home_name_abbrev].hourly.data[hour].time - parksPlus[b.home_name_abbrev] <= 3600000 || info[b.home_name_abbrev].hourly.data[hour].time - parksPlus[b.home_name_abbrev] >= -360000) {
-            precipitationPercentageB = hour.precipProbability;
-          }
-        })
-      } */
-      /* let aGameTime = gameTimes.filter(function(game) {
-          if (game.park == a.home_name_abbrev) {
-            return game.time
-          }
-        });
-      let bGameTime = gameTimes.filter(function(game) {
-          if (game.park == b.home_name_abbrev) {
-            return game.time
-          }
-        });
-      console.log(aGameTime[0].park + ' ' + bGameTime[0].park); */
-      
-      return parksPlus[b] - parksPlus[a];
+      return parksPlus[b.home_name_abbrev][1] - parksPlus[a.home_name_abbrev][1];
     }.bind(this))
     return sortedParks.slice(0);
   }

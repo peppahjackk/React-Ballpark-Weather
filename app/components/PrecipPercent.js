@@ -10,7 +10,7 @@ export default class PrecipPercent extends React.Component {
   render() {
     return(
       <Table.Cell>
-        {Math.round(this.props.data.daily.data[this.props.day].precipProbability * 100)} %
+        {Math.round(this.props.precipData[this.props.park][1] * 100)} %
       </Table.Cell>
     )
   }
