@@ -47,12 +47,13 @@ export default class FiveDayLeague extends React.Component {
       // Sort parks for each day in order of precipitation chance
       for (let i = 0; i < this.state.days; i++) {
         parksGameTime[i] = darkSkyHelper.extractGameTimes(gameTimesMs[i]);
-        sortedParks[i] = darkSkyHelper.sortParks(this.state.weatherData,this.state.dailyParks[i],i,parksGameTime[i]);
+        parksGameTime[i] = darkSkyHelper.checkHourlyPrecip(this.state.weatherData,i,parksGameTime[i]);
+        sortedParks[i] = darkSkyHelper.sortParks(this.state.dailyParks[i],i,parksGameTime[i]);
       }
       this.setState({
         dateInfo,
         sortedParks: sortedParks,
-        gameTimes: gameTimesMs,
+        precipData: parksGameTime,
         isLoading: false
       });
       console.log(this.state);
@@ -67,7 +68,7 @@ export default class FiveDayLeague extends React.Component {
      // Builds array of Details components for each day
      if (this.state.isLoading === false) {
      for (var i = 0; i < this.state.days; i++) {
-       eachDay.push(<MultiParkDetails key={i} parks={this.state.sortedParks[i]} data={this.state.weatherData} dateInfo={this.state.dateInfo} cols={this.props.cols} days={this.state.days} day={i}></MultiParkDetails>);
+       eachDay.push(<MultiParkDetails key={i} parks={this.state.sortedParks[i]} precipData={this.state.precipData[i]} data={this.state.weatherData} dateInfo={this.state.dateInfo} cols={this.props.cols} days={this.state.days} day={i}></MultiParkDetails>);
      }}
      return ( this.state.isLoading === true
             ? <Loading days={this.state.days} header={this.props.header} subheader={this.props.subheader} />
