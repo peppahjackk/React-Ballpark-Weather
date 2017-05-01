@@ -37,6 +37,7 @@ export default class DetailsSkeleton extends React.Component {
             </Table.Header>
           </Table>
             <Header as='h4' style={Object.assign({},styles.infoHeader,styles.noMarginTop)}>Low or No Chance Parks</Header>
+            <p style={styles.infoSubHeader}>* indicates game time data</p>
         </div>
       </Grid.Column>
     )

@@ -1,5 +1,4 @@
 import React from 'react'
-import { Table } from 'semantic-ui-react'
 import styles from '../styles'
 
 export default class PrecipPercent extends React.Component {
@@ -8,10 +7,14 @@ export default class PrecipPercent extends React.Component {
   }
   
   render() {
+    let gameTime;
+    if (this.props.precipData[this.props.park][0]) {
+      gameTime = '*';
+    } 
     return(
-      <Table.Cell>
-        {Math.round(this.props.precipData[this.props.park][1] * 100)} %
-      </Table.Cell>
+      <span>
+        {Math.round(this.props.precipData[this.props.park][1] * 100)}%{gameTime}
+      </span>
     )
   }
 }

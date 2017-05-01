@@ -21,15 +21,6 @@ export default class MultiParkDetails extends React.Component {
         lowChanceParks.push(this.props.parks[park]);
       }
     }.bind(this))
-    /*for (let i = 0; i < this.props.parks.length; i++) {
-      if (['ARI','HOU','MIA','MIL','SEA','TB','TOR'].indexOf(this.props.parks[i].home_name_abbrev) > -1) {
-        domeParks.push(this.props.parks[i]);
-      } else if (this.props.data[this.props.parks[i].home_name_abbrev].daily.data[this.props.day].precipProbability < 0.4) {
-        lowChanceParks.push(this.props.parks[i]);
-      } else {
-        highChanceParks.push(this.props.parks[i]);
-      }
-    } */
     if (highChanceParks.length) {
       highChanceTable = <Table celled compact unstackable style={styles.precipTable}>
               <Table.Header style={styles.precipTHead}>
@@ -44,14 +35,14 @@ export default class MultiParkDetails extends React.Component {
               {highChanceParks.map((park) =>
                 <Table.Row key={park.home_name_abbrev+this.props.day}>
                   <Table.Cell>{park.away_name_abbrev} vs {park.home_name_abbrev}</Table.Cell>
-                  <PrecipPercent park={park.home_name_abbrev} precipData={this.props.precipData} />
+                  <Table.Cell><PrecipPercent park={park.home_name_abbrev} precipData={this.props.precipData} /></Table.Cell>
                   <PrecipType data={this.props.data[park.home_name_abbrev]} day={this.props.day} />
                 </Table.Row>
                )}
             </Table.Body>
           </Table>
     } else {
-      highChanceTable = <div><Header as='h3' style={Object.assign({}, styles.infoHeader,styles.noHighChanceHeader)}>No parks have a high chance of precipitation!</Header> <Divider /></div>
+      highChanceTable = <div><Header as='h3' style={Object.assign({}, styles.infoSubHeader,styles.noHighChanceHeader)}>No parks have a high chance of precipitation!</Header> <Divider /></div>
     }
     let lowChanceNum = lowChanceParks.length + domeParks.length;
     if (lowChanceNum % 2) {
@@ -68,9 +59,10 @@ export default class MultiParkDetails extends React.Component {
             {highChanceTable}
             <Header as='h4' style={Object.assign({},styles.infoHeader,styles.noMarginTop)}>Low or No Chance Parks</Header>
             <ul style={Object.assign({}, styles.list, styles.lowChance)}>
-              {lowChanceParks.map((park) => <li key={park.home_name_abbrev+this.props.day} style={styles.listItem}>{park.away_name_abbrev} vs {park.home_name_abbrev} {Math.round(this.props.precipData[park.home_name_abbrev][1] * 100)}%</li>)}
-            {domeParks.map((park) => <li key={park.home_name_abbrev+this.props.day} style={styles.listItem}>{park.away_name_abbrev} vs {park.home_name_abbrev} - %</li>)}
+              {lowChanceParks.map((park) => <li key={park.home_name_abbrev+this.props.day} style={styles.listItem}>{park.away_name_abbrev} vs {park.home_name_abbrev} <PrecipPercent park={park.home_name_abbrev} precipData={this.props.precipData} /></li>)}
+            {domeParks.map((park) => <li key={park.home_name_abbrev+this.props.day} style={styles.listItem}>{park.away_name_abbrev} vs {park.home_name_abbrev} -%</li>)}
                            {emptyPark.map((park) => <li key={'emptyPark'+this.props.day} style={styles.listItem}>-</li>)}</ul>
+              <p style={styles.infoSubHeader}>* indicates game time data</p>
         </div>
       </Grid.Column>
     )
