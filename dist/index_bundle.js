@@ -2578,10 +2578,11 @@ var styles = {
     backgroundColor: '#C6E8FD'
   },
   fullGrid: {
-    margin: '0px'
+    margin: '0px auto',
+    maxWidth: '1500px'
   },
   container: {
-    height: '100vh'
+    paddingBottom: '4rem'
   },
   bold: {
     fontWeight: 'bold'
@@ -2649,7 +2650,8 @@ var styles = {
   },
   detailsRow: {
     height: '100%',
-    padding: '0 0 .5rem'
+    padding: '0 0 .5rem',
+    zIndex: 2
   },
   ulGrass: {
     position: 'absolute',
@@ -30424,7 +30426,7 @@ var FiveDayLeague = function (_React$Component) {
         // Condense total list of active ballparks for the next X days
         var allParks = _darkSkyHelper2.default.condenseParks(dailyParks);
         // Obtain weather data
-        return _darkSkyHelper2.default.getWeather(allParks);
+        //return darkSkyHelper.getWeather(allParks)
       }.bind(this)).then(function (info) {
         this.setState({
           weatherData: info
@@ -30606,8 +30608,7 @@ var Home = function (_React$Component) {
             _react2.default.createElement(_PageHeader2.default, { cols: '16' })
           ),
           _react2.default.createElement(_FiveDayLeague2.default, { cols: '16', header: 'Ballpark Weather' })
-        ),
-        _react2.default.createElement(_Footer2.default, null)
+        )
       );
     }
   }]);
@@ -30768,6 +30769,10 @@ var _Nav = __webpack_require__(482);
 
 var _Nav2 = _interopRequireDefault(_Nav);
 
+var _Footer = __webpack_require__(476);
+
+var _Footer2 = _interopRequireDefault(_Footer);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -30793,8 +30798,9 @@ var Main = function (_React$Component) {
     value: function render() {
       return _react2.default.createElement(
         'div',
-        null,
-        _react2.default.cloneElement(this.props.children, { key: this.props.location.pathname })
+        { className: 'appB' },
+        _react2.default.cloneElement(this.props.children, { key: this.props.location.pathname }),
+        _react2.default.createElement(_Footer2.default, null)
       );
     }
   }]);

@@ -11,10 +11,11 @@ var styles = {
     backgroundColor: '#C6E8FD'
   },
   fullGrid: {
-    margin: '0px'
+    margin: '0px auto',
+    maxWidth: '1500px'
   },
   container: {
-    height: '100vh'
+    paddingBottom: '4rem'
   },
   bold: {
     fontWeight: 'bold'
@@ -90,7 +91,8 @@ var styles = {
   },
   detailsRow: {
     height: '100%',
-    padding: '0 0 .5rem'
+    padding: '0 0 .5rem',
+    zIndex: 2
   },
   ulGrass: {
     position: 'absolute',

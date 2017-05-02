@@ -16,7 +16,6 @@ export default class Home extends React.Component {
           </Grid.Row>
           <FiveDayLeague cols='16' header='Ballpark Weather'></FiveDayLeague>
         </Grid>
-      <Footer />
       </Container>
     )
   }

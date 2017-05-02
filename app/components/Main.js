@@ -1,5 +1,6 @@
 import React from 'react';
 import Nav from './Nav';
+import Footer from './Footer'
 
 const menuOptions = ['Home', 'Day', 'Stadium'];
 const menuTitle = 'Ballpark Weather';
@@ -11,8 +12,9 @@ export default class Main extends React.Component {
   
   render() {
     return (
-      <div>
+      <div className='appB'>
         {React.cloneElement(this.props.children, {key: this.props.location.pathname})}
+        <Footer />
       </div>  
     )
   }
