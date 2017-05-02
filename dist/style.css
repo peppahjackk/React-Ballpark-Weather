@@ -2,7 +2,7 @@ body {
   background: #4096ee;
 }
 
-.app {
+.appC {
   background: #7abcff;
   /* Old browsers */
   background: -moz-linear-gradient(top, #7abcff 0%, #60abf8 44%, #4096ee 100%);
@@ -13,7 +13,7 @@ body {
   /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
   filter: progid: DXImageTransform.Microsoft.gradient( startColorstr='#7abcff', endColorstr='#4096ee', GradientType=0);
   /* IE6-9 */
-}
+} 
 
 footer {
   position: fixed;
@@ -40,12 +40,37 @@ footer a:hover {
 
 @keyframes animatedBackground {
 	from { background-position: 0 0; }
-	to { background-position: 100% 0; }
+	to { background-position: 794.96px 0; }
+}
+
+@keyframes animatedBackground2 {
+	from { background-position: 0 0; }
+	to { background-position: 588.789px 0 }
 }
 
 #animate-area	{  
-	background-image: url(images/cloud1.svg);
+	background-image: url(images/clouds1.svg);
 	background-position: 0px 0px;
 	background-repeat: repeat;
-	animation: animatedBackground 40s linear infinite;
+	animation: animatedBackground 15s linear infinite;
 }
+
+#animate-area2 {
+	background-image: url(images/clouds2.svg);
+	background-position: 0px 0px;
+	background-repeat: repeat;
+	animation: animatedBackground2 30s linear infinite;
+}
+
+@media (min-width: 992px) {
+	#animate-area {
+		height: 100%;
+		animation: animatedBackground 20s linear infinite;
+	}
+	
+	#animate-area2 {
+		height: 100%;
+		animation: animatedBackground2 33s linear infinite;
+	}
+}
+

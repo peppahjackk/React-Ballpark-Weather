@@ -23,6 +23,9 @@ var styles = {
   skeleton: {
     minHeight: '250px'
   },
+  skeleIndicator: {
+    marginTop: '56px'
+  },
   infoHeader: {
     marginBottom: 0,
     color: 'white',

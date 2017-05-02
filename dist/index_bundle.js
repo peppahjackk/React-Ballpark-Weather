@@ -2590,6 +2590,9 @@ var styles = {
   skeleton: {
     minHeight: '250px'
   },
+  skeleIndicator: {
+    marginTop: '56px'
+  },
   infoHeader: {
     marginBottom: 0,
     color: 'white',
@@ -30393,7 +30396,7 @@ var DetailsSkeleton = function (_React$Component) {
           ),
           _react2.default.createElement(
             'p',
-            { style: _styles2.default.infoSubHeader },
+            { style: Object.assign({}, _styles2.default.infoSubHeader, _styles2.default.skeleIndicator) },
             '* indicates game time data'
           )
         )
