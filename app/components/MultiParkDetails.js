@@ -3,7 +3,6 @@ import { Grid, Header, Table, Divider } from 'semantic-ui-react'
 import styles from '../styles'
 import PrecipPercent from './PrecipPercent'
 import PrecipType from './PrecipType'
-import LowChancePrecip from './LowChancePrecip'
 
 export default class MultiParkDetails extends React.Component {
   constructor(props) {

@@ -1,6 +1,7 @@
 import React from 'react'
 import { Grid, Segment, Header, Table } from 'semantic-ui-react'
 import styles from '../styles'
+import EmptyTableRow from './EmptyTableRow'
 
 export default class DetailsSkeleton extends React.Component {
   constructor(props) {
@@ -23,17 +24,9 @@ export default class DetailsSkeleton extends React.Component {
                 <Table.HeaderCell>Type</Table.HeaderCell>
               </Table.Row>
             
-              <Table.Row>
-                <Table.Cell>-</Table.Cell>
-                <Table.Cell>-</Table.Cell>
-                <Table.Cell>-</Table.Cell>
-              </Table.Row>
-            
-              <Table.Row>
-                <Table.Cell>-</Table.Cell>
-                <Table.Cell>-</Table.Cell>
-                <Table.Cell>-</Table.Cell>
-              </Table.Row>
+              <EmptyTableRow cells={3} />
+              <EmptyTableRow cells={3} />
+                
             </Table.Header>
           </Table>
             <Header as='h4' style={Object.assign({},styles.infoHeader,styles.noMarginTop)}>Low or No Chance Parks</Header>

@@ -1,10 +1,8 @@
-import React, { Component } from 'react'
+import React from 'react'
 import { Grid, Header } from 'semantic-ui-react'
 import styles from '../styles'
-let date = new Date();
 
-
-export default class PageHeader extends Component {
+export default class PageHeader extends React.Component {
   constructor(props) {
     super(props)
   }
@@ -23,7 +21,5 @@ export default class PageHeader extends Component {
 }
 
 PageHeader.defaultProps = {
-  header: 'Today',
-  subheader: date.toDateString(),
   cols: 12
 }

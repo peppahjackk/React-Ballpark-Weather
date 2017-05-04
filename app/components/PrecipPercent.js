@@ -1,5 +1,4 @@
 import React from 'react'
-import styles from '../styles'
 
 export default class PrecipPercent extends React.Component {
   constructor(props) {

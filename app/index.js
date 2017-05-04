@@ -4,7 +4,7 @@ import ReactDOM from 'react-dom'
 import Routes from './config/routes.js'
 
 var _APP_INFO = {
-  name: 'Baseball-Weather',
+  name: 'Ballpark-Weather',
   branch: 'master',
   version: '1.0'
 }
