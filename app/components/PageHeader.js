@@ -1,5 +1,5 @@
 import React from 'react'
-import { Grid, Header } from 'semantic-ui-react'
+import { Grid } from 'semantic-ui-react'
 import styles from '../styles'
 
 export default class PageHeader extends React.Component {
@@ -18,8 +18,4 @@ export default class PageHeader extends React.Component {
         </Grid.Column>
     )
   }
-}
-
-PageHeader.defaultProps = {
-  cols: 12
 }

@@ -18,35 +18,38 @@ export default class FiveDayLeague extends React.Component {
   }
   
   componentDidMount() {
-    // Obtain game data for the next X days
+    // Obtains game data for the next X days
     darkSkyHelper.getParks(this.state.days)
     .then(function(dailyParks) {
       this.setState({
         dailyParks: dailyParks
       })
-      // Condense total list of active ballparks for the next X days
+      // Condenses total list of active ballparks for the next X days
       let allParks = darkSkyHelper.condenseParks(dailyParks);
-      // Obtain weather data
+      // Obtains weather data for necessary parks
       return darkSkyHelper.getWeather(allParks)
     }.bind(this))
     .then(function(info) {
      this.setState({
        weatherData: info
      });
-     // Set the days and dates for details component headers 
+     // Sets the days and dates for details component headers 
      return darkSkyHelper.formatDateInfo(info, this.state.days, this.state.dailyParks[0]);
     }.bind(this))
     .then(function(dateInfo) {
+      // Converts time from string (e.g. '7:05 pm') to Date ms (e.g. 1493906056000)
       let gameTimesMs = Object.keys(this.state.dailyParks).map(function(day) {
         return Object.keys(this.state.dailyParks[day]).map(function(game) {
           return mlbHelper.convertTime(this.state.dailyParks[day][game], this.state.weatherData[game.home_name_abbrev], day, dateInfo)
         }.bind(this)) 
       }.bind(this));
       let sortedParks = {}, parksGameTime = {};
-      // Sort parks for each day in order of precipitation chance
       for (let i = 0; i < this.state.days; i++) {
+        // Packs game times into new game object
         parksGameTime[i] = darkSkyHelper.extractGameTimes(gameTimesMs[i]);
+        // Adds hourly weather data to game object
         parksGameTime[i] = darkSkyHelper.checkHourlyPrecip(this.state.weatherData,i,parksGameTime[i]);
+        // Sorts parks in order of precipitation chance
         sortedParks[i] = darkSkyHelper.sortParks(this.state.dailyParks[i],i,parksGameTime[i]);
       }
       this.setState({
@@ -62,11 +65,11 @@ export default class FiveDayLeague extends React.Component {
   }
   
    render() {
-     let eachDay =[];
-     // Builds array of Details components for each day
+     let eachDay = [];
+     // Builds an array of Details components for each day
      if (this.state.isLoading === false) {
      for (var i = 0; i < this.state.days; i++) {
-       eachDay.push(<MultiParkDetails key={i} parks={this.state.sortedParks[i]} precipData={this.state.precipData[i]} data={this.state.weatherData} dateInfo={this.state.dateInfo} cols={this.props.cols} days={this.state.days} day={i}></MultiParkDetails>);
+       eachDay.push(<MultiParkDetails key={i} parks={this.state.sortedParks[i]} precipData={this.state.precipData[i]} data={this.state.weatherData} dateInfo={this.state.dateInfo} days={this.state.days} day={i}></MultiParkDetails>);
      }}
      return ( this.state.isLoading === true
             ? <Loading days={this.state.days} header={this.props.header} subheader={this.props.subheader} />

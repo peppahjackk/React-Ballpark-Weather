@@ -7,6 +7,7 @@ export default class EmptyTableRow extends React.Component {
   }
   
   render() {
+    // Inserts X number of blank cells into Semantic UI Table
     let cells = [];
     for (let i = 0; i < this.props.cells; i++) {
       cells.push(<Table.Cell key={i}>{this.props.fill}</Table.Cell>)

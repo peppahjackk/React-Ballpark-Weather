@@ -7,6 +7,7 @@ export default class PrecipPercent extends React.Component {
   
   render() {
     let gameTime;
+    // Adds indicator if hourly weather data is utilized
     if (this.props.precipData[this.props.park][0]) {
       gameTime = '*';
     } 

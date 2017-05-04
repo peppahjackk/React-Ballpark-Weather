@@ -1,5 +1,5 @@
 import React from 'react'
-import { Grid, Segment, Header, Table } from 'semantic-ui-react'
+import { Grid, Header, Table } from 'semantic-ui-react'
 import styles from '../styles'
 import EmptyTableRow from './EmptyTableRow'
 
@@ -10,6 +10,7 @@ export default class DetailsSkeleton extends React.Component {
   
   render() {
     return (
+      // Skeleton for weather details display
       <Grid.Column tablet={16} mobile={16} computer={5}>
         <div style={styles.detailsContainer}>
           <Header as='h3' style={styles.infoHeader}>Weekday</Header>

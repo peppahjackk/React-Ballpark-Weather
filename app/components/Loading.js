@@ -1,6 +1,5 @@
 import React from 'react'
-import { Container, Grid, Header, Loader, Segment, Dimmer } from 'semantic-ui-react'
-import PageHeader from './PageHeader'
+import { Grid, Loader, Dimmer } from 'semantic-ui-react'
 import DetailsSkeleton from './DetailsSkeleton'
 import styles from '../styles'
 
@@ -17,7 +16,6 @@ export default class Loading extends React.Component {
               <DetailsSkeleton />
               <DetailsSkeleton />
               <DetailsSkeleton /> 
-            
           </Grid.Row>
     )
   }
