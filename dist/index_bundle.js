@@ -30277,6 +30277,11 @@ var DetailsSkeleton = function (_React$Component) {
                   _react2.default.createElement(
                     _semanticUiReact.Table.HeaderCell,
                     null,
+                    'Game Time'
+                  ),
+                  _react2.default.createElement(
+                    _semanticUiReact.Table.HeaderCell,
+                    null,
                     'Precip %'
                   ),
                   _react2.default.createElement(
@@ -30285,8 +30290,9 @@ var DetailsSkeleton = function (_React$Component) {
                     'Type'
                   )
                 ),
-                _react2.default.createElement(_EmptyTableRow2.default, { cells: 3 }),
-                _react2.default.createElement(_EmptyTableRow2.default, { cells: 3 })
+                _react2.default.createElement(_EmptyTableRow2.default, { cells: 4 }),
+                _react2.default.createElement(_EmptyTableRow2.default, { cells: 4 }),
+                _react2.default.createElement(_EmptyTableRow2.default, { cells: 4 })
               )
             ),
             _react2.default.createElement(

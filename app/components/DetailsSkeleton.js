@@ -21,12 +21,14 @@ export default class DetailsSkeleton extends React.Component {
             <Table.Header style={styles.precipTHead}>
               <Table.Row>
                 <Table.HeaderCell>Matchup</Table.HeaderCell>
+                <Table.HeaderCell>Game Time</Table.HeaderCell>
                 <Table.HeaderCell>Precip %</Table.HeaderCell>
                 <Table.HeaderCell>Type</Table.HeaderCell>
               </Table.Row>
             
-              <EmptyTableRow cells={3} />
-              <EmptyTableRow cells={3} />
+              <EmptyTableRow cells={4} />
+              <EmptyTableRow cells={4} />
+              <EmptyTableRow cells={4} />
                 
             </Table.Header>
           </Table>
