@@ -15,7 +15,7 @@ export default class MultiParkDetails extends React.Component {
     Object.keys(this.props.parks).map(function(park) {
        if (['ARI','HOU','MIA','MIL','SEA','TB','TOR'].indexOf(this.props.parks[park].home_name_abbrev) > -1) {
         domeParks.push(this.props.parks[park]);
-      } else if (this.props.precipData[this.props.parks[park].home_name_abbrev][1] > 0.4) {
+      } else if (this.props.gameData[this.props.parks[park].home_name_abbrev][1].precipProbability >= 0.4) {
         highChanceParks.push(this.props.parks[park]);
       } else {
         lowChanceParks.push(this.props.parks[park]);
@@ -27,6 +27,7 @@ export default class MultiParkDetails extends React.Component {
               <Table.Header style={styles.precipTHead}>
                 <Table.Row>
                   <Table.HeaderCell>Matchup</Table.HeaderCell>
+                  <Table.HeaderCell>Game Time</Table.HeaderCell>
                   <Table.HeaderCell>Precip %</Table.HeaderCell>
                   <Table.HeaderCell>Type</Table.HeaderCell>
                 </Table.Row>
@@ -36,7 +37,8 @@ export default class MultiParkDetails extends React.Component {
               {highChanceParks.map((park) =>
                 <Table.Row key={park.home_name_abbrev+this.props.day}>
                   <Table.Cell>{park.away_name_abbrev} vs {park.home_name_abbrev}</Table.Cell>
-                  <Table.Cell><PrecipPercent park={park.home_name_abbrev} precipData={this.props.precipData} /></Table.Cell>
+                  <Table.Cell>{this.props.gameData[park.home_name_abbrev][2].event_time}</Table.Cell>
+                  <Table.Cell><PrecipPercent park={park.home_name_abbrev} gameData={this.props.gameData} /></Table.Cell>
                   <PrecipType data={this.props.data[park.home_name_abbrev]} day={this.props.day} />
                 </Table.Row>
                )}
@@ -62,7 +64,7 @@ export default class MultiParkDetails extends React.Component {
           {highChanceTable}
           <Header as='h4' style={Object.assign({},styles.infoHeader,styles.noMarginTop)}>Low or No Chance Parks</Header>
           <ul style={Object.assign({}, styles.list, styles.lowChance)}>
-            {lowChanceParks.map((park) => <li key={park.home_name_abbrev+this.props.day} style={styles.listItem}>{park.away_name_abbrev} vs {park.home_name_abbrev} <PrecipPercent park={park.home_name_abbrev} precipData={this.props.precipData} /></li>)}
+            {lowChanceParks.map((park) => <li key={park.home_name_abbrev+this.props.day} style={styles.listItem}>{park.away_name_abbrev} vs {park.home_name_abbrev} <PrecipPercent park={park.home_name_abbrev} gameData={this.props.gameData} /></li>)}
             {domeParks.map((park) => <li key={park.home_name_abbrev+this.props.day} style={styles.listItem}>{park.away_name_abbrev} vs {park.home_name_abbrev} -%</li>)}
             {emptyPark.map((park) => <li key={'emptyPark'+this.props.day} style={styles.listItem}>-</li>)}
           </ul>

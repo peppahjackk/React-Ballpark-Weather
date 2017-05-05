@@ -30477,19 +30477,19 @@ var FiveDayLeague = function (_React$Component) {
           }.bind(this));
         }.bind(this));
         var sortedParks = {},
-            parksGameTime = {};
+            fullGameData = {};
         for (var i = 0; i < this.state.days; i++) {
           // Packs game times into new game object
-          parksGameTime[i] = _darkSkyHelper2.default.extractGameTimes(gameTimesMs[i]);
+          fullGameData[i] = _darkSkyHelper2.default.extractGameTimes(gameTimesMs[i]);
           // Adds hourly weather data to game object
-          parksGameTime[i] = _darkSkyHelper2.default.checkHourlyPrecip(this.state.weatherData, i, parksGameTime[i]);
+          fullGameData[i] = _darkSkyHelper2.default.checkHourlyPrecip(this.state.weatherData, i, fullGameData[i], this.state.dailyParks[i]);
           // Sorts parks in order of precipitation chance
-          sortedParks[i] = _darkSkyHelper2.default.sortParks(this.state.dailyParks[i], i, parksGameTime[i]);
+          sortedParks[i] = _darkSkyHelper2.default.sortParks(this.state.dailyParks[i], i, fullGameData[i]);
         }
         this.setState({
           dateInfo: dateInfo,
           sortedParks: sortedParks,
-          precipData: parksGameTime,
+          gameData: fullGameData,
           isLoading: false
         });
       }.bind(this)).catch(function (error) {
@@ -30503,7 +30503,7 @@ var FiveDayLeague = function (_React$Component) {
       // Builds an array of Details components for each day
       if (this.state.isLoading === false) {
         for (var i = 0; i < this.state.days; i++) {
-          eachDay.push(_react2.default.createElement(_MultiParkDetails2.default, { key: i, parks: this.state.sortedParks[i], precipData: this.state.precipData[i], data: this.state.weatherData, dateInfo: this.state.dateInfo, days: this.state.days, day: i }));
+          eachDay.push(_react2.default.createElement(_MultiParkDetails2.default, { key: i, parks: this.state.sortedParks[i], gameData: this.state.gameData[i], data: this.state.weatherData, dateInfo: this.state.dateInfo, days: this.state.days, day: i }));
         }
       }
       return this.state.isLoading === true ? _react2.default.createElement(_Loading2.default, { days: this.state.days, header: this.props.header, subheader: this.props.subheader }) : _react2.default.createElement(
@@ -30850,7 +30850,7 @@ var MultiParkDetails = function (_React$Component) {
       Object.keys(this.props.parks).map(function (park) {
         if (['ARI', 'HOU', 'MIA', 'MIL', 'SEA', 'TB', 'TOR'].indexOf(this.props.parks[park].home_name_abbrev) > -1) {
           domeParks.push(this.props.parks[park]);
-        } else if (this.props.precipData[this.props.parks[park].home_name_abbrev][1] > 0.4) {
+        } else if (this.props.gameData[this.props.parks[park].home_name_abbrev][1].precipProbability >= 0.4) {
           highChanceParks.push(this.props.parks[park]);
         } else {
           lowChanceParks.push(this.props.parks[park]);
@@ -30871,6 +30871,11 @@ var MultiParkDetails = function (_React$Component) {
                 _semanticUiReact.Table.HeaderCell,
                 null,
                 'Matchup'
+              ),
+              _react2.default.createElement(
+                _semanticUiReact.Table.HeaderCell,
+                null,
+                'Game Time'
               ),
               _react2.default.createElement(
                 _semanticUiReact.Table.HeaderCell,
@@ -30901,7 +30906,12 @@ var MultiParkDetails = function (_React$Component) {
                 _react2.default.createElement(
                   _semanticUiReact.Table.Cell,
                   null,
-                  _react2.default.createElement(_PrecipPercent2.default, { park: park.home_name_abbrev, precipData: _this2.props.precipData })
+                  _this2.props.gameData[park.home_name_abbrev][2].event_time
+                ),
+                _react2.default.createElement(
+                  _semanticUiReact.Table.Cell,
+                  null,
+                  _react2.default.createElement(_PrecipPercent2.default, { park: park.home_name_abbrev, gameData: _this2.props.gameData })
                 ),
                 _react2.default.createElement(_PrecipType2.default, { data: _this2.props.data[park.home_name_abbrev], day: _this2.props.day })
               );
@@ -30967,7 +30977,7 @@ var MultiParkDetails = function (_React$Component) {
                 ' vs ',
                 park.home_name_abbrev,
                 ' ',
-                _react2.default.createElement(_PrecipPercent2.default, { park: park.home_name_abbrev, precipData: _this2.props.precipData })
+                _react2.default.createElement(_PrecipPercent2.default, { park: park.home_name_abbrev, gameData: _this2.props.gameData })
               );
             }),
             domeParks.map(function (park) {
@@ -31042,13 +31052,13 @@ var PrecipPercent = function (_React$Component) {
     value: function render() {
       var gameTime = void 0;
       // Adds indicator if hourly weather data is utilized
-      if (this.props.precipData[this.props.park][0]) {
+      if (this.props.gameData[this.props.park][0]) {
         gameTime = '*';
       }
       return _react2.default.createElement(
         'span',
         null,
-        Math.round(this.props.precipData[this.props.park][1] * 100),
+        Math.round(this.props.gameData[this.props.park][1].precipProbability * 100),
         '%',
         gameTime
       );
@@ -31296,21 +31306,21 @@ var getWeatherData = function () {
     }
   }, {
     key: 'checkHourlyPrecip',
-    value: function checkHourlyPrecip(info, day, games) {
+    value: function checkHourlyPrecip(info, day, gameTimes, gameData) {
       var precipitationPercentage = {};
-      Object.keys(games).map(function (game) {
+      Object.keys(gameTimes).map(function (game) {
 
         if (['ARI', 'HOU', 'MIA', 'MIL', 'SEA', 'TB', 'TOR'].indexOf(game) > -1) {
-          precipitationPercentage[game] = [false, 0];
+          precipitationPercentage[game] = [false, 0, gameData[Object.keys(gameTimes).indexOf(game)]];
           return;
         }
         // Sets initial precipitation percentage to the overall chance for the day
-        precipitationPercentage[game] = [false, info[game].daily.data[day].precipProbability];
+        precipitationPercentage[game] = [false, info[game].daily.data[day], gameData[Object.keys(gameTimes).indexOf(game)]];
         // If the game is less than 48 hours away pull weather data from the hour nearest game time
-        if (games[game] - info[game].currently.time * 1000 < 172800000) {
+        if (gameTimes[game] - info[game].currently.time * 1000 < 172800000) {
           Object.keys(info[game].hourly.data).filter(function (hour) {
-            if (-3600000 <= info[game].hourly.data[hour].time * 1000 - games[game] && info[game].hourly.data[hour].time * 1000 - games[game] <= 360000) {
-              precipitationPercentage[game] = [true, info[game].hourly.data[hour].precipProbability];
+            if (-3600000 <= info[game].hourly.data[hour].time * 1000 - gameTimes[game] && info[game].hourly.data[hour].time * 1000 - gameTimes[game] <= 360000) {
+              precipitationPercentage[game] = [true, info[game].hourly.data[hour], gameData[Object.keys(gameTimes).indexOf(game)]];
               return;
             }
             return false;
@@ -31333,7 +31343,7 @@ var getWeatherData = function () {
         } else if (['ARI', 'HOU', 'MIA', 'MIL', 'SEA', 'TB', 'TOR'].indexOf(a.home_name_abbrev) > -1) {
           return 1;
         }
-        return parksPlus[b.home_name_abbrev][1] - parksPlus[a.home_name_abbrev][1];
+        return parksPlus[b.home_name_abbrev][1].precipProbability - parksPlus[a.home_name_abbrev][1].precipProbability;
       }.bind(this));
       return sortedParks.slice(0);
     }
