@@ -81,21 +81,21 @@ export default class getWeatherData {
     return parksPlus;
   }
   
-  static checkHourlyPrecip(info, day, games) {
+  static checkHourlyPrecip(info, day, gameTimes, gameData) {
     let precipitationPercentage = {};
-    Object.keys(games).map(function(game) {
+    Object.keys(gameTimes).map(function(game) {
       
       if (['ARI','HOU','MIA','MIL','SEA','TB','TOR'].indexOf(game) > -1) {
-        precipitationPercentage[game] = [false,0];
+        precipitationPercentage[game] = [false,0,gameData[Object.keys(gameTimes).indexOf(game)]];
         return;
       }
       // Sets initial precipitation percentage to the overall chance for the day
-      precipitationPercentage[game] = [false,info[game].daily.data[day].precipProbability];
+      precipitationPercentage[game] = [false,info[game].daily.data[day],gameData[Object.keys(gameTimes).indexOf(game)]];
       // If the game is less than 48 hours away pull weather data from the hour nearest game time
-      if (games[game] - (info[game].currently.time * 1000) < 172800000) {
+      if (gameTimes[game] - (info[game].currently.time * 1000) < 172800000) {
         Object.keys(info[game].hourly.data).filter(function(hour) {
-          if ((-3600000 <= (info[game].hourly.data[hour].time * 1000) - games[game] && (info[game].hourly.data[hour].time * 1000) - games[game] <= 360000)) {
-            precipitationPercentage[game] = [true,info[game].hourly.data[hour].precipProbability];
+          if ((-3600000 <= (info[game].hourly.data[hour].time * 1000) - gameTimes[game] && (info[game].hourly.data[hour].time * 1000) - gameTimes[game] <= 360000)) {
+            precipitationPercentage[game] = [true,info[game].hourly.data[hour],gameData[Object.keys(gameTimes).indexOf(game)]];
             return;
           }
           return false;
@@ -115,7 +115,7 @@ export default class getWeatherData {
       } else if ((['ARI','HOU','MIA','MIL','SEA','TB','TOR'].indexOf(a.home_name_abbrev) > -1)) {
         return 1;
       }
-      return parksPlus[b.home_name_abbrev][1] - parksPlus[a.home_name_abbrev][1];
+      return parksPlus[b.home_name_abbrev][1].precipProbability - parksPlus[a.home_name_abbrev][1].precipProbability;
     }.bind(this))
     return sortedParks.slice(0);
   }

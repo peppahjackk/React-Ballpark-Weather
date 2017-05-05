@@ -43,19 +43,19 @@ export default class FiveDayLeague extends React.Component {
           return mlbHelper.convertTime(this.state.dailyParks[day][game], this.state.weatherData[game.home_name_abbrev], day, dateInfo)
         }.bind(this)) 
       }.bind(this));
-      let sortedParks = {}, parksGameTime = {};
+      let sortedParks = {}, fullGameData = {};
       for (let i = 0; i < this.state.days; i++) {
         // Packs game times into new game object
-        parksGameTime[i] = darkSkyHelper.extractGameTimes(gameTimesMs[i]);
+        fullGameData[i] = darkSkyHelper.extractGameTimes(gameTimesMs[i]);
         // Adds hourly weather data to game object
-        parksGameTime[i] = darkSkyHelper.checkHourlyPrecip(this.state.weatherData,i,parksGameTime[i]);
+        fullGameData[i] = darkSkyHelper.checkHourlyPrecip(this.state.weatherData,i,fullGameData[i],this.state.dailyParks[i]);
         // Sorts parks in order of precipitation chance
-        sortedParks[i] = darkSkyHelper.sortParks(this.state.dailyParks[i],i,parksGameTime[i]);
+        sortedParks[i] = darkSkyHelper.sortParks(this.state.dailyParks[i],i,fullGameData[i]);
       }
       this.setState({
         dateInfo,
         sortedParks: sortedParks,
-        precipData: parksGameTime,
+        gameData: fullGameData,
         isLoading: false
       });
     }.bind(this))
@@ -69,7 +69,7 @@ export default class FiveDayLeague extends React.Component {
      // Builds an array of Details components for each day
      if (this.state.isLoading === false) {
      for (var i = 0; i < this.state.days; i++) {
-       eachDay.push(<MultiParkDetails key={i} parks={this.state.sortedParks[i]} precipData={this.state.precipData[i]} data={this.state.weatherData} dateInfo={this.state.dateInfo} days={this.state.days} day={i}></MultiParkDetails>);
+       eachDay.push(<MultiParkDetails key={i} parks={this.state.sortedParks[i]} gameData={this.state.gameData[i]} data={this.state.weatherData} dateInfo={this.state.dateInfo} days={this.state.days} day={i}></MultiParkDetails>);
      }}
      return ( this.state.isLoading === true
             ? <Loading days={this.state.days} header={this.props.header} subheader={this.props.subheader} />
