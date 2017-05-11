@@ -46,8 +46,29 @@ export default class getWeatherData {
 
   }
 
+  
+  static checkIndexPark() {
+      console.log(info[park[indexPark].home_name_abbrev].daily);
+      console.log('runrunrun');
+      if (!info[park[indexPark].home_name_abbrev].daily) {
+        indexPark++;
+        checkIndexPark();
+      }
+    return 
+    } 
+  
   // Returns an object containing the weather information for the requested amount of days
   static formatDateInfo(info, days, park) {
+    let indexPark = 0;
+    let realParks = park.map(function(currPark){
+      console.log(info);
+      console.log(park);
+      console.log(currPark);
+      if (info[currPark.home_name_abbrev].daily) {
+        return currPark
+      }
+    });
+    console.log(realParks);
     let dateInfo = {},
       numDays,
       latest;
@@ -64,7 +85,7 @@ export default class getWeatherData {
     }
     // Obtain and set weekday(s) and date(s)
     for (let i = 0; i < numDays; i++) {
-      latest = info[park[0].home_name_abbrev].daily;
+      latest = info[park[realParks[0]].home_name_abbrev].daily;
       let dayData = latest.data[i];
       let day = new Date(parseInt(dayData.time + '000'));
       dateInfo['Day' + i] = weekdays[day.getDay()];

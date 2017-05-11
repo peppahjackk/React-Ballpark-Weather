@@ -31271,12 +31271,43 @@ var getWeatherData = function () {
         console.log(error);
       });
     }
+  }, {
+    key: 'checkIndexPark',
+    value: function (_checkIndexPark) {
+      function checkIndexPark() {
+        return _checkIndexPark.apply(this, arguments);
+      }
+
+      checkIndexPark.toString = function () {
+        return _checkIndexPark.toString();
+      };
+
+      return checkIndexPark;
+    }(function () {
+      console.log(info[park[indexPark].home_name_abbrev].daily);
+      console.log('runrunrun');
+      if (!info[park[indexPark].home_name_abbrev].daily) {
+        indexPark++;
+        checkIndexPark();
+      }
+      return;
+    })
 
     // Returns an object containing the weather information for the requested amount of days
 
   }, {
     key: 'formatDateInfo',
     value: function formatDateInfo(info, days, park) {
+      var indexPark = 0;
+      var realParks = park.map(function (currPark) {
+        console.log(info);
+        console.log(park);
+        console.log(currPark);
+        if (info[currPark.home_name_abbrev].daily) {
+          return currPark;
+        }
+      });
+      console.log(realParks);
       var dateInfo = {},
           numDays = void 0,
           latest = void 0;
@@ -31293,7 +31324,7 @@ var getWeatherData = function () {
       }
       // Obtain and set weekday(s) and date(s)
       for (var i = 0; i < numDays; i++) {
-        latest = info[park[0].home_name_abbrev].daily;
+        latest = info[park[realParks[0]].home_name_abbrev].daily;
         var dayData = latest.data[i];
         var day = new Date(parseInt(dayData.time + '000'));
         dateInfo['Day' + i] = weekdays[day.getDay()];
