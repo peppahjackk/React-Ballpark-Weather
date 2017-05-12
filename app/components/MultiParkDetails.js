@@ -3,6 +3,7 @@ import { Grid, Header, Table, Divider } from 'semantic-ui-react'
 import styles from '../styles'
 import PrecipPercent from './PrecipPercent'
 import PrecipType from './PrecipType'
+import DetailsHeader from './DetailsHeader'
 
 export default class MultiParkDetails extends React.Component {
   constructor(props) {
@@ -24,15 +25,7 @@ export default class MultiParkDetails extends React.Component {
     // Places high chance parks into a table
     if (highChanceParks.length) {
       highChanceTable = <Table celled compact unstackable style={styles.precipTable}>
-              <Table.Header style={styles.precipTHead}>
-                <Table.Row>
-                  <Table.HeaderCell>Matchup</Table.HeaderCell>
-                  <Table.HeaderCell>Game Time</Table.HeaderCell>
-                  <Table.HeaderCell>Precip %</Table.HeaderCell>
-                  <Table.HeaderCell>Type</Table.HeaderCell>
-                </Table.Row>
-              </Table.Header>
-      
+            <DetailsHeader />
             <Table.Body>
               {highChanceParks.map((park) =>
                 <Table.Row key={park.home_name_abbrev+this.props.day}>

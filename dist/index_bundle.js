@@ -30214,9 +30214,13 @@ var _styles = __webpack_require__(57);
 
 var _styles2 = _interopRequireDefault(_styles);
 
-var _EmptyTableRow = __webpack_require__(475);
+var _EmptyTableRows = __webpack_require__(916);
 
-var _EmptyTableRow2 = _interopRequireDefault(_EmptyTableRow);
+var _EmptyTableRows2 = _interopRequireDefault(_EmptyTableRows);
+
+var _DetailsHeader = __webpack_require__(915);
+
+var _DetailsHeader2 = _interopRequireDefault(_DetailsHeader);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -30263,37 +30267,8 @@ var DetailsSkeleton = function (_React$Component) {
             _react2.default.createElement(
               _semanticUiReact.Table,
               { celled: true, compact: true, unstackable: true, style: _styles2.default.precipTable },
-              _react2.default.createElement(
-                _semanticUiReact.Table.Header,
-                { style: _styles2.default.precipTHead },
-                _react2.default.createElement(
-                  _semanticUiReact.Table.Row,
-                  null,
-                  _react2.default.createElement(
-                    _semanticUiReact.Table.HeaderCell,
-                    null,
-                    'Matchup'
-                  ),
-                  _react2.default.createElement(
-                    _semanticUiReact.Table.HeaderCell,
-                    null,
-                    'Game Time'
-                  ),
-                  _react2.default.createElement(
-                    _semanticUiReact.Table.HeaderCell,
-                    null,
-                    'Precip %'
-                  ),
-                  _react2.default.createElement(
-                    _semanticUiReact.Table.HeaderCell,
-                    null,
-                    'Type'
-                  )
-                ),
-                _react2.default.createElement(_EmptyTableRow2.default, { cells: 4 }),
-                _react2.default.createElement(_EmptyTableRow2.default, { cells: 4 }),
-                _react2.default.createElement(_EmptyTableRow2.default, { cells: 4 })
-              )
+              _react2.default.createElement(_DetailsHeader2.default, null),
+              _react2.default.createElement(_EmptyTableRows2.default, { rows: 2, cells: 4 })
             ),
             _react2.default.createElement(
               _semanticUiReact.Header,
@@ -30317,77 +30292,7 @@ var DetailsSkeleton = function (_React$Component) {
 exports.default = DetailsSkeleton;
 
 /***/ }),
-/* 475 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _react = __webpack_require__(1);
-
-var _react2 = _interopRequireDefault(_react);
-
-var _semanticUiReact = __webpack_require__(55);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var EmptyTableRow = function (_React$Component) {
-  _inherits(EmptyTableRow, _React$Component);
-
-  function EmptyTableRow(props) {
-    _classCallCheck(this, EmptyTableRow);
-
-    return _possibleConstructorReturn(this, (EmptyTableRow.__proto__ || Object.getPrototypeOf(EmptyTableRow)).call(this, props));
-  }
-
-  _createClass(EmptyTableRow, [{
-    key: 'render',
-    value: function render() {
-      // Inserts X number of blank cells into Semantic UI Table
-      var cells = [];
-      for (var i = 0; i < this.props.cells; i++) {
-        cells.push(_react2.default.createElement(
-          _semanticUiReact.Table.Cell,
-          { key: i },
-          this.props.fill
-        ));
-      }
-      return _react2.default.createElement(
-        _semanticUiReact.Table.Row,
-        null,
-        cells
-      );
-    }
-  }]);
-
-  return EmptyTableRow;
-}(_react2.default.Component);
-
-exports.default = EmptyTableRow;
-
-
-EmptyTableRow.defaultProps = {
-  fill: 'n/a'
-};
-
-EmptyTableRow.propTypes = {
-  cells: _react2.default.PropTypes.number.isRequired,
-  fill: _react2.default.PropTypes.string
-};
-
-/***/ }),
+/* 475 */,
 /* 476 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -30826,6 +30731,10 @@ var _PrecipType = __webpack_require__(483);
 
 var _PrecipType2 = _interopRequireDefault(_PrecipType);
 
+var _DetailsHeader = __webpack_require__(915);
+
+var _DetailsHeader2 = _interopRequireDefault(_DetailsHeader);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -30868,34 +30777,7 @@ var MultiParkDetails = function (_React$Component) {
         highChanceTable = _react2.default.createElement(
           _semanticUiReact.Table,
           { celled: true, compact: true, unstackable: true, style: _styles2.default.precipTable },
-          _react2.default.createElement(
-            _semanticUiReact.Table.Header,
-            { style: _styles2.default.precipTHead },
-            _react2.default.createElement(
-              _semanticUiReact.Table.Row,
-              null,
-              _react2.default.createElement(
-                _semanticUiReact.Table.HeaderCell,
-                null,
-                'Matchup'
-              ),
-              _react2.default.createElement(
-                _semanticUiReact.Table.HeaderCell,
-                null,
-                'Game Time'
-              ),
-              _react2.default.createElement(
-                _semanticUiReact.Table.HeaderCell,
-                null,
-                'Precip %'
-              ),
-              _react2.default.createElement(
-                _semanticUiReact.Table.HeaderCell,
-                null,
-                'Type'
-              )
-            )
-          ),
+          _react2.default.createElement(_DetailsHeader2.default, null),
           _react2.default.createElement(
             _semanticUiReact.Table.Body,
             null,
@@ -64032,6 +63914,164 @@ module.exports = g;
 
 module.exports = __webpack_require__(455);
 
+
+/***/ }),
+/* 915 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(1);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _semanticUiReact = __webpack_require__(55);
+
+var _styles = __webpack_require__(57);
+
+var _styles2 = _interopRequireDefault(_styles);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var DetailsHeader = function (_React$Component) {
+  _inherits(DetailsHeader, _React$Component);
+
+  function DetailsHeader(props) {
+    _classCallCheck(this, DetailsHeader);
+
+    return _possibleConstructorReturn(this, (DetailsHeader.__proto__ || Object.getPrototypeOf(DetailsHeader)).call(this, props));
+  }
+
+  _createClass(DetailsHeader, [{
+    key: 'render',
+    value: function render() {
+      return _react2.default.createElement(
+        _semanticUiReact.Table.Header,
+        { style: _styles2.default.precipTHead },
+        _react2.default.createElement(
+          _semanticUiReact.Table.Row,
+          null,
+          _react2.default.createElement(
+            _semanticUiReact.Table.HeaderCell,
+            null,
+            'Matchup'
+          ),
+          _react2.default.createElement(
+            _semanticUiReact.Table.HeaderCell,
+            null,
+            'Time'
+          ),
+          _react2.default.createElement(
+            _semanticUiReact.Table.HeaderCell,
+            null,
+            'Precip %'
+          ),
+          _react2.default.createElement(
+            _semanticUiReact.Table.HeaderCell,
+            null,
+            'Type'
+          )
+        )
+      );
+    }
+  }]);
+
+  return DetailsHeader;
+}(_react2.default.Component);
+
+exports.default = DetailsHeader;
+
+/***/ }),
+/* 916 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(1);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _semanticUiReact = __webpack_require__(55);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var EmptyTableRow = function (_React$Component) {
+  _inherits(EmptyTableRow, _React$Component);
+
+  function EmptyTableRow(props) {
+    _classCallCheck(this, EmptyTableRow);
+
+    return _possibleConstructorReturn(this, (EmptyTableRow.__proto__ || Object.getPrototypeOf(EmptyTableRow)).call(this, props));
+  }
+
+  _createClass(EmptyTableRow, [{
+    key: 'render',
+    value: function render() {
+      // Inserts X number of blank cells into Semantic UI Table
+      var cells = [];
+      for (var i = 0; i < this.props.cells; i++) {
+        cells.push(_react2.default.createElement(
+          _semanticUiReact.Table.Cell,
+          { key: i },
+          this.props.fill
+        ));
+      }
+      var rows = [];
+      for (var _i = 0; _i < this.props.rows; _i++) {
+        cells.push(_react2.default.createElement(
+          _semanticUiReact.Table.Row,
+          { key: _i },
+          cells
+        ));
+      }
+      return _react2.default.createElement(
+        _semanticUiReact.Table.Body,
+        null,
+        cells
+      );
+    }
+  }]);
+
+  return EmptyTableRow;
+}(_react2.default.Component);
+
+exports.default = EmptyTableRow;
+
+
+EmptyTableRow.defaultProps = {
+  fill: 'n/a'
+};
+
+EmptyTableRow.propTypes = {
+  cells: _react2.default.PropTypes.number.isRequired,
+  fill: _react2.default.PropTypes.string
+};
 
 /***/ })
 /******/ ]);

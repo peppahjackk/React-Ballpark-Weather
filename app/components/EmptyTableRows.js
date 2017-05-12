@@ -12,10 +12,14 @@ export default class EmptyTableRow extends React.Component {
     for (let i = 0; i < this.props.cells; i++) {
       cells.push(<Table.Cell key={i}>{this.props.fill}</Table.Cell>)
     }
+    let rows = [];
+    for (let i = 0; i < this.props.rows; i++) {
+      cells.push(<Table.Row key={i}>{cells}</Table.Row>)
+    }
     return (
-      <Table.Row>
+      <Table.Body>
         {cells}
-      </Table.Row>
+      </Table.Body>
     )
   }
 }

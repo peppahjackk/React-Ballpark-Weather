@@ -1,7 +1,8 @@
 import React from 'react'
 import { Grid, Header, Table } from 'semantic-ui-react'
 import styles from '../styles'
-import EmptyTableRow from './EmptyTableRow'
+import EmptyTableRows from './EmptyTableRows'
+import DetailsHeader from './DetailsHeader'
 
 export default class DetailsSkeleton extends React.Component {
   constructor(props) {
@@ -18,19 +19,8 @@ export default class DetailsSkeleton extends React.Component {
         </div>
         <div style={Object.assign({}, styles.detailsContainer, styles.skeleton)}>
           <Table celled compact unstackable style={styles.precipTable}>
-            <Table.Header style={styles.precipTHead}>
-              <Table.Row>
-                <Table.HeaderCell>Matchup</Table.HeaderCell>
-                <Table.HeaderCell>Game Time</Table.HeaderCell>
-                <Table.HeaderCell>Precip %</Table.HeaderCell>
-                <Table.HeaderCell>Type</Table.HeaderCell>
-              </Table.Row>
-            
-              <EmptyTableRow cells={4} />
-              <EmptyTableRow cells={4} />
-              <EmptyTableRow cells={4} />
-                
-            </Table.Header>
+            <DetailsHeader />
+            <EmptyTableRows rows={2} cells={4} />
           </Table>
             <Header as='h4' style={Object.assign({},styles.infoHeader,styles.noMarginTop)}>Low or No Chance Parks</Header>
             <p style={Object.assign({}, styles.infoSubHeader, styles.skeleIndicator)}>* indicates game time data</p>
