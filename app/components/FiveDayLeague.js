@@ -40,7 +40,8 @@ export default class FiveDayLeague extends React.Component {
       // Converts time from string (e.g. '7:05 pm') to Date ms (e.g. 1493906056000)
       let gameTimesMs = Object.keys(this.state.dailyParks).map(function(day) {
         return Object.keys(this.state.dailyParks[day]).map(function(game) {
-          return mlbHelper.convertTime(this.state.dailyParks[day][game], this.state.weatherData[game.home_name_abbrev], day, dateInfo)
+          let curr = this.state.dailyParks[day][game];
+          return mlbHelper.convertTime(curr, this.state.weatherData[curr.home_name_abbrev], day, dateInfo)
         }.bind(this)) 
       }.bind(this));
       let sortedParks = {}, fullGameData = {};
