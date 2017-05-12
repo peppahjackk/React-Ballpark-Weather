@@ -4,6 +4,7 @@ import styles from '../styles'
 import PrecipPercent from './PrecipPercent'
 import PrecipType from './PrecipType'
 import DetailsHeader from './DetailsHeader'
+import officialTeamTwitter from '../utils/officialTeamTwitter'
 
 export default class MultiParkDetails extends React.Component {
   constructor(props) {
@@ -29,7 +30,7 @@ export default class MultiParkDetails extends React.Component {
             <Table.Body>
               {highChanceParks.map((park) =>
                 <Table.Row key={park.home_name_abbrev+this.props.day}>
-                  <Table.Cell>{park.away_name_abbrev} vs {park.home_name_abbrev}</Table.Cell>
+                  <Table.Cell><a href={'http://www.twitter.com/' + officialTeamTwitter.twitterLinks[park.away_name_abbrev]} target="_blank">{park.away_name_abbrev}</a> vs <a href={'http://www.twitter.com/' + officialTeamTwitter.twitterLinks[park.home_name_abbrev]} target="_blank">{park.home_name_abbrev}</a></Table.Cell>
                   <Table.Cell>{this.props.gameData[park.home_name_abbrev][2].event_time}</Table.Cell>
                   <Table.Cell><PrecipPercent park={park.home_name_abbrev} gameData={this.props.gameData} /></Table.Cell>
                   <PrecipType data={this.props.data[park.home_name_abbrev]} day={this.props.day} />

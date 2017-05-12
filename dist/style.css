@@ -27,12 +27,12 @@ footer {
   z-index: 3;
 }
 
-footer a {
+a {
   color: white;
   text-decoration: underline;
 }
 
-footer a:hover {
+a:hover {
   color: #7abcff;
   text-decoration: underline;
   transition: color 200ms; 

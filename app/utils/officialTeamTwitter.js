@@ -1,0 +1,36 @@
+var twitterLinks = {
+  ARI: 'dbacks',
+  ATL: 'braves',
+  BAL: 'orioles',
+  BOS: 'redsox',
+  CHC: 'cubs',
+  CWS: 'whitesox',
+  CIN: 'reds',
+  CLE: 'indians',
+  COL: 'rockies',
+  DET: 'tigers',
+  HOU: 'astros',
+  KC: 'royals',
+  LAA: 'angels',
+  LAD: 'dodgers',
+  MIA: 'marlins',
+  MIL: 'brewers',
+  MIN: 'twins',
+  NYM: 'mets',
+  NYY: 'yankees',
+  OAK: 'athletics',
+  PHI: 'phillies',
+  PIT: 'pirates',
+  SD: 'padres',
+  SEA: 'mariners',
+  SF: 'sfgiants',
+  STL: 'cardinals',
+  TB: 'raysbaseball',
+  TEX: 'rangers',
+  TOR: 'bluejays',
+  WSH: 'nationals',
+}
+
+module.exports = {
+  twitterLinks
+}
