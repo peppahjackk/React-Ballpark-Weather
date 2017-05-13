@@ -24,7 +24,6 @@ export default class FiveDayLeague extends React.Component {
       this.setState({
         dailyParks: dailyParks
       })
-      console.log(dailyParks);
       // Condenses total list of active ballparks for the next X days
       let allParks = darkSkyHelper.condenseParks(dailyParks);
       // Obtains weather data for necessary parks
@@ -34,6 +33,7 @@ export default class FiveDayLeague extends React.Component {
      this.setState({
        weatherData: info
      });
+      console.log(info);
      // Sets the days and dates for details component headers 
      return darkSkyHelper.formatDateInfo(info, this.state.days, this.state.dailyParks[0]);
     }.bind(this))
@@ -48,12 +48,13 @@ export default class FiveDayLeague extends React.Component {
       let sortedParks = {}, fullGameData = {};
       for (let i = 0; i < this.state.days; i++) {
         // Packs game times into new game object
-        fullGameData[i] = darkSkyHelper.extractGameTimes(gameTimesMs[i]);
+        fullGameData[i] = darkSkyHelper.extractGameTimes(gameTimesMs[i],this.state.dailyParks[i]);
         // Adds hourly weather data to game object
         fullGameData[i] = darkSkyHelper.checkHourlyPrecip(this.state.weatherData,i,fullGameData[i],this.state.dailyParks[i]);
         // Sorts parks in order of precipitation chance
         sortedParks[i] = darkSkyHelper.sortParks(this.state.dailyParks[i],i,fullGameData[i]);
       }
+      console.log(fullGameData);
       this.setState({
         dateInfo,
         sortedParks: sortedParks,

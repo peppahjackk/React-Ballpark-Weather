@@ -16,15 +16,16 @@ export default class mlbHelper {
     }
     // Creates date object at game time
     const d = new Date(dateInfo['Day' + day + 'Date'].year, dateInfo['Day' + day + 'Date'].monthNum, dateInfo['Day' + day + 'Date'].day, hours, minutes);
+    console.log(d.toUTCString());
     // Obtains game time in ms
     let ms = parseInt(d.getTime());
     const hr = 3600000;
     // Converts EST/EDT game time to GMT time
-    if (weather) {
+    /* if (weather) {
       ms -= hr * weather.offset;
     } else {
       // Converts time for DOME stadiums
-      ms += (hr * 5);
+      ms += (hr * 4);
       switch (game.home_name_abbrev) {
         case 'MIL':
         case 'HOU':
@@ -37,9 +38,9 @@ export default class mlbHelper {
           ms += (hr * 3);
           break;
       }
-    }
+    } */
     return {
-      park: game.home_name_abbrev,
+      park: game.home_name_abbrev+game.game_nbr,
       time: ms
     };
   }

@@ -11,8 +11,11 @@ export default class GameTime extends React.Component {
     if (this.props.data.status === 'Preview' || this.props.data.status === 'Pre-Game')
       {
         time = this.props.data.event_time;
-      } else {
+      }  else {
         time = this.props.data.status;
+      }
+    if (this.props.data.event_time === '3:33 AM' && (this.props.data.status ==='Preview' || this.props.data.status === 'Pre-Game')) {
+        time = 'After Gm 1'
       }
     return(
       <span>

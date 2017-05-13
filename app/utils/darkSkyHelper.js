@@ -76,7 +76,7 @@ export default class getWeatherData {
     return dateInfo;
   }
   
-  static extractGameTimes(gameTimes) {
+  static extractGameTimes(gameTimes, gameData) {
     let parksPlus = {};
     for (let game in gameTimes) {
       parksPlus[gameTimes[game].park] = gameTimes[game].time;
@@ -87,18 +87,18 @@ export default class getWeatherData {
   static checkHourlyPrecip(info, day, gameTimes, gameData) {
     let precipitationPercentage = {};
     Object.keys(gameTimes).map(function(game) {
-      
-      if (['ARI','HOU','MIA','MIL','SEA','TB','TOR'].indexOf(game) > -1) {
+      let park = game.slice(0, -1);
+      if (['ARI','HOU','MIA','MIL','SEA','TB','TOR'].indexOf(park) > -1) {
         precipitationPercentage[game] = [false,0,gameData[Object.keys(gameTimes).indexOf(game)]];
         return;
       }
       // Sets initial precipitation percentage to the overall chance for the day
-      precipitationPercentage[game] = [false,info[game].daily.data[day],gameData[Object.keys(gameTimes).indexOf(game)]];
+      precipitationPercentage[game] = [false,info[park].daily.data[day],gameData[Object.keys(gameTimes).indexOf(game)]];
       // If the game is less than 48 hours away pull weather data from the hour nearest game time
-      if (gameTimes[game] - (info[game].currently.time * 1000) < 172800000) {
-        Object.keys(info[game].hourly.data).filter(function(hour) {
-          if ((-3600000 <= (info[game].hourly.data[hour].time * 1000) - gameTimes[game] && (info[game].hourly.data[hour].time * 1000) - gameTimes[game] <= 360000)) {
-            precipitationPercentage[game] = [true,info[game].hourly.data[hour],gameData[Object.keys(gameTimes).indexOf(game)]];
+      if (gameTimes[game] - (info[park].currently.time * 1000) < 172800000) {
+        Object.keys(info[park].hourly.data).filter(function(hour) {
+          if ((-3600000 <= (info[park].hourly.data[hour].time * 1000) - gameTimes[game] && (info[park].hourly.data[hour].time * 1000) - gameTimes[game] <= 360000)) {
+            precipitationPercentage[game] = [true,info[park].hourly.data[hour],gameData[Object.keys(gameTimes).indexOf(game)]];
             return;
           }
           return false;
@@ -118,7 +118,7 @@ export default class getWeatherData {
       } else if ((['ARI','HOU','MIA','MIL','SEA','TB','TOR'].indexOf(a.home_name_abbrev) > -1)) {
         return 1;
       }
-      return parksPlus[b.home_name_abbrev][1].precipProbability - parksPlus[a.home_name_abbrev][1].precipProbability;
+      return parksPlus[b.home_name_abbrev+b.game_nbr][1].precipProbability - parksPlus[a.home_name_abbrev+a.game_nbr][1].precipProbability;
     }.bind(this))
     return sortedParks.slice(0);
   }
