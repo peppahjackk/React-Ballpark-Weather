@@ -24,6 +24,7 @@ export default class FiveDayLeague extends React.Component {
       this.setState({
         dailyParks: dailyParks
       })
+      console.log(dailyParks);
       // Condenses total list of active ballparks for the next X days
       let allParks = darkSkyHelper.condenseParks(dailyParks);
       // Obtains weather data for necessary parks

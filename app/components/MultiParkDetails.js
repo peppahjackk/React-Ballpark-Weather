@@ -1,6 +1,7 @@
 import React from 'react'
 import { Grid, Header, Table, Divider } from 'semantic-ui-react'
 import styles from '../styles'
+import GameTime from './GameTime'
 import PrecipPercent from './PrecipPercent'
 import PrecipType from './PrecipType'
 import DetailsHeader from './DetailsHeader'
@@ -31,7 +32,7 @@ export default class MultiParkDetails extends React.Component {
               {highChanceParks.map((park) =>
                 <Table.Row key={park.home_name_abbrev+this.props.day}>
                   <Table.Cell><a href={'http://www.twitter.com/' + officialTeamTwitter.twitterLinks[park.away_name_abbrev]} target="_blank">{park.away_name_abbrev}</a> vs <a href={'http://www.twitter.com/' + officialTeamTwitter.twitterLinks[park.home_name_abbrev]} target="_blank">{park.home_name_abbrev}</a></Table.Cell>
-                  <Table.Cell>{this.props.gameData[park.home_name_abbrev][2].event_time}</Table.Cell>
+                  <Table.Cell><GameTime data={this.props.gameData[park.home_name_abbrev][2]} /></Table.Cell>
                   <Table.Cell><PrecipPercent park={park.home_name_abbrev} gameData={this.props.gameData} /></Table.Cell>
                   <PrecipType data={this.props.data[park.home_name_abbrev]} day={this.props.day} />
                 </Table.Row>
