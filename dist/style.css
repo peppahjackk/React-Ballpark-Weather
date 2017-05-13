@@ -40,37 +40,30 @@ a:hover {
 
 @keyframes animatedBackground {
 	from { background-position: 0 0; }
-	to { background-position: 794.96px 0; }
-}
-
-@keyframes animatedBackground2 {
-	from { background-position: 0 0; }
-	to { background-position: 588.789px 0 }
+	to { background-position: 1280px 0; }
 }
 
 #animate-area	{  
-	background-image: url(images/clouds1.svg);
+	background-image: url(images/clouds1_v2.svg);
 	background-position: 0px 0px;
 	background-repeat: repeat;
-	animation: animatedBackground 15s linear infinite;
+	animation: animatedBackground 22s linear infinite;
 }
 
 #animate-area2 {
-	background-image: url(images/clouds2.svg);
+	background-image: url(images/clouds2_v2.svg);
 	background-position: 0px 0px;
 	background-repeat: repeat;
-	animation: animatedBackground2 30s linear infinite;
+	animation: animatedBackground 55s linear infinite;
 }
 
 @media (min-width: 992px) {
 	#animate-area {
 		height: 100%;
-		animation: animatedBackground 20s linear infinite;
 	}
 	
 	#animate-area2 {
 		height: 100%;
-		animation: animatedBackground2 33s linear infinite;
 	}
 }
 
