@@ -95,7 +95,7 @@ export default class getWeatherData {
       // Sets initial precipitation percentage to the overall chance for the day
       precipitationPercentage[game] = [false,info[park].daily.data[day],gameData[Object.keys(gameTimes).indexOf(game)]];
       // If the game is less than 48 hours away pull weather data from the hour nearest game time
-      if (gameTimes[game] - (info[park].currently.time * 1000) < 172800000) {
+      if (gameTimes[game] - (info[park].currently.time * 1000) < 172800000 && gameTimes[game] - (info[park].currently.time * 1000) > 0) {
         Object.keys(info[park].hourly.data).filter(function(hour) {
           if ((-3600000 <= (info[park].hourly.data[hour].time * 1000) - gameTimes[game] && (info[park].hourly.data[hour].time * 1000) - gameTimes[game] <= 360000)) {
             precipitationPercentage[game] = [true,info[park].hourly.data[hour],gameData[Object.keys(gameTimes).indexOf(game)]];
@@ -103,6 +103,8 @@ export default class getWeatherData {
           }
           return false;
         })
+      } else if (gameTimes[game] - (info[park].currently.time * 1000) < 0) {
+        precipitationPercentage[game] = [false,info[park].currently,gameData[Object.keys(gameTimes).indexOf(game)]];
       }
       return;
     });
