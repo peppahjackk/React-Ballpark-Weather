@@ -34,7 +34,7 @@ export default class MultiParkDetails extends React.Component {
                   <Table.Cell>{park.away_name_abbrev} vs {park.home_name_abbrev}</Table.Cell>
                   <Table.Cell><GameTime data={this.props.gameData[park.home_name_abbrev+park.game_nbr][2]} /></Table.Cell>
                   <Table.Cell><PrecipPercent park={park.home_name_abbrev+park.game_nbr} gameData={this.props.gameData} /></Table.Cell>
-                  <PrecipType data={this.props.data[park.home_name_abbrev]} day={this.props.day} />
+                  <PrecipType park={park.home_name_abbrev+park.game_nbr} gameData={this.props.gameData} />
                   <Table.Cell>
                     <a href={'http://www.twitter.com/' + officialTeamTwitter.twitterLinks[park.home_name_abbrev]} target="_blank" style={styles.infoIconLink}>
                       <img src="images/icons/social-1_logo-twitter.svg" alt="twitter" style={styles.infoIcon} />
