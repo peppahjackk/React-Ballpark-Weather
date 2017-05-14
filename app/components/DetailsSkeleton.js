@@ -20,7 +20,7 @@ export default class DetailsSkeleton extends React.Component {
         <div style={Object.assign({}, styles.detailsContainer, styles.skeleton)}>
           <Table celled compact unstackable style={styles.precipTable}>
             <DetailsHeader />
-            <EmptyTableRows rows={2} cells={4} />
+            <EmptyTableRows rows={2} cells={5} />
           </Table>
             <Header as='h4' style={Object.assign({},styles.infoHeader,styles.noMarginTop)}>Low or No Chance Parks</Header>
             <p style={Object.assign({}, styles.infoSubHeader, styles.skeleIndicator)}>* indicates game time data</p>
