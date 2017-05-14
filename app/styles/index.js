@@ -105,6 +105,17 @@ var styles = {
     bottom: '0',
     left: '0'
   },
+  infoIconLink : {
+    position: 'relative',
+    display: 'inline-block',
+    left: 'calc(50% - 12px)',
+    height: '24px',
+    top: '1px'
+  },
+  infoIcon: {
+    position: 'relative',
+    height: '24px'
+  },
   noMarginTop: {
     marginTop: 0
   }
