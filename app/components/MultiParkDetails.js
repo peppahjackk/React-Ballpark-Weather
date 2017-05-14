@@ -1,6 +1,5 @@
 import React from 'react'
 import { Grid, Header, Table, Divider } from 'semantic-ui-react'
-import styles from '../styles'
 import GameTime from './GameTime'
 import PrecipPercent from './PrecipPercent'
 import PrecipType from './PrecipType'
@@ -26,7 +25,7 @@ export default class MultiParkDetails extends React.Component {
     }.bind(this))
     // Places high chance parks into a table
     if (highChanceParks.length) {
-      highChanceTable = <Table celled compact unstackable style={styles.precipTable}>
+      highChanceTable = <Table celled compact unstackable className='precipTable'>
             <DetailsHeader />
             <Table.Body>
               {highChanceParks.map((park) =>
@@ -36,8 +35,8 @@ export default class MultiParkDetails extends React.Component {
                   <Table.Cell><PrecipPercent park={park.home_name_abbrev+park.game_nbr} gameData={this.props.gameData} /></Table.Cell>
                   <PrecipType park={park.home_name_abbrev+park.game_nbr} gameData={this.props.gameData} />
                   <Table.Cell>
-                    <a href={'http://www.twitter.com/' + officialTeamTwitter.twitterLinks[park.home_name_abbrev]} target="_blank" style={styles.infoIconLink}>
-                      <img src="images/icons/social-1_logo-twitter.svg" alt="twitter" style={styles.infoIcon} />
+                    <a href={'http://www.twitter.com/' + officialTeamTwitter.twitterLinks[park.home_name_abbrev]} target="_blank" className='infoIconLink'>
+                      <img src="images/icons/social-1_logo-twitter.svg" alt="twitter" className='infoIcon' />
                     </a><
                   /Table.Cell>
                 </Table.Row>
@@ -46,7 +45,7 @@ export default class MultiParkDetails extends React.Component {
           </Table>
     } else {
       // Delivers the good news that no games have a high precipitation chance
-      highChanceTable = <div><Header as='h3' style={Object.assign({}, styles.infoSubHeader,styles.noHighChanceHeader)}>No parks have a high chance of precipitation!</Header> <Divider /></div>
+      highChanceTable = <div><Header as='h3' className='infoSubHeader noHighChanceHeader'>No parks have a high chance of precipitation!</Header> <Divider /></div>
     }
     // Adds a dash to keep the two column list looking even stevens
     let lowChanceNum = lowChanceParks.length + domeParks.length;
@@ -55,20 +54,20 @@ export default class MultiParkDetails extends React.Component {
     }
     return (
       <Grid.Column tablet={16} mobile={16} computer={5}>
-        <div style={styles.detailsContainer}>
-          <Header as='h3' style={styles.infoHeader}>{this.props.dateInfo['Day'+this.props.day]}</Header>
-          <Header as='h4' style={Object.assign({},styles.infoSubHeader,styles.noMarginTop)}>{this.props.dateInfo['Day'+this.props.day+'Date'].month}  {this.props.dateInfo['Day'+this.props.day+'Date'].day + ' '}  
+        <div className='detailsContainer'>
+          <Header as='h3' className='infoHeader'>{this.props.dateInfo['Day'+this.props.day]}</Header>
+          <Header as='h4' className='infoSubHeader noMarginTop'>{this.props.dateInfo['Day'+this.props.day+'Date'].month}  {this.props.dateInfo['Day'+this.props.day+'Date'].day + ' '}  
 {this.props.dateInfo['Day'+this.props.day+'Date'].year}</Header>
         </div>
-        <div style={styles.detailsContainer}>
+        <div className='detailsContainer'>
           {highChanceTable}
-          <Header as='h4' style={Object.assign({},styles.infoHeader,styles.noMarginTop)}>Low or No Chance Parks</Header>
-          <ul style={Object.assign({}, styles.list, styles.lowChance)}>
-            {lowChanceParks.map((park) => <li key={park.home_name_abbrev+this.props.day+'gm'+park.game_nbr} style={styles.listItem}>{park.away_name_abbrev} vs {park.home_name_abbrev} <PrecipPercent park={park.home_name_abbrev+park.game_nbr} gameData={this.props.gameData} /></li>)}
-            {domeParks.map((park) => <li key={park.home_name_abbrev+this.props.day+'gm'+park.game_nbr} style={styles.listItem}>{park.away_name_abbrev} vs {park.home_name_abbrev} -%</li>)}
-            {emptyPark.map((park) => <li key={'emptyPark'+this.props.day} style={styles.listItem}>-</li>)}
+          <Header as='h4' className='infoHeader noMarginTop'>Low or No Chance Parks</Header>
+          <ul className='list lowChance'>
+            {lowChanceParks.map((park) => <li key={park.home_name_abbrev+this.props.day+'gm'+park.game_nbr} className='listItem'>{park.away_name_abbrev} vs {park.home_name_abbrev} <PrecipPercent park={park.home_name_abbrev+park.game_nbr} gameData={this.props.gameData} /></li>)}
+            {domeParks.map((park) => <li key={park.home_name_abbrev+this.props.day+'gm'+park.game_nbr} className='listItem'>{park.away_name_abbrev} vs {park.home_name_abbrev} -%</li>)}
+            {emptyPark.map((park) => <li key={'emptyPark'+this.props.day} className='listItem'>-</li>)}
           </ul>
-          <p style={styles.infoSubHeader}>* indicates game time data</p>
+          <p className='infoSubHeader'>* indicates game time data</p>
         </div>
       </Grid.Column>
     )

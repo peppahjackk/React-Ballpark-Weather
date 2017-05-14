@@ -6,7 +6,6 @@ import Loading from './Loading'
 import PageHeader from './PageHeader'
 import dateManip from '../utils/dateManipulation'
 import mlbHelper from '../utils/mlbHelper'
-import styles from '../styles'
 
 export default class FiveDayLeague extends React.Component {
   constructor(props) {
@@ -74,7 +73,7 @@ export default class FiveDayLeague extends React.Component {
      }}
      return ( this.state.isLoading === true
             ? <Loading days={this.state.days} header={this.props.header} subheader={this.props.subheader} />
-            : <Grid.Row columns='3' style={styles.detailsRow}>
+            : <Grid.Row columns='3' className='detailsRow'>
                 {eachDay}
               </Grid.Row>
     )
