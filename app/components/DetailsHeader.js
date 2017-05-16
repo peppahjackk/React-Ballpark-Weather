@@ -12,8 +12,7 @@ export default class DetailsHeader extends React.Component {
         <Table.Row>
           <Table.HeaderCell>Matchup</Table.HeaderCell>
           <Table.HeaderCell>Time</Table.HeaderCell>
-          <Table.HeaderCell>Precip %</Table.HeaderCell>
-          <Table.HeaderCell>Type</Table.HeaderCell>
+          <Table.HeaderCell>Precip</Table.HeaderCell>
           <Table.HeaderCell>More</Table.HeaderCell>
         </Table.Row>
       </Table.Header>

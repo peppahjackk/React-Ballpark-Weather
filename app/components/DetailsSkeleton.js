@@ -19,7 +19,7 @@ export default class DetailsSkeleton extends React.Component {
         <div className='detailsContainer skeleton'>
           <Table celled compact unstackable className='precipTable'>
             <DetailsHeader />
-            <EmptyTableRows rows={2} cells={5} />
+            <EmptyTableRows rows={2} cells={4} />
           </Table>
             <Header as='h4' className='infoHeader noMarginTop'>Low or No Chance Parks</Header>
             <p className='infoSubHeader skeleIndicator'>* indicates game time data</p>
