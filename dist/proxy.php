@@ -34,30 +34,47 @@ $ballparks = [
 ];
 
 $ballparksQuery = [];
-$_POST = json_decode(file_get_contents('php://input'), true);
 // Builds array of requested stadiums' coordinates
-$ballparksRequested = json_decode($_POST["parkRequest"]);
-foreach ($ballparksRequested as $currentPark => $location) {
+$ballparksRequested = array('COL','CIN','NYY');
+foreach ($ballparksRequested as $location) {
   if ($location == 'ARI' || $location == 'HOU' || $location == 'MIA' || $location == 'MIL' || $location == 'SEA' || $location == 'TB' || $location == 'TOR') {
-    array_push($ballparksQuery, 'DOME');
+    $ballparksQuery[$location] = 'DOME';
   } else {
-    array_push($ballparksQuery, $ballparks[$location]);
+    $ballparksQuery[$location] = $ballparks[$location];
   }
 };
 
-// Gathers and prints weather data for requested stadiums
+  // Gathers and prints weather data for requested stadiums
 $curl = curl_init();
-foreach ($ballparksQuery as $currentPark) {
+
+// Create connection
+$servername = 'localhost';
+$conn = new mysqli($servername, $dbusername, $dbpass, $dbname);
+
+// Check connection
+if ($conn->connect_error) {
+  die('Connection failed: ' . $conn->connect_error);
+}
+
+foreach ($ballparksQuery as $currentPark => $location) {
   if ($currentPark == 'DOME') {
     $result = $currentPark;
   } else {
-    curl_setopt($curl, CURLOPT_URL, "https://api.darksky.net/forecast/". $secret_key . $currentPark);
+    curl_setopt($curl, CURLOPT_URL, "https://api.darksky.net/forecast/". $secret_key . $location);
     curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
     $result = curl_exec($curl);
   }
-  echo $result;
+  
+  $sql = "INSERT INTO WeatherData " .
+    "(thepark, data) " .
+    "VALUES ( '$currentPark', '$result' )";
+  if ($conn->query($sql) === TRUE) {
+    echo 'New record created successfully';
+  } else {
+    echo 'Error: ' . $sql . '<br>' . $conn->error;
+  }
 }
 
+$conn->close();
 curl_close($curl) 
-
 ?>
