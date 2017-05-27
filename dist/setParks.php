@@ -46,8 +46,8 @@ for ($i = 1; $i <= 8; $i++) {
   foreach ($result as $currentGame) {
     $currentGameStr = json_encode($currentGame);
     $sql = "INSERT INTO GameData " .
-    "(day, data) " .
-    "VALUES ( '$i', '$currentGameStr' )";
+    "(day, park, gm, data) " .
+    "VALUES ( '$i', '$currentGame->home_name_abbrev', '$currentGame->game_nbr', '$currentGameStr' )";
     if ($conn->query($sql) === FALSE) {
       echo 'Error: ' . $sql . '<br>' . $conn->error;
     }
