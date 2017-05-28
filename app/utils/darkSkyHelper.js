@@ -127,7 +127,26 @@ export default class getWeatherData {
   // Calls MLB data to retrieve game info for the requested amount of days
   static getParks(days) {
     let finalParks = {},
-        urlMonth='/month_',
+        promises = [];
+    // Builds array of promises for each day requested
+    axios.post('./getParks.php')
+    .then((daysGames)=> {
+      console.log(daysGames.data);
+      Object.keys(daysGames.data).map((day)=> {
+        let games = daysGames[day].data;
+        finalParks[day] = {};
+        Object.keys(games).map((game) => {
+          finalParks[day][game] = games[game];
+        })
+      })
+      console.log(finalParks);
+      return finalParks;
+    })
+    .catch(e => {
+      console.log('Error: ' + e);
+    })
+    
+    /*  urlMonth='/month_',
         urlDay='/day_',
         daysUrl = [];
     let today = new Date();
@@ -161,7 +180,7 @@ export default class getWeatherData {
       })
       .catch(function(error) {
         console.log(error);
-      });
+      }); */
   }
   
   static condenseParks(allParks) {
