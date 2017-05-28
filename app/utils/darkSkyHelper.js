@@ -3,7 +3,7 @@ import dateManip from '../utils/dateManipulation'
 
 export default class getWeatherData {
   // Requests weather data for given ballparks using proxy server
-  static getWeather(parks) {
+  /* static getWeather(parks) {
     let parksRequested = [],
       initialParks = [],
       lastPark = 0,
@@ -44,7 +44,7 @@ export default class getWeatherData {
         console.log(error);
       });
 
-  }
+  } */
   
   // Returns an object containing the weather information for the requested amount of days
   static formatDateInfo(info, days, park) {
@@ -127,20 +127,38 @@ export default class getWeatherData {
   
   // Calls php script to obtain and organize game data from DB
   static getParks() {
-    let finalParks = {};
+    let allParkData = {};
     return axios.post('./getParks.php')
-    .then((daysGames)=> {
-      let dailyData = daysGames;
-      Object.keys(dailyData.data).map((day)=> {
-        let games = dailyData.data[day];
-        finalParks[day] = {};
+    .then((info)=> {
+      let parkData = info;
+      Object.keys(parkData.data).map((day)=> {
+        let games = parkData.data[day];
+        allParkData[day] = {};
         Object.keys(games).map((game) => {
-          finalParks[day][game] = games[game];
+          allParkData[day][game] = games[game];
         })
       })
-      return finalParks;
+      return allParkData;
     })
     .catch(e => {
+      console.log(e);
+    })
+  }
+  
+  // Calls script to obtain and orgainze weather data from DB
+  static getWeather() {
+    let allWeatherData = {};
+    return axios.post('./getWeather.php')
+    .then((info)=> {
+      console.log(info);
+      let weatherData = info;
+      Object.keys(weatherData.data).map((park)=>{
+        console.log(weatherData.data[park]);
+        allWeatherData[park] = weatherData.data[park];
+      })
+      return allWeatherData
+    })
+    .catch(e=>{
       console.log(e);
     })
   }

@@ -27,19 +27,18 @@ export default class FiveDayLeague extends React.Component {
           this.setState({
             dailyParks: dailyParks
           })
-          console.log(dailyParks);
           // Condenses total list of active ballparks for the next X days
-          let allParks = darkSkyHelper.condenseParks(dailyParks);
+          //let allParks = darkSkyHelper.condenseParks(dailyParks);
           // Obtains weather data for necessary parks
-          return darkSkyHelper.getWeather(allParks).bind(this)
+          return darkSkyHelper.getWeather();
         })
-        .then(function(info) {
+        .then((info)=> {
           this.setState({
             weatherData: info
           });
           // Sets the days and dates for details component headers 
           return darkSkyHelper.formatDateInfo(info, this.state.days, this.state.dailyParks[0]);
-        }.bind(this))
+        })
         .then(function(dateInfo) {
           // Converts time from string (e.g. '7:05 pm') to Date ms (e.g. 1493906056000)
           let gameTimesMs = Object.keys(this.state.dailyParks).map(function(day) {

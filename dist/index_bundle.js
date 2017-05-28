@@ -30396,18 +30396,17 @@ var FiveDayLeague = function (_React$Component) {
         _this2.setState({
           dailyParks: dailyParks
         });
-        console.log(dailyParks);
         // Condenses total list of active ballparks for the next X days
-        var allParks = _darkSkyHelper2.default.condenseParks(dailyParks);
+        //let allParks = darkSkyHelper.condenseParks(dailyParks);
         // Obtains weather data for necessary parks
-        return _darkSkyHelper2.default.getWeather(allParks).bind(_this2);
+        return _darkSkyHelper2.default.getWeather();
       }).then(function (info) {
-        this.setState({
+        _this2.setState({
           weatherData: info
         });
         // Sets the days and dates for details component headers 
-        return _darkSkyHelper2.default.formatDateInfo(info, this.state.days, this.state.dailyParks[0]);
-      }.bind(this)).then(function (dateInfo) {
+        return _darkSkyHelper2.default.formatDateInfo(info, _this2.state.days, _this2.state.dailyParks[0]);
+      }).then(function (dateInfo) {
         // Converts time from string (e.g. '7:05 pm') to Date ms (e.g. 1493906056000)
         var gameTimesMs = Object.keys(this.state.dailyParks).map(function (day) {
           return Object.keys(this.state.dailyParks[day]).map(function (game) {
@@ -31218,53 +31217,52 @@ var getWeatherData = function () {
   }
 
   _createClass(getWeatherData, null, [{
-    key: 'getWeather',
+    key: 'formatDateInfo',
 
     // Requests weather data for given ballparks using proxy server
-    value: function getWeather(parks) {
-      var parksRequested = [],
-          initialParks = [],
-          lastPark = 0,
-          allData = {};
+    /* static getWeather(parks) {
+      let parksRequested = [],
+        initialParks = [],
+        lastPark = 0,
+        allData = {};
       initialParks = parks;
       // Adds only outdoor parks to weather request array
-      for (var i = 0; i < initialParks.length; i++) {
-        if (['ARI', 'HOU', 'MIA', 'MIL', 'SEA', 'TB', 'TOR'].indexOf(initialParks[i]) === -1) {
+      for (let i = 0; i < initialParks.length; i++) {
+        if (['ARI','HOU','MIA','MIL','SEA','TB','TOR'].indexOf(initialParks[i]) === -1) {
           parksRequested.push(initialParks[i]);
         }
       }
-      var numParks = parksRequested.length;
+      let numParks = parksRequested.length;
       parksRequested = JSON.stringify(parksRequested);
       // Calls php script to fetch weather data via API call(s)
-      return _axios2.default.post('./proxy.php', {
-        parkRequest: parksRequested
-      }).then(function (msg) {
-        var weatherData = msg.data;
-        parksRequested = JSON.parse(parksRequested);
-        if (parksRequested.length > 1) {
-          // Breaks up each parks' data into seperate objects
-          for (var i = 0; i < parksRequested.length; i++) {
-            var endParkData = void 0;
-            endParkData = weatherData.indexOf('}}', lastPark) + 2;
-            if (endParkData > 0) {
-              var data = weatherData.substring(lastPark, endParkData);
-              allData[parksRequested[i]] = JSON.parse(data);
-              lastPark = endParkData;
+      return axios.post('./proxy.php', {
+          parkRequest: parksRequested
+        })
+        .then(function(msg) {
+          let weatherData = msg.data;
+          parksRequested = JSON.parse(parksRequested);
+          if (parksRequested.length > 1) {
+            // Breaks up each parks' data into seperate objects
+            for (var i = 0; i < parksRequested.length; i++) {
+              let endParkData;
+              endParkData = weatherData.indexOf('}}', lastPark) + 2;
+              if (endParkData > 0) {
+                var data = weatherData.substring(lastPark, endParkData);
+                allData[parksRequested[i]] = JSON.parse(data);
+                lastPark = endParkData;
+              }
             }
+          } else {
+            allData[parksRequested[0]] = weatherData;
           }
-        } else {
-          allData[parksRequested[0]] = weatherData;
-        }
-        return allData;
-      }).catch(function (error) {
-        console.log(error);
-      });
-    }
+          return allData;
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
+     } */
 
     // Returns an object containing the weather information for the requested amount of days
-
-  }, {
-    key: 'formatDateInfo',
     value: function formatDateInfo(info, days, park) {
       var dateInfo = {},
           numDays = void 0,
@@ -31353,17 +31351,36 @@ var getWeatherData = function () {
   }, {
     key: 'getParks',
     value: function getParks() {
-      var finalParks = {};
-      return _axios2.default.post('./getParks.php').then(function (daysGames) {
-        var dailyData = daysGames;
-        Object.keys(dailyData.data).map(function (day) {
-          var games = dailyData.data[day];
-          finalParks[day] = {};
+      var allParkData = {};
+      return _axios2.default.post('./getParks.php').then(function (info) {
+        var parkData = info;
+        Object.keys(parkData.data).map(function (day) {
+          var games = parkData.data[day];
+          allParkData[day] = {};
           Object.keys(games).map(function (game) {
-            finalParks[day][game] = games[game];
+            allParkData[day][game] = games[game];
           });
         });
-        return finalParks;
+        return allParkData;
+      }).catch(function (e) {
+        console.log(e);
+      });
+    }
+
+    // Calls script to obtain and orgainze weather data from DB
+
+  }, {
+    key: 'getWeather',
+    value: function getWeather() {
+      var allWeatherData = {};
+      return _axios2.default.post('./getWeather.php').then(function (info) {
+        console.log(info);
+        var weatherData = info;
+        Object.keys(weatherData.data).map(function (park) {
+          console.log(weatherData.data[park]);
+          allWeatherData[park] = weatherData.data[park];
+        });
+        return allWeatherData;
       }).catch(function (e) {
         console.log(e);
       });

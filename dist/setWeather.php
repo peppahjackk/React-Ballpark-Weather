@@ -83,7 +83,7 @@ foreach ($ballparksQuery as $currentPark => $location) {
   if ($location == 'DOME') {
     $result = $location;
   } else {
-    curl_setopt($curl, CURLOPT_URL, "https://api.darksky.net/forecast/". $secret_key . $location);
+    curl_setopt($curl, CURLOPT_URL, "https://api.darksky.net/forecast/". $secret_key . $location . "?exclude=alerts");
     curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
     $result = curl_exec($curl);
   }

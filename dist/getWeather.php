@@ -6,7 +6,7 @@ ini_set("display_errors", "1"); // shows all errors
 ini_set("log_errors", 1);
 ini_set("error_log", "/tmp/php-error.log");
 
-$currentGame = (object)[];
+$weatherData = (object)[];
 // Create db connection
 $servername = 'localhost';
 $conn = new mysqli($servername, $dbusername, $dbpass, $dbname);
@@ -15,29 +15,27 @@ $conn = new mysqli($servername, $dbusername, $dbpass, $dbname);
 if ($conn->connect_error) {
   die('Connection failed: ' . $conn->connect_error);
 }
-// just grab all rows at once you dunce. set the $currentGame->day->park etc
+
 // Get game data
-$sql = "SELECT * from GameData";
+$sql = "SELECT * from WeatherData";
 $result = $conn->query($sql);
 
 if ($result->num_rows > 0) {
   // output data of each row
   while($row = $result->fetch_assoc()) {
-    if (!isset($currentGame->$row['day'])) {
-      $currentGame->$row['day'] = (object)[];
+    $weatherData->$row['park'] = (object)[];
+    if (gettype(json_decode($row['data'])) === 'object') {
+      $weatherData->$row['park']->data = json_decode($row['data']);
+    } else {
+      $weatherData->$row['park']->data = $row['data'];
     }
-    $key = $row['park'].$row['gm'];
-    $currentGame->$row['day']->$key = (object)[];
-    $currentGame->$row['day']->$key->park = $row['park'];
-    $currentGame->$row['day']->$key->gm = $row['gm'];
-    $currentGame->$row['day']->$key->data = json_decode($row['data']);
-    $currentGame->$row['ts']->$key->ts = $row['ts'];
+    $weatherData->$row['park']->ts = $row['ts'];
   }
 } else {
   echo "0 results";
 }
-               
-echo json_encode($currentGame);
 
+echo json_encode($weatherData);
+    
 $conn->close();
 ?>
