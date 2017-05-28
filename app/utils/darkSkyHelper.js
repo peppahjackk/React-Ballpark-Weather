@@ -124,63 +124,25 @@ export default class getWeatherData {
     }.bind(this))
     return sortedParks.slice(0);
   }
-  // Calls MLB data to retrieve game info for the requested amount of days
-  static getParks(days) {
-    let finalParks = {},
-        promises = [];
-    // Builds array of promises for each day requested
-    axios.post('./getParks.php')
+  
+  // Calls php script to obtain and organize game data from DB
+  static getParks() {
+    let finalParks = {};
+    return axios.post('./getParks.php')
     .then((daysGames)=> {
-      console.log(daysGames.data);
-      Object.keys(daysGames.data).map((day)=> {
-        let games = daysGames[day].data;
+      let dailyData = daysGames;
+      Object.keys(dailyData.data).map((day)=> {
+        let games = dailyData.data[day];
         finalParks[day] = {};
         Object.keys(games).map((game) => {
           finalParks[day][game] = games[game];
         })
       })
-      console.log(finalParks);
       return finalParks;
     })
     .catch(e => {
-      console.log('Error: ' + e);
+      console.log(e);
     })
-    
-    /*  urlMonth='/month_',
-        urlDay='/day_',
-        daysUrl = [];
-    let today = new Date();
-    for (let i = 0; i < days; i++) {
-      urlMonth='/month_',
-      urlDay='/day_';
-      // Creates date object for the next X amount of days
-      let currentDay = new Date(today.getTime() + (86400000 * i));
-      let year = currentDay.getFullYear();
-      let month = (currentDay.getMonth()+1);
-      let day = currentDay.getDate();
-      if (month < 10) {
-        urlMonth='/month_0';
-      }
-      if (day < 10) {
-        urlDay='/day_0';
-      }
-      // Adds requested day's URL to array
-      daysUrl.push(year+urlMonth+month+urlDay+day);
-    }
-    // Maps through URL array to get obtain game data for next X amount of days
-    return axios.all(daysUrl.map(function(url) {
-      return axios.get('http://gd2.mlb.com/components/game/mlb/year_'+url+'/grid.json')
-    }))    
-      .then(function(info) {
-        // Iterates through each day and adds game data to final object
-        for (let i = 0; i < Object.keys(info).length; i++) {
-          finalParks[i] = info[i].data.data.games.game;
-        }
-      return finalParks;
-      })
-      .catch(function(error) {
-        console.log(error);
-      }); */
   }
   
   static condenseParks(allParks) {

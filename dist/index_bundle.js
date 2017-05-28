@@ -30389,18 +30389,19 @@ var FiveDayLeague = function (_React$Component) {
   _createClass(FiveDayLeague, [{
     key: 'componentDidMount',
     value: function componentDidMount() {
+      var _this2 = this;
+
       // Obtains game data for the next X days
-      _darkSkyHelper2.default.getParks(this.state.days).then(function (dailyParks) {
-        this.setState({
+      return _darkSkyHelper2.default.getParks().then(function (dailyParks) {
+        _this2.setState({
           dailyParks: dailyParks
         });
-        console.log('hey');
-        console.log(this.state);
+        console.log(dailyParks);
         // Condenses total list of active ballparks for the next X days
         var allParks = _darkSkyHelper2.default.condenseParks(dailyParks);
         // Obtains weather data for necessary parks
-        //return darkSkyHelper.getWeather(allParks)
-      }.bind(this)).then(function (info) {
+        return _darkSkyHelper2.default.getWeather(allParks).bind(_this2);
+      }).then(function (info) {
         this.setState({
           weatherData: info
         });
@@ -30441,13 +30442,29 @@ var FiveDayLeague = function (_React$Component) {
       // Builds an array of Details components for each day
       if (this.state.isLoading === false) {
         for (var i = 0; i < this.state.days; i++) {
-          eachDay.push(_react2.default.createElement(_MultiParkDetails2.default, { key: i, parks: this.state.sortedParks[i], gameData: this.state.gameData[i], data: this.state.weatherData, dateInfo: this.state.dateInfo, days: this.state.days, day: i }));
+          eachDay.push(_react2.default.createElement(
+            _MultiParkDetails2.default,
+            { key: i,
+              parks: this.state.sortedParks[i],
+              gameData: this.state.gameData[i],
+              data: this.state.weatherData,
+              dateInfo: this.state.dateInfo,
+              days: this.state.days,
+              day: i },
+            ' '
+          ));
         }
       }
-      return this.state.isLoading === true ? _react2.default.createElement(_Loading2.default, { days: this.state.days, header: this.props.header, subheader: this.props.subheader }) : _react2.default.createElement(
+      return this.state.isLoading === true ? _react2.default.createElement(_Loading2.default, { days: this.state.days,
+        header: this.props.header,
+        subheader: this.props.subheader
+      }) : _react2.default.createElement(
         _semanticUiReact.Grid.Row,
-        { columns: '3', className: 'detailsRow' },
-        eachDay
+        { columns: '3',
+          className: 'detailsRow' },
+        ' ',
+        eachDay,
+        ' '
       );
     }
   }]);
@@ -31330,64 +31347,26 @@ var getWeatherData = function () {
       }.bind(this));
       return sortedParks.slice(0);
     }
-    // Calls MLB data to retrieve game info for the requested amount of days
+
+    // Calls php script to obtain and organize game data from DB
 
   }, {
     key: 'getParks',
-    value: function getParks(days) {
-      var finalParks = {},
-          promises = [];
-      // Builds array of promises for each day requested
-      _axios2.default.post('./getParks.php').then(function (daysGames) {
-        console.log(daysGames.data);
-        Object.keys(daysGames.data).map(function (day) {
-          var games = daysGames[day].data;
+    value: function getParks() {
+      var finalParks = {};
+      return _axios2.default.post('./getParks.php').then(function (daysGames) {
+        var dailyData = daysGames;
+        Object.keys(dailyData.data).map(function (day) {
+          var games = dailyData.data[day];
           finalParks[day] = {};
           Object.keys(games).map(function (game) {
             finalParks[day][game] = games[game];
           });
         });
-        console.log(finalParks);
         return finalParks;
       }).catch(function (e) {
-        console.log('Error: ' + e);
+        console.log(e);
       });
-
-      /*  urlMonth='/month_',
-          urlDay='/day_',
-          daysUrl = [];
-      let today = new Date();
-      for (let i = 0; i < days; i++) {
-        urlMonth='/month_',
-        urlDay='/day_';
-        // Creates date object for the next X amount of days
-        let currentDay = new Date(today.getTime() + (86400000 * i));
-        let year = currentDay.getFullYear();
-        let month = (currentDay.getMonth()+1);
-        let day = currentDay.getDate();
-        if (month < 10) {
-          urlMonth='/month_0';
-        }
-        if (day < 10) {
-          urlDay='/day_0';
-        }
-        // Adds requested day's URL to array
-        daysUrl.push(year+urlMonth+month+urlDay+day);
-      }
-      // Maps through URL array to get obtain game data for next X amount of days
-      return axios.all(daysUrl.map(function(url) {
-        return axios.get('http://gd2.mlb.com/components/game/mlb/year_'+url+'/grid.json')
-      }))    
-        .then(function(info) {
-          // Iterates through each day and adds game data to final object
-          for (let i = 0; i < Object.keys(info).length; i++) {
-            finalParks[i] = info[i].data.data.games.game;
-          }
-        return finalParks;
-        })
-        .catch(function(error) {
-          console.log(error);
-        }); */
     }
   }, {
     key: 'condenseParks',
