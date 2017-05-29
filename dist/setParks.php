@@ -19,12 +19,12 @@ if ($conn->connect_error) {
 }
 
 // Clear previous game data
-$clearSql = "truncate GameData";
+/* $clearSql = "truncate GameData";
 if ($conn->query($clearSql)===TRUE) {
   echo 'Cleared GameData table successfully <br>';
 } else {
   echo 'Error: '.$clearSql.'<br>'. $conn->error;
-}
+} */
 
 // Get the next 8 days of game data
 for ($i = 1; $i <= 8; $i++) {
@@ -45,16 +45,16 @@ for ($i = 1; $i <= 8; $i++) {
   // Insert each game into DB for current day
   foreach ($result as $currentGame) {
     $currentGameStr = json_encode($currentGame);
-    $sql = "INSERT INTO GameData " .
-    "(day, park, gm, data) " .
-    "VALUES ( '$i', '$currentGame->home_name_abbrev', '$currentGame->game_nbr', '$currentGameStr' )";
+    $sql = "REPLACE INTO GameData " .
+    "(gid, day, park, gm, data, status) " .
+    "VALUES ( '$currentGame->calendar_event_id', '$i', '$currentGame->home_name_abbrev', '$currentGame->game_nbr', '$currentGameStr', '$currentGame->status' )";
     if ($conn->query($sql) === FALSE) {
       echo 'Error: ' . $sql . '<br>' . $conn->error;
     }
   }
 }
 curl_close($curl);
-echo 'Obtained park data';
+echo 'Obtained game data and set to table';
 
 // Executes script to build active parks for next 8 days
 include('condenseParks.php');

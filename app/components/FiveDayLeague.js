@@ -22,13 +22,11 @@ export default class FiveDayLeague extends React.Component {
 
     componentDidMount() {
       // Obtains game data for the next X days
-      return darkSkyHelper.getParks()
+      darkSkyHelper.getParks()
       .then((dailyParks) => {
           this.setState({
             dailyParks: dailyParks
           })
-          // Condenses total list of active ballparks for the next X days
-          //let allParks = darkSkyHelper.condenseParks(dailyParks);
           // Obtains weather data for necessary parks
           return darkSkyHelper.getWeather();
         })
@@ -36,17 +34,18 @@ export default class FiveDayLeague extends React.Component {
           this.setState({
             weatherData: info
           });
+        //console.log(this.state);
           // Sets the days and dates for details component headers 
-          return darkSkyHelper.formatDateInfo(info, this.state.days, this.state.dailyParks[0]);
+          return darkSkyHelper.formatDateInfo(info, this.state.dailyParks[1],this.state.days);
         })
-        .then(function(dateInfo) {
+        .then((dateInfo)=> {
           // Converts time from string (e.g. '7:05 pm') to Date ms (e.g. 1493906056000)
-          let gameTimesMs = Object.keys(this.state.dailyParks).map(function(day) {
-            return Object.keys(this.state.dailyParks[day]).map(function(game) {
+          let gameTimesMs = Object.keys(this.state.dailyParks).map((day)=> {
+            return Object.keys(this.state.dailyParks[day]).map((game)=> {
               let curr = this.state.dailyParks[day][game];
               return mlbHelper.convertTime(curr, this.state.weatherData[curr.home_name_abbrev], day, dateInfo)
-            }.bind(this))
-          }.bind(this));
+            })
+          });
           let sortedParks = {},
             fullGameData = {};
           for (let i = 0; i < this.state.days; i++) {
@@ -63,7 +62,7 @@ export default class FiveDayLeague extends React.Component {
             gameData: fullGameData,
             isLoading: false
           });
-        }.bind(this))
+        })
         .catch(function(error) {
           console.log(error);
         });

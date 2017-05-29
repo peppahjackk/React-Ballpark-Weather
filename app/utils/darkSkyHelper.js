@@ -2,77 +2,36 @@ import axios from 'axios'
 import dateManip from '../utils/dateManipulation'
 
 export default class getWeatherData {
-  // Requests weather data for given ballparks using proxy server
-  /* static getWeather(parks) {
-    let parksRequested = [],
-      initialParks = [],
-      lastPark = 0,
-      allData = {};
-    initialParks = parks;
-    // Adds only outdoor parks to weather request array
-    for (let i = 0; i < initialParks.length; i++) {
-      if (['ARI','HOU','MIA','MIL','SEA','TB','TOR'].indexOf(initialParks[i]) === -1) {
-        parksRequested.push(initialParks[i]);
-      }
-    }
-    let numParks = parksRequested.length;
-    parksRequested = JSON.stringify(parksRequested);
-    // Calls php script to fetch weather data via API call(s)
-    return axios.post('./proxy.php', {
-        parkRequest: parksRequested
-      })
-      .then(function(msg) {
-        let weatherData = msg.data;
-        parksRequested = JSON.parse(parksRequested);
-        if (parksRequested.length > 1) {
-          // Breaks up each parks' data into seperate objects
-          for (var i = 0; i < parksRequested.length; i++) {
-            let endParkData;
-            endParkData = weatherData.indexOf('}}', lastPark) + 2;
-            if (endParkData > 0) {
-              var data = weatherData.substring(lastPark, endParkData);
-              allData[parksRequested[i]] = JSON.parse(data);
-              lastPark = endParkData;
-            }
-          }
-        } else {
-          allData[parksRequested[0]] = weatherData;
-        }
-        return allData;
-      })
-      .catch(function(error) {
-        console.log(error);
-      });
-
-  } */
-  
   // Returns an object containing the weather information for the requested amount of days
-  static formatDateInfo(info, days, park) {
+  static formatDateInfo(info, park, days = 1) {
     let dateInfo = {},
+        outdoorPark = {},
       numDays,
       latest;
-    let realParks = park.filter(function(currPark){
-      return info[currPark.home_name_abbrev] 
-    });
     const weekdays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
     // Sets number of days: minimum 1, maximum 8
-    if (!days) {
-      numdays = 1;
-    } else if (days < 1) {
-      numDays = 1;
+    if (days < 1) {
+      days = 1;
     } else if (days > 8) {
       days = 8;
-    } else {
-      numDays = days;
     }
-    // Obtain and set weekday(s) and date(s)
-    for (let i = 0; i < numDays; i++) {
-      latest = info[realParks[0].home_name_abbrev].daily;
-      let dayData = latest.data[i];
+    // Finds weather data for an outdoor park
+    let dailyParks = Object.keys(park);
+    for (let i = 0; i < dailyParks.length; i++) {
+      let currParkName = park[dailyParks[i]].data.home_name_abbrev;
+      if (typeof info[currParkName] === 'object') {
+        outdoorPark = info[currParkName].data.daily;
+        break;
+      }
+    }
+    // Obtains and sets weekday(s) and date(s) for the coming days
+    for (let i = 0; i < days; i++) {
+      let dayData = outdoorPark.data[i];
       let day = new Date(parseInt(dayData.time + '000'));
       dateInfo['Day' + i] = weekdays[day.getDay()];
-      dateInfo['Day' + i + 'Date'] = dateManip.prettifyDate(latest.data[i].time);
+      dateInfo['Day' + i + 'Date'] = dateManip.prettifyDate(outdoorPark.data[i].time);
     }
+    console.log(dateInfo);
     return dateInfo;
   }
   
@@ -150,10 +109,8 @@ export default class getWeatherData {
     let allWeatherData = {};
     return axios.post('./getWeather.php')
     .then((info)=> {
-      console.log(info);
       let weatherData = info;
       Object.keys(weatherData.data).map((park)=>{
-        console.log(weatherData.data[park]);
         allWeatherData[park] = weatherData.data[park];
       })
       return allWeatherData

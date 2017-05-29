@@ -42,14 +42,6 @@ if ($conn->connect_error) {
   die('Connection failed: ' . $conn->connect_error);
 }
 
-// Clear previous weather data
-$clearSql = "truncate WeatherData";
-if ($conn->query($clearSql)===TRUE) {
-  echo 'Cleared WeatherData table successfully <br>';
-} else {
-  echo 'Error: '.$clearSql.'<br>'. $conn->error;
-}
-
 $ballparksQuery = array();
 $ballparksRequested = array();
 
@@ -88,7 +80,7 @@ foreach ($ballparksQuery as $currentPark => $location) {
     $result = curl_exec($curl);
   }
   
-  $sql = "INSERT INTO WeatherData ".
+  $sql = "REPLACE INTO WeatherData ".
     "(park, data) " .
     "VALUES ( '$currentPark', '$result' )";
   if ($conn->query($sql) === FALSE) {

@@ -15,7 +15,7 @@ $conn = new mysqli($servername, $dbusername, $dbpass, $dbname);
 if ($conn->connect_error) {
   die('Connection failed: ' . $conn->connect_error);
 }
-// just grab all rows at once you dunce. set the $currentGame->day->park etc
+
 // Get game data
 $sql = "SELECT * from GameData";
 $result = $conn->query($sql);
@@ -31,7 +31,7 @@ if ($result->num_rows > 0) {
     $currentGame->$row['day']->$key->park = $row['park'];
     $currentGame->$row['day']->$key->gm = $row['gm'];
     $currentGame->$row['day']->$key->data = json_decode($row['data']);
-    $currentGame->$row['ts']->$key->ts = $row['ts'];
+    $currentGame->$row['day']->$key->ts = $row['ts'];
   }
 } else {
   echo "0 results";

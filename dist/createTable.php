@@ -13,11 +13,12 @@ if ($conn->connect_error) {
 // sql to create GameData table
 $sql = 'CREATE TABLE GameData
 (
-  id INT AUTO_INCREMENT PRIMARY KEY,
+  gid VARCHAR(21) PRIMARY KEY,
   day INT NOT NULL,
   park VARCHAR(3) NOT NULL,
   gm INT NOT NULL,
-  data VARCHAR(65500),
+  data VARCHAR(65450),
+  status VARCHAR(15),
   ts TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 )';
 
@@ -32,8 +33,7 @@ $sql = 'CREATE TABLE GameData
 // create WeatherData table
 /* $sql = 'CREATE TABLE WeatherData
   (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    park VARCHAR(3),
+    park VARCHAR(3) PRIMARY KEY,
     data VARCHAR(65000),
     ts TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
   )'; */
