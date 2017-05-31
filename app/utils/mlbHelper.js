@@ -3,8 +3,6 @@ export default class mlbHelper {
     let hours, minutes;
     const time = game.event_time;
     const tempDate = new Date();
-    day--;
-    console.log(day);
     var utcMonth = dateInfo['Day' + day + 'Date'].monthNum;
     var utcDay = dateInfo['Day' + day + 'Date'].day;
     // Parses game time from MLB game data

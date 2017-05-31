@@ -30402,9 +30402,9 @@ var FiveDayLeague = function (_React$Component) {
         _this2.setState({
           weatherData: info
         });
-        //console.log(this.state);
+        console.log(_this2.state.dailyParks);
         // Sets the days and dates for details component headers 
-        return _darkSkyHelper2.default.formatDateInfo(info, _this2.state.dailyParks[1], _this2.state.days);
+        return _darkSkyHelper2.default.formatDateInfo(info, _this2.state.dailyParks[0], _this2.state.days);
       }).then(function (dateInfo) {
         // Converts time from string (e.g. '7:05 pm') to Date ms (e.g. 1493906056000)
         var gameTimesMs = Object.keys(_this2.state.dailyParks).map(function (day) {
@@ -30423,6 +30423,7 @@ var FiveDayLeague = function (_React$Component) {
           // Sorts parks in order of precipitation chance
           sortedParks[i] = _darkSkyHelper2.default.sortParks(_this2.state.dailyParks[i], i, fullGameData[i]);
         }
+        console.log(sortedParks);
         _this2.setState({
           dateInfo: dateInfo,
           sortedParks: sortedParks,
@@ -31251,16 +31252,17 @@ var getWeatherData = function () {
         dateInfo['Day' + _i] = weekdays[day.getDay()];
         dateInfo['Day' + _i + 'Date'] = _dateManipulation2.default.prettifyDate(outdoorPark.data[_i].time);
       }
-      console.log(dateInfo);
       return dateInfo;
     }
   }, {
     key: 'extractGameTimes',
     value: function extractGameTimes(gameTimes, gameData) {
       var parksPlus = {};
+      console.log(gameTimes);
       for (var game in gameTimes) {
         parksPlus[gameTimes[game].park] = gameTimes[game].time;
       }
+      console.log(parksPlus);
       return parksPlus;
     }
   }, {
@@ -31273,19 +31275,19 @@ var getWeatherData = function () {
           precipitationPercentage[game] = [false, 0, gameData[Object.keys(gameTimes).indexOf(game)]];
           return;
         }
-        // Sets initial precipitation percentage to the overall chance for the day
-        precipitationPercentage[game] = [false, info[park].daily.data[day], gameData[Object.keys(gameTimes).indexOf(game)]];
+        // Sets initial precipitation percentage to the overall chance for the day 
+        precipitationPercentage[game] = [false, info[park].data.daily.data[day], gameData[Object.keys(gameTimes).indexOf(game)]];
         // If the game is less than 48 hours away pull weather data from the hour nearest game time
-        if (gameTimes[game] - info[park].currently.time * 1000 < 172800000 && gameTimes[game] - info[park].currently.time * 1000 > 0) {
-          Object.keys(info[park].hourly.data).filter(function (hour) {
-            if (-3600000 <= info[park].hourly.data[hour].time * 1000 - gameTimes[game] && info[park].hourly.data[hour].time * 1000 - gameTimes[game] <= 360000) {
-              precipitationPercentage[game] = [true, info[park].hourly.data[hour], gameData[Object.keys(gameTimes).indexOf(game)]];
+        if (gameTimes[game] - info[park].data.currently.time * 1000 < 172800000 && gameTimes[game] - info[park].data.currently.time * 1000 > 0) {
+          Object.keys(info[park].data.hourly.data).filter(function (hour) {
+            if (-3600000 <= info[park].data.hourly.data[hour].time * 1000 - gameTimes[game] && info[park].data.hourly.data[hour].time * 1000 - gameTimes[game] <= 360000) {
+              precipitationPercentage[game] = [true, info[park].data.hourly.data[hour], gameData[Object.keys(gameTimes).indexOf(game)]];
               return;
             }
             return false;
           });
-        } else if (gameTimes[game] - info[park].currently.time * 1000 < 0) {
-          precipitationPercentage[game] = [false, info[park].currently, gameData[Object.keys(gameTimes).indexOf(game)]];
+        } else if (gameTimes[game] - info[park].data.currently.time * 1000 < 0) {
+          precipitationPercentage[game] = [false, info[park].data.currently, gameData[Object.keys(gameTimes).indexOf(game)]];
         }
         return;
       });
@@ -31297,14 +31299,14 @@ var getWeatherData = function () {
   }, {
     key: 'sortParks',
     value: function sortParks(parks, day, parksPlus) {
-      var sortedParks = parks.sort(function (a, b) {
+      var sortedParks = Object.keys(parks).sort(function (a, b) {
         // Pushes any DOME park to the bottom of the list
-        if (['ARI', 'HOU', 'MIA', 'MIL', 'SEA', 'TB', 'TOR'].indexOf(b.home_name_abbrev) > -1) {
+        if (['ARI', 'HOU', 'MIA', 'MIL', 'SEA', 'TB', 'TOR'].indexOf(parks[b].data.home_name_abbrev) > -1) {
           return -1;
-        } else if (['ARI', 'HOU', 'MIA', 'MIL', 'SEA', 'TB', 'TOR'].indexOf(a.home_name_abbrev) > -1) {
+        } else if (['ARI', 'HOU', 'MIA', 'MIL', 'SEA', 'TB', 'TOR'].indexOf(parks[a].data.home_name_abbrev) > -1) {
           return 1;
         }
-        return parksPlus[b.home_name_abbrev + b.game_nbr][1].precipProbability - parksPlus[a.home_name_abbrev + a.game_nbr][1].precipProbability;
+        return parksPlus[parks[b].data.home_name_abbrev + parks[b].data.game_nbr][1].precipProbability - parksPlus[parks[a].data.home_name_abbrev + parks[a].data.game_nbr][1].precipProbability;
       }.bind(this));
       return sortedParks.slice(0);
     }
@@ -31319,6 +31321,7 @@ var getWeatherData = function () {
         var parkData = info;
         Object.keys(parkData.data).map(function (day) {
           var games = parkData.data[day];
+          day--;
           allParkData[day] = {};
           Object.keys(games).map(function (game) {
             allParkData[day][game] = games[game];
@@ -31394,8 +31397,6 @@ var mlbHelper = function () {
           minutes = void 0;
       var time = game.event_time;
       var tempDate = new Date();
-      day--;
-      console.log(day);
       var utcMonth = dateInfo['Day' + day + 'Date'].monthNum;
       var utcDay = dateInfo['Day' + day + 'Date'].day;
       // Parses game time from MLB game data

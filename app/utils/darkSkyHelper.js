@@ -31,15 +31,16 @@ export default class getWeatherData {
       dateInfo['Day' + i] = weekdays[day.getDay()];
       dateInfo['Day' + i + 'Date'] = dateManip.prettifyDate(outdoorPark.data[i].time);
     }
-    console.log(dateInfo);
     return dateInfo;
   }
   
   static extractGameTimes(gameTimes, gameData) {
     let parksPlus = {};
+    console.log(gameTimes);
     for (let game in gameTimes) {
       parksPlus[gameTimes[game].park] = gameTimes[game].time;
     }
+    console.log(parksPlus);
     return parksPlus;
   }
   
@@ -51,19 +52,19 @@ export default class getWeatherData {
         precipitationPercentage[game] = [false,0,gameData[Object.keys(gameTimes).indexOf(game)]];
         return;
       }
-      // Sets initial precipitation percentage to the overall chance for the day
-      precipitationPercentage[game] = [false,info[park].daily.data[day],gameData[Object.keys(gameTimes).indexOf(game)]];
+      // Sets initial precipitation percentage to the overall chance for the day 
+      precipitationPercentage[game] = [false,info[park].data.daily.data[day],gameData[Object.keys(gameTimes).indexOf(game)]];
       // If the game is less than 48 hours away pull weather data from the hour nearest game time
-      if (gameTimes[game] - (info[park].currently.time * 1000) < 172800000 && gameTimes[game] - (info[park].currently.time * 1000) > 0) {
-        Object.keys(info[park].hourly.data).filter(function(hour) {
-          if ((-3600000 <= (info[park].hourly.data[hour].time * 1000) - gameTimes[game] && (info[park].hourly.data[hour].time * 1000) - gameTimes[game] <= 360000)) {
-            precipitationPercentage[game] = [true,info[park].hourly.data[hour],gameData[Object.keys(gameTimes).indexOf(game)]];
+      if (gameTimes[game] - (info[park].data.currently.time * 1000) < 172800000 && gameTimes[game] - (info[park].data.currently.time * 1000) > 0) {
+        Object.keys(info[park].data.hourly.data).filter(function(hour) {
+          if ((-3600000 <= (info[park].data.hourly.data[hour].time * 1000) - gameTimes[game] && (info[park].data.hourly.data[hour].time * 1000) - gameTimes[game] <= 360000)) {
+            precipitationPercentage[game] = [true,info[park].data.hourly.data[hour],gameData[Object.keys(gameTimes).indexOf(game)]];
             return;
           }
           return false;
         })
-      } else if (gameTimes[game] - (info[park].currently.time * 1000) < 0) {
-        precipitationPercentage[game] = [false,info[park].currently,gameData[Object.keys(gameTimes).indexOf(game)]];
+      } else if (gameTimes[game] - (info[park].data.currently.time * 1000) < 0) {
+        precipitationPercentage[game] = [false,info[park].data.currently,gameData[Object.keys(gameTimes).indexOf(game)]];
       }
       return;
     });
@@ -72,14 +73,14 @@ export default class getWeatherData {
   
   // Sorts an array of weather objects by precipitation chance for the requested day
   static sortParks(parks, day, parksPlus) {
-    let sortedParks = parks.sort(function(a,b) {
+    let sortedParks = Object.keys(parks).sort(function(a,b) {
       // Pushes any DOME park to the bottom of the list
-      if (['ARI','HOU','MIA','MIL','SEA','TB','TOR'].indexOf(b.home_name_abbrev) > -1) {
+      if (['ARI','HOU','MIA','MIL','SEA','TB','TOR'].indexOf(parks[b].data.home_name_abbrev) > -1) {
         return -1;
-      } else if ((['ARI','HOU','MIA','MIL','SEA','TB','TOR'].indexOf(a.home_name_abbrev) > -1)) {
+      } else if ((['ARI','HOU','MIA','MIL','SEA','TB','TOR'].indexOf(parks[a].data.home_name_abbrev) > -1)) {
         return 1;
       }
-      return parksPlus[b.home_name_abbrev+b.game_nbr][1].precipProbability - parksPlus[a.home_name_abbrev+a.game_nbr][1].precipProbability;
+      return parksPlus[parks[b].data.home_name_abbrev+parks[b].data.game_nbr][1].precipProbability - parksPlus[parks[a].data.home_name_abbrev+parks[a].data.game_nbr][1].precipProbability;
     }.bind(this))
     return sortedParks.slice(0);
   }
@@ -92,6 +93,7 @@ export default class getWeatherData {
       let parkData = info;
       Object.keys(parkData.data).map((day)=> {
         let games = parkData.data[day];
+        day--;
         allParkData[day] = {};
         Object.keys(games).map((game) => {
           allParkData[day][game] = games[game];
