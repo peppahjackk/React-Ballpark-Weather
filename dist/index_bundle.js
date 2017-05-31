@@ -30380,7 +30380,7 @@ var FiveDayLeague = function (_React$Component) {
     var _this = _possibleConstructorReturn(this, (FiveDayLeague.__proto__ || Object.getPrototypeOf(FiveDayLeague)).call(this, props));
 
     _this.state = {
-      days: 3,
+      days: 8,
       isLoading: true
     };
     return _this;
@@ -30409,7 +30409,7 @@ var FiveDayLeague = function (_React$Component) {
         // Converts time from string (e.g. '7:05 pm') to Date ms (e.g. 1493906056000)
         var gameTimesMs = Object.keys(_this2.state.dailyParks).map(function (day) {
           return Object.keys(_this2.state.dailyParks[day]).map(function (game) {
-            var curr = _this2.state.dailyParks[day][game];
+            var curr = _this2.state.dailyParks[day][game].data;
             return _mlbHelper2.default.convertTime(curr, _this2.state.weatherData[curr.home_name_abbrev], day, dateInfo);
           });
         });
@@ -31394,6 +31394,8 @@ var mlbHelper = function () {
           minutes = void 0;
       var time = game.event_time;
       var tempDate = new Date();
+      day--;
+      console.log(day);
       var utcMonth = dateInfo['Day' + day + 'Date'].monthNum;
       var utcDay = dateInfo['Day' + day + 'Date'].day;
       // Parses game time from MLB game data

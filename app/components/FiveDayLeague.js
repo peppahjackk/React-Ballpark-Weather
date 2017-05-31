@@ -15,7 +15,7 @@ export default class FiveDayLeague extends React.Component {
     constructor(props) {
       super(props)
       this.state = {
-        days: 3,
+        days: 8,
         isLoading: true
       }
     }
@@ -42,7 +42,7 @@ export default class FiveDayLeague extends React.Component {
           // Converts time from string (e.g. '7:05 pm') to Date ms (e.g. 1493906056000)
           let gameTimesMs = Object.keys(this.state.dailyParks).map((day)=> {
             return Object.keys(this.state.dailyParks[day]).map((game)=> {
-              let curr = this.state.dailyParks[day][game];
+              let curr = this.state.dailyParks[day][game].data;
               return mlbHelper.convertTime(curr, this.state.weatherData[curr.home_name_abbrev], day, dateInfo)
             })
           });
