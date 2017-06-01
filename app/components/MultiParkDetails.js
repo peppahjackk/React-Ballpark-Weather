@@ -12,45 +12,49 @@ export default class MultiParkDetails extends React.Component {
   }
   
   render() {
-    let domeParks = [], highChanceParks = [], lowChanceParks = [], emptyPark = [], highChanceTable;
-    // Distributes the days parks into high chance, low chance, and dome parks
-    Object.keys(this.props.parks).map(function(park) {
-       if (['ARI','HOU','MIA','MIL','SEA','TB','TOR'].indexOf(this.props.parks[park].home_name_abbrev) > -1) {
-        domeParks.push(this.props.parks[park]);
-      } else if (this.props.gameData[this.props.parks[park].home_name_abbrev+this.props.parks[park].game_nbr][1].precipProbability >= 0.4) {
-        highChanceParks.push(this.props.parks[park]);
-      } else {
-        lowChanceParks.push(this.props.parks[park]);
-      }
-    }.bind(this))
+    let emptyPark = [], highChanceTable;
+    let gameData = this.props.gameData;
     // Places high chance parks into a table
-    if (highChanceParks.length) {
+    if (gameData.high.length) {
       highChanceTable = <Table celled compact unstackable className='precipTable'>
             <DetailsHeader />
             <Table.Body>
-              {highChanceParks.map((park) =>
-                <Table.Row key={park.home_name_abbrev+this.props.day+'gm'+park.game_nbr}>
-                  <Table.Cell>{park.away_name_abbrev} vs {park.home_name_abbrev}</Table.Cell>
-                  <Table.Cell><GameTime data={this.props.gameData[park.home_name_abbrev+park.game_nbr][2]} /></Table.Cell>
-                  <Table.Cell><PrecipPercent park={park.home_name_abbrev+park.game_nbr} gameData={this.props.gameData} /> <PrecipType park={park.home_name_abbrev+park.game_nbr} gameData={this.props.gameData} /></Table.Cell>
+              {gameData.high.map((currPark) => {
+               let parkData = currPark[Object.keys(currPark)[0]];
+                return (<Table.Row key={parkData[2].park+parkData[2].gm}>
+                  <Table.Cell>{parkData[2].data.away_name_abbrev} vs {parkData[2].park}</Table.Cell>
+                  <Table.Cell><GameTime data={parkData[2].data} /></Table.Cell>
+                  <Table.Cell><PrecipPercent parkData={parkData} /> <PrecipType parkData={parkData} /></Table.Cell>
                   <Table.Cell>
-                    <a href={'http://www.twitter.com/' + officialTeamTwitter.twitterLinks[park.home_name_abbrev]} target="_blank" className='infoIconLink'>
+                    <a href={'http://www.twitter.com/' + officialTeamTwitter.twitterLinks[parkData[2].park]} target="_blank" className='infoIconLink'>
                       <img src="images/icons/social-1_logo-twitter.svg" alt="twitter" className='infoIcon' />
                     </a><
                   /Table.Cell>
-                </Table.Row>
-               )}
+                </Table.Row>)
+              })}
             </Table.Body>
           </Table>
     } else {
       // Delivers the good news that no games have a high precipitation chance
       highChanceTable = <div><Header as='h3' className='infoSubHeader noHighChanceHeader'>No parks have a high chance of precipitation!</Header> <Divider /></div>
     }
-    // Adds a dash to keep the two column list looking even stevens
-    let lowChanceNum = lowChanceParks.length + domeParks.length;
+    
+    // Places Low chance parks into a list
+    let lowChanceList = gameData.low.map((currPark) => {
+      let parkData = currPark[Object.keys(currPark)[0]];
+      return (<li key={parkData[2].park+parkData[2].gm} className='listItem'>{parkData[2].data.away_name_abbrev} vs {parkData[2].park} <PrecipPercent parkData={parkData} /></li>)
+    });
+
+    // Adds Dome parks to the end of the low chance parks list
+    let domeList = gameData.dome.map((currPark) => {
+      let parkData = currPark[Object.keys(currPark)[0]];
+      return (<li key={parkData[2].park+parkData[2].gm} className='listItem'>{parkData[2].data.away_name_abbrev} vs {parkData[2].park} -%</li>)});
+    
+    // Adds a dash to keep the two column list looking even stevens 
+    let lowChanceNum = gameData.low.length + gameData.dome.length;
     if (lowChanceNum % 2) {
       emptyPark.push('-');
-    }
+    }  
     return (
       <Grid.Column tablet={16} mobile={16} computer={5}>
         <div className='detailsContainer'>
@@ -62,8 +66,8 @@ export default class MultiParkDetails extends React.Component {
           {highChanceTable}
           <Header as='h4' className='infoHeader noMarginTop'>Low or No Chance Parks</Header>
           <ul className='list lowChance'>
-            {lowChanceParks.map((park) => <li key={park.home_name_abbrev+this.props.day+'gm'+park.game_nbr} className='listItem'>{park.away_name_abbrev} vs {park.home_name_abbrev} <PrecipPercent park={park.home_name_abbrev+park.game_nbr} gameData={this.props.gameData} /></li>)}
-            {domeParks.map((park) => <li key={park.home_name_abbrev+this.props.day+'gm'+park.game_nbr} className='listItem'>{park.away_name_abbrev} vs {park.home_name_abbrev} -%</li>)}
+            {lowChanceList}
+            {domeList}
             {emptyPark.map((park) => <li key={'emptyPark'+this.props.day} className='listItem'>-</li>)}
           </ul>
           <p className='infoSubHeader'>* indicates game time data</p>

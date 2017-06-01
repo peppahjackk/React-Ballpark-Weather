@@ -9,7 +9,7 @@ export default class PrecipPercent extends React.Component {
   render() {
     return(
       <span>
-        {this.props.gameData[this.props.park][1].precipType || 'rain'}
+        {this.props.parkData[1].precipType || 'rain'}
       </span>
     )
   }

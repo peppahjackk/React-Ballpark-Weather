@@ -36,35 +36,33 @@ export default class getWeatherData {
   
   static extractGameTimes(gameTimes, gameData) {
     let parksPlus = {};
-    console.log(gameTimes);
     for (let game in gameTimes) {
       parksPlus[gameTimes[game].park] = gameTimes[game].time;
     }
-    console.log(parksPlus);
     return parksPlus;
   }
   
   static checkHourlyPrecip(info, day, gameTimes, gameData) {
     let precipitationPercentage = {};
-    Object.keys(gameTimes).map(function(game) {
+    Object.keys(gameTimes).map((game)=> {
       let park = game.slice(0, -1);
       if (['ARI','HOU','MIA','MIL','SEA','TB','TOR'].indexOf(park) > -1) {
-        precipitationPercentage[game] = [false,0,gameData[Object.keys(gameTimes).indexOf(game)]];
+        precipitationPercentage[game] = [false,0,gameData[game]];
         return;
       }
       // Sets initial precipitation percentage to the overall chance for the day 
-      precipitationPercentage[game] = [false,info[park].data.daily.data[day],gameData[Object.keys(gameTimes).indexOf(game)]];
+      precipitationPercentage[game] = [false,info[park].data.daily.data[day],gameData[game]];
       // If the game is less than 48 hours away pull weather data from the hour nearest game time
       if (gameTimes[game] - (info[park].data.currently.time * 1000) < 172800000 && gameTimes[game] - (info[park].data.currently.time * 1000) > 0) {
-        Object.keys(info[park].data.hourly.data).filter(function(hour) {
+        Object.keys(info[park].data.hourly.data).filter((hour)=> {
           if ((-3600000 <= (info[park].data.hourly.data[hour].time * 1000) - gameTimes[game] && (info[park].data.hourly.data[hour].time * 1000) - gameTimes[game] <= 360000)) {
-            precipitationPercentage[game] = [true,info[park].data.hourly.data[hour],gameData[Object.keys(gameTimes).indexOf(game)]];
+            precipitationPercentage[game] = [true,info[park].data.hourly.data[hour],gameData[game]];
             return;
           }
           return false;
         })
       } else if (gameTimes[game] - (info[park].data.currently.time * 1000) < 0) {
-        precipitationPercentage[game] = [false,info[park].data.currently,gameData[Object.keys(gameTimes).indexOf(game)]];
+        precipitationPercentage[game] = [false,info[park].data.currently,gameData[game]];
       }
       return;
     });
@@ -73,7 +71,8 @@ export default class getWeatherData {
   
   // Sorts an array of weather objects by precipitation chance for the requested day
   static sortParks(parks, day, parksPlus) {
-    let sortedParks = Object.keys(parks).sort(function(a,b) {
+    let finalParksPlus = {high:[], low:[], dome:[]};
+    let sortedParks = Object.keys(parks).sort((a,b)=> {
       // Pushes any DOME park to the bottom of the list
       if (['ARI','HOU','MIA','MIL','SEA','TB','TOR'].indexOf(parks[b].data.home_name_abbrev) > -1) {
         return -1;
@@ -81,8 +80,23 @@ export default class getWeatherData {
         return 1;
       }
       return parksPlus[parks[b].data.home_name_abbrev+parks[b].data.game_nbr][1].precipProbability - parksPlus[parks[a].data.home_name_abbrev+parks[a].data.game_nbr][1].precipProbability;
-    }.bind(this))
-    return sortedParks.slice(0);
+    })
+    sortedParks = sortedParks.slice(0);
+    for (let park in sortedParks) {
+      let parkData = parksPlus[parks[sortedParks[park]].data.home_name_abbrev+parks[sortedParks[park]].data.game_nbr];
+      let parkObj = {};
+       parkObj[sortedParks[park]] = parkData;
+      if (typeof parkData[1] != 'object') {
+        finalParksPlus.dome.push(parkObj);
+      } else if (parkData[1].precipProbability >= 0.4) {
+        let parkName = sortedParks[park];
+        finalParksPlus.high.push(parkObj);
+      } else {
+        let parkName = sortedParks[park];
+        finalParksPlus.low.push(parkObj);
+      }
+    }
+    return finalParksPlus;
   }
   
   // Calls php script to obtain and organize game data from DB
