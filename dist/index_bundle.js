@@ -30403,8 +30403,9 @@ var FiveDayLeague = function (_React$Component) {
           weatherData: info
         });
         // Sets the days and dates for details component headers 
-        return _darkSkyHelper2.default.formatDateInfo(info, _this2.state.dailyParks[0], _this2.state.days);
+        return _darkSkyHelper2.default.formatDateInfo(_this2.state.weatherData, _this2.state.dailyParks[0], _this2.state.days);
       }).then(function (dateInfo) {
+        _this2.setState({ dateInfo: dateInfo });
         // Converts time from string (e.g. '7:05 pm') to Date ms (e.g. 1493906056000)
         var gameTimesMs = Object.keys(_this2.state.dailyParks).map(function (day) {
           return Object.keys(_this2.state.dailyParks[day]).map(function (game) {
@@ -30422,7 +30423,6 @@ var FiveDayLeague = function (_React$Component) {
           fullGameData[i] = _darkSkyHelper2.default.sortParks(_this2.state.dailyParks[i], i, fullGameData[i]);
         }
         _this2.setState({
-          dateInfo: dateInfo,
           gameData: fullGameData,
           isLoading: false
         });
@@ -31226,7 +31226,7 @@ var getWeatherData = function () {
         }
       }
       // Obtains and sets weekday(s) and date(s) for the coming days
-      for (var _i = 0; _i < days; _i++) {
+      for (var _i = 0; _i < 8; _i++) {
         var dayData = outdoorPark.data[_i];
         var day = new Date(parseInt(dayData.time + '000'));
         dateInfo['Day' + _i] = weekdays[day.getDay()];

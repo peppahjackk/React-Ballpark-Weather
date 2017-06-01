@@ -25,7 +25,7 @@ export default class getWeatherData {
       }
     }
     // Obtains and sets weekday(s) and date(s) for the coming days
-    for (let i = 0; i < days; i++) {
+    for (let i = 0; i < 8; i++) {
       let dayData = outdoorPark.data[i];
       let day = new Date(parseInt(dayData.time + '000'));
       dateInfo['Day' + i] = weekdays[day.getDay()];

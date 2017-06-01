@@ -35,9 +35,10 @@ export default class FiveDayLeague extends React.Component {
             weatherData: info
           });
           // Sets the days and dates for details component headers 
-          return darkSkyHelper.formatDateInfo(info, this.state.dailyParks[0],this.state.days);
+          return darkSkyHelper.formatDateInfo(this.state.weatherData, this.state.dailyParks[0],this.state.days);
         })
         .then((dateInfo)=> {
+          this.setState({dateInfo})
           // Converts time from string (e.g. '7:05 pm') to Date ms (e.g. 1493906056000)
           let gameTimesMs = Object.keys(this.state.dailyParks).map((day)=> {
             return Object.keys(this.state.dailyParks[day]).map((game)=> {
@@ -55,7 +56,6 @@ export default class FiveDayLeague extends React.Component {
             fullGameData[i] = darkSkyHelper.sortParks(this.state.dailyParks[i], i, fullGameData[i]);
           }
           this.setState({
-            dateInfo,
             gameData: fullGameData,
             isLoading: false
           });
