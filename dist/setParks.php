@@ -27,7 +27,7 @@ if ($conn->connect_error) {
 }
 
 // Get the next 8 days of game data
-for ($i = 1; $i <= 8; $i++) {
+for ($i = 0; $i <= 8; $i++) {
   $curr = $i - 1;
   $y = date('Y',strtotime('+'.$curr.' day'));
   $m = date('m',strtotime('+'.$curr.' day'));
@@ -58,6 +58,8 @@ for ($i = 1; $i <= 8; $i++) {
 curl_close($curl);
 echo 'Obtained game data and set to table';
 
+// Clears Finished games
+include('clearOldParks.php');
 // Executes script to build active parks for next 8 days
 include('condenseParks.php');
 

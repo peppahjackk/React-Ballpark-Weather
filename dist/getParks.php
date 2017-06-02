@@ -17,7 +17,7 @@ if ($conn->connect_error) {
 }
 
 // Get game data
-$sql = "SELECT * from GameData";
+$sql = "SELECT * from GameData ORDER BY gid";
 $result = $conn->query($sql);
 
 if ($result->num_rows > 0) {
