@@ -23,15 +23,15 @@ $result = $conn->query($sql);
 if ($result->num_rows > 0) {
   // output data of each row
   while($row = $result->fetch_assoc()) {
-    if (!isset($currentGame->$row['day'])) {
-      $currentGame->$row['day'] = (object)[];
+    if (!isset($currentGame->$row['date'])) {
+      $currentGame->$row['date'] = (object)[];
     }
     $key = $row['park'].$row['gm'];
-    $currentGame->$row['day']->$key = (object)[];
-    $currentGame->$row['day']->$key->park = $row['park'];
-    $currentGame->$row['day']->$key->gm = $row['gm'];
-    $currentGame->$row['day']->$key->data = json_decode($row['data']);
-    $currentGame->$row['day']->$key->ts = $row['ts'];
+    $currentGame->$row['date']->$key = (object)[];
+    $currentGame->$row['date']->$key->park = $row['park'];
+    $currentGame->$row['date']->$key->gm = $row['gm'];
+    $currentGame->$row['date']->$key->data = json_decode($row['data']);
+    $currentGame->$row['date']->$key->ts = $row['ts'];
   }
 } else {
   echo "0 results";

@@ -6,6 +6,14 @@ ini_set("display_errors", "1"); // shows all errors
 ini_set("log_errors", 1);
 ini_set("error_log", "/tmp/php-error.log");
 
+function parseDate($calendar_id) {
+  $dateBlob = substr($calendar_id, -10);
+  $yr = substr($dateBlob, 0,4);
+  $mnth = substr($dateBlob,5,2);
+  $day = substr($dateBlob,8,2);
+  return $yr.$mnth.$day;
+}
+
 // Initialize curl
 $curl = curl_init();
 
@@ -17,14 +25,6 @@ $conn = new mysqli($servername, $dbusername, $dbpass, $dbname);
 if ($conn->connect_error) {
   die('Connection failed: ' . $conn->connect_error);
 }
-
-// Clear previous game data
-/* $clearSql = "truncate GameData";
-if ($conn->query($clearSql)===TRUE) {
-  echo 'Cleared GameData table successfully <br>';
-} else {
-  echo 'Error: '.$clearSql.'<br>'. $conn->error;
-} */
 
 // Get the next 8 days of game data
 for ($i = 1; $i <= 8; $i++) {
@@ -45,9 +45,11 @@ for ($i = 1; $i <= 8; $i++) {
   // Insert each game into DB for current day
   foreach ($result as $currentGame) {
     $currentGameStr = json_encode($currentGame);
+    $currDate = parseDate($currentGame->calendar_event_id);
+    
     $sql = "REPLACE INTO GameData " .
-    "(gid, day, park, gm, data, status) " .
-    "VALUES ( '$currentGame->calendar_event_id', '$i', '$currentGame->home_name_abbrev', '$currentGame->game_nbr', '$currentGameStr', '$currentGame->status' )";
+    "(gid, date, park, gm, data, status) " .
+    "VALUES ( '$currentGame->calendar_event_id', '$currDate', '$currentGame->home_name_abbrev', '$currentGame->game_nbr', '$currentGameStr', '$currentGame->status' )";
     if ($conn->query($sql) === FALSE) {
       echo 'Error: ' . $sql . '<br>' . $conn->error;
     }

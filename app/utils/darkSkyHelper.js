@@ -1,35 +1,27 @@
 import axios from 'axios'
-import dateManip from '../utils/dateManipulation'
 
 export default class getWeatherData {
   // Returns an object containing the weather information for the requested amount of days
-  static formatDateInfo(info, park, days = 1) {
-    let dateInfo = {},
-        outdoorPark = {},
-      numDays,
-      latest;
+  static formatDateInfo(park) {
+    let dateInfo = {};
     const weekdays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-    // Sets number of days: minimum 1, maximum 8
-    if (days < 1) {
-      days = 1;
-    } else if (days > 8) {
-      days = 8;
-    }
+    const months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+
     // Finds weather data for an outdoor park
     let dailyParks = Object.keys(park);
     for (let i = 0; i < dailyParks.length; i++) {
-      let currParkName = park[dailyParks[i]].data.home_name_abbrev;
-      if (typeof info[currParkName] === 'object') {
-        outdoorPark = info[currParkName].data.daily;
-        break;
+      let currDate = dailyParks[i];
+      let yr = currDate.substr(0,4);
+      let mnth = (currDate.substr(4,2)) - 1;
+      let day = currDate.substr(6,2);
+      let date = new Date(yr,mnth,day);
+      dateInfo['Day'+i] = weekdays[date.getDay()];
+      dateInfo['Day'+i+'Date'] = {
+        month: months[date.getUTCMonth()],
+        monthNum: date.getUTCMonth(),
+        day: date.getUTCDate(),
+        year: date.getUTCFullYear()
       }
-    }
-    // Obtains and sets weekday(s) and date(s) for the coming days
-    for (let i = 0; i < 8; i++) {
-      let dayData = outdoorPark.data[i];
-      let day = new Date(parseInt(dayData.time + '000'));
-      dateInfo['Day' + i] = weekdays[day.getDay()];
-      dateInfo['Day' + i + 'Date'] = dateManip.prettifyDate(outdoorPark.data[i].time);
     }
     return dateInfo;
   }
@@ -105,12 +97,11 @@ export default class getWeatherData {
     return axios.post('./getParks.php')
     .then((info)=> {
       let parkData = info;
-      Object.keys(parkData.data).map((day)=> {
-        let games = parkData.data[day];
-        day--;
-        allParkData[day] = {};
+      Object.keys(parkData.data).map((date)=> {
+        let games = parkData.data[date];
+        allParkData[date] = {};
         Object.keys(games).map((game) => {
-          allParkData[day][game] = games[game];
+          allParkData[date][game] = games[game];
         })
       })
       return allParkData;

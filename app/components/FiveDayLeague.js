@@ -35,25 +35,27 @@ export default class FiveDayLeague extends React.Component {
             weatherData: info
           });
           // Sets the days and dates for details component headers 
-          return darkSkyHelper.formatDateInfo(this.state.weatherData, this.state.dailyParks[0],this.state.days);
+          return darkSkyHelper.formatDateInfo(this.state.dailyParks);
         })
         .then((dateInfo)=> {
           this.setState({dateInfo})
           // Converts time from string (e.g. '7:05 pm') to Date ms (e.g. 1493906056000)
-          let gameTimesMs = Object.keys(this.state.dailyParks).map((day)=> {
-            return Object.keys(this.state.dailyParks[day]).map((game)=> {
-              let curr = this.state.dailyParks[day][game].data;
+          let gameTimesMs = Object.keys(this.state.dailyParks).map((date)=> {
+            return Object.keys(this.state.dailyParks[date]).map((game)=> {
+              let curr = this.state.dailyParks[date][game].data;
+              let day = Object.keys(this.state.dailyParks).indexOf(date);
               return mlbHelper.convertTime(curr, this.state.weatherData[curr.home_name_abbrev], day, dateInfo)
             })
           });
           let fullGameData = {};
           for (let i = 0; i < this.state.days; i++) {
+            let dailyKeys = Object.keys(this.state.dailyParks);
             // Packs game times into new game object
-            fullGameData[i] = darkSkyHelper.extractGameTimes(gameTimesMs[i], this.state.dailyParks[i]);
+            fullGameData[i] = darkSkyHelper.extractGameTimes(gameTimesMs[i], this.state.dailyParks[dailyKeys[i]]);
             // Adds hourly weather data to game object
-            fullGameData[i] = darkSkyHelper.checkHourlyPrecip(this.state.weatherData, i, fullGameData[i], this.state.dailyParks[i]);
+            fullGameData[i] = darkSkyHelper.checkHourlyPrecip(this.state.weatherData, i, fullGameData[i], this.state.dailyParks[dailyKeys[i]]);
             // Filters and sorts parks based on precipitation chance
-            fullGameData[i] = darkSkyHelper.sortParks(this.state.dailyParks[i], i, fullGameData[i]);
+            fullGameData[i] = darkSkyHelper.sortParks(this.state.dailyParks[dailyKeys[i]], i, fullGameData[i]);
           }
           this.setState({
             gameData: fullGameData,

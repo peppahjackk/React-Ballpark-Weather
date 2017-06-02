@@ -14,11 +14,11 @@ if ($conn->connect_error) {
 $sql = 'CREATE TABLE GameData
 (
   gid VARCHAR(21) PRIMARY KEY,
-  day INT NOT NULL,
+  date INT NOT NULL,
   park VARCHAR(3) NOT NULL,
   gm INT NOT NULL,
-  data VARCHAR(65450),
   status VARCHAR(15),
+  data VARCHAR(65450),
   ts TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 )';
 
