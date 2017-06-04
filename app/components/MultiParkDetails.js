@@ -12,8 +12,9 @@ export default class MultiParkDetails extends React.Component {
   }
   
   render() {
-    let emptyPark = [], highChanceTable;
-    let gameData = this.props.gameData;
+    let highChanceTable,
+        lowChanceList,
+    gameData = this.props.gameData;
     // Places high chance parks into a table
     if (gameData.high.length) {
       highChanceTable = <Table celled compact unstackable className='precipTable'>
@@ -36,25 +37,30 @@ export default class MultiParkDetails extends React.Component {
           </Table>
     } else {
       // Delivers the good news that no games have a high precipitation chance
-      highChanceTable = <div><Header as='h3' className='infoSubHeader noHighChanceHeader'>No parks have a high chance of precipitation!</Header> <Divider /></div>
+      highChanceTable = <div><Header as='h3' className='infoSubHeader noHighChanceHeader'>No more games have a high chance of rain!</Header> <Divider /></div>
     }
-    
-    // Places Low chance parks into a list
-    let lowChanceList = gameData.low.map((currPark) => {
-      let parkData = currPark[Object.keys(currPark)[0]];
-      return (<li key={parkData[2].park+parkData[2].gm} className='listItem'>{parkData[2].data.away_name_abbrev} vs {parkData[2].park} <PrecipPercent parkData={parkData} /></li>)
-    });
 
-    // Adds Dome parks to the end of the low chance parks list
-    let domeList = gameData.dome.map((currPark) => {
-      let parkData = currPark[Object.keys(currPark)[0]];
-      return (<li key={parkData[2].park+parkData[2].gm} className='listItem'>{parkData[2].data.away_name_abbrev} vs {parkData[2].park} -%</li>)});
-    
-    // Adds a dash to keep the two column list looking even stevens 
-    let lowChanceNum = gameData.low.length + gameData.dome.length;
-    if (lowChanceNum % 2) {
-      emptyPark.push('-');
-    }  
+      // Places Low chance parks into a list
+      lowChanceList = gameData.low.map((currPark) => {
+        let parkData = currPark[Object.keys(currPark)[0]];
+        return (<li key={parkData[2].park+parkData[2].gm} className='listItem'>{parkData[2].data.away_name_abbrev} vs {parkData[2].park} <PrecipPercent parkData={parkData} /></li>)
+      });
+
+      // Adds Dome parks to the end of the low chance parks list
+      gameData.dome.map((currPark) => {
+        let parkData = currPark[Object.keys(currPark)[0]];
+        lowChanceList.push(<li key={parkData[2].park+parkData[2].gm} className='listItem'>{parkData[2].data.away_name_abbrev} vs {parkData[2].park} -%</li>);
+      return; 
+      });
+
+      // Adds a dash to keep the two column list looking even stevens 
+        if (!lowChanceList.length) {
+          lowChanceList.push(<li key={'emptyPark1'} className='listItem'>n/a</li>);
+          lowChanceList.push(<li key={'emptyPark2'} className='listItem'>n/a</li>);
+        } else if (lowChanceList.length % 2) {
+        lowChanceList.push(<li key={'emptyPark'+this.props.day} className='listItem'>-</li>);
+      } 
+                         
     return (
       <Grid.Column tablet={16} mobile={16} computer={5}>
         <div className='detailsContainer'>
@@ -65,11 +71,7 @@ export default class MultiParkDetails extends React.Component {
         <div className='detailsContainer'>
           {highChanceTable}
           <Header as='h4' className='infoHeader noMarginTop'>Low or No Chance Parks</Header>
-          <ul className='list lowChance'>
-            {lowChanceList}
-            {domeList}
-            {emptyPark.map((park) => <li key={'emptyPark'+this.props.day} className='listItem'>-</li>)}
-          </ul>
+          <ul className='list lowChance'>{lowChanceList}</ul>     
           <p className='infoSubHeader'>* indicates game time data</p>
         </div>
       </Grid.Column>

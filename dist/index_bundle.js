@@ -30792,11 +30792,9 @@ var MultiParkDetails = function (_React$Component) {
   _createClass(MultiParkDetails, [{
     key: 'render',
     value: function render() {
-      var _this2 = this;
-
-      var emptyPark = [],
-          highChanceTable = void 0;
-      var gameData = this.props.gameData;
+      var highChanceTable = void 0,
+          lowChanceList = void 0,
+          gameData = this.props.gameData;
       // Places high chance parks into a table
       if (gameData.high.length) {
         highChanceTable = _react2.default.createElement(
@@ -30851,7 +30849,7 @@ var MultiParkDetails = function (_React$Component) {
           _react2.default.createElement(
             _semanticUiReact.Header,
             { as: 'h3', className: 'infoSubHeader noHighChanceHeader' },
-            'No parks have a high chance of precipitation!'
+            'No more games have a high chance of rain!'
           ),
           ' ',
           _react2.default.createElement(_semanticUiReact.Divider, null)
@@ -30859,7 +30857,7 @@ var MultiParkDetails = function (_React$Component) {
       }
 
       // Places Low chance parks into a list
-      var lowChanceList = gameData.low.map(function (currPark) {
+      lowChanceList = gameData.low.map(function (currPark) {
         var parkData = currPark[Object.keys(currPark)[0]];
         return _react2.default.createElement(
           'li',
@@ -30873,23 +30871,39 @@ var MultiParkDetails = function (_React$Component) {
       });
 
       // Adds Dome parks to the end of the low chance parks list
-      var domeList = gameData.dome.map(function (currPark) {
+      gameData.dome.map(function (currPark) {
         var parkData = currPark[Object.keys(currPark)[0]];
-        return _react2.default.createElement(
+        lowChanceList.push(_react2.default.createElement(
           'li',
           { key: parkData[2].park + parkData[2].gm, className: 'listItem' },
           parkData[2].data.away_name_abbrev,
           ' vs ',
           parkData[2].park,
           ' -%'
-        );
+        ));
+        return;
       });
 
       // Adds a dash to keep the two column list looking even stevens 
-      var lowChanceNum = gameData.low.length + gameData.dome.length;
-      if (lowChanceNum % 2) {
-        emptyPark.push('-');
+      if (!lowChanceList.length) {
+        lowChanceList.push(_react2.default.createElement(
+          'li',
+          { key: 'emptyPark1', className: 'listItem' },
+          'n/a'
+        ));
+        lowChanceList.push(_react2.default.createElement(
+          'li',
+          { key: 'emptyPark2', className: 'listItem' },
+          'n/a'
+        ));
+      } else if (lowChanceList.length % 2) {
+        lowChanceList.push(_react2.default.createElement(
+          'li',
+          { key: 'emptyPark' + this.props.day, className: 'listItem' },
+          '-'
+        ));
       }
+
       return _react2.default.createElement(
         _semanticUiReact.Grid.Column,
         { tablet: 16, mobile: 16, computer: 5 },
@@ -30922,15 +30936,7 @@ var MultiParkDetails = function (_React$Component) {
           _react2.default.createElement(
             'ul',
             { className: 'list lowChance' },
-            lowChanceList,
-            domeList,
-            emptyPark.map(function (park) {
-              return _react2.default.createElement(
-                'li',
-                { key: 'emptyPark' + _this2.props.day, className: 'listItem' },
-                '-'
-              );
-            })
+            lowChanceList
           ),
           _react2.default.createElement(
             'p',
