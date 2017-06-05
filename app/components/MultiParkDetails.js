@@ -14,7 +14,7 @@ export default class MultiParkDetails extends React.Component {
   render() {
     let highChanceTable,
         lowChanceList,
-    gameData = this.props.gameData;
+        gameData = this.props.gameData;
     // Places high chance parks into a table
     if (gameData.high.length) {
       highChanceTable = <Table celled compact unstackable className='precipTable'>
@@ -22,6 +22,7 @@ export default class MultiParkDetails extends React.Component {
             <Table.Body>
               {gameData.high.map((currPark) => {
                let parkData = currPark[Object.keys(currPark)[0]];
+               console.log(parkData);
                 return (<Table.Row key={parkData[2].park+parkData[2].gm}>
                   <Table.Cell>{parkData[2].data.away_name_abbrev} vs {parkData[2].park}</Table.Cell>
                   <Table.Cell><GameTime data={parkData[2].data} /></Table.Cell>

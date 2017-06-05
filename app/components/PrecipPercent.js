@@ -13,7 +13,7 @@ export default class PrecipPercent extends React.Component {
     } 
     return(
       <span>
-        {Math.round(this.props.parkData[1].precipProbability * 100)}%{gameTime}
+        {Math.round(this.props.parkData[1][0].precipProbability * 100)}%{gameTime}
       </span>
     )
   }

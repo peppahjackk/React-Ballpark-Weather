@@ -43,18 +43,20 @@ export default class getWeatherData {
         return;
       }
       // Sets initial precipitation percentage to the overall chance for the day 
-      precipitationPercentage[game] = [false,info[park].data.daily.data[day],gameData[game]];
+      precipitationPercentage[game] = [false,[info[park].data.daily.data[day]],gameData[game]];
+      let hourlyData = info[park].data.hourly.data;
       // If the game is less than 48 hours away pull weather data from the hour nearest game time
       if (gameTimes[game] - (info[park].data.currently.time * 1000) < 172800000 && gameTimes[game] - (info[park].data.currently.time * 1000) > 0) {
-        Object.keys(info[park].data.hourly.data).filter((hour)=> {
-          if ((-3600000 <= (info[park].data.hourly.data[hour].time * 1000) - gameTimes[game] && (info[park].data.hourly.data[hour].time * 1000) - gameTimes[game] <= 360000)) {
-            precipitationPercentage[game] = [true,info[park].data.hourly.data[hour],gameData[game]];
+        Object.keys(hourlyData).map((hour)=> {
+          hour = parseInt(hour);
+          if ((-3600000 <= (hourlyData[hour].time * 1000) - gameTimes[game] && (hourlyData[hour].time * 1000) - gameTimes[game] <= 360000)) {
+            precipitationPercentage[game] = [true,[hourlyData[hour],hourlyData[hour+1],hourlyData[hour+2]],gameData[game]];
             return;
           }
           return false;
         })
       } else if (gameTimes[game] - (info[park].data.currently.time * 1000) < 0) {
-        precipitationPercentage[game] = [false,info[park].data.currently,gameData[game]];
+        precipitationPercentage[game] = [false,[info[park].data.currently],gameData[game]];
       }
       return;
     });
@@ -71,16 +73,16 @@ export default class getWeatherData {
       } else if ((['ARI','HOU','MIA','MIL','SEA','TB','TOR'].indexOf(parks[a].data.home_name_abbrev) > -1)) {
         return 1;
       }
-      return parksPlus[parks[b].data.home_name_abbrev+parks[b].data.game_nbr][1].precipProbability - parksPlus[parks[a].data.home_name_abbrev+parks[a].data.game_nbr][1].precipProbability;
+      return parksPlus[parks[b].data.home_name_abbrev+parks[b].data.game_nbr][1][0].precipProbability - parksPlus[parks[a].data.home_name_abbrev+parks[a].data.game_nbr][1][0].precipProbability;
     })
     sortedParks = sortedParks.slice(0);
     for (let park in sortedParks) {
       let parkData = parksPlus[parks[sortedParks[park]].data.home_name_abbrev+parks[sortedParks[park]].data.game_nbr];
       let parkObj = {};
        parkObj[sortedParks[park]] = parkData;
-      if (typeof parkData[1] != 'object') {
+      if (typeof parkData[1][0] != 'object') {
         finalParksPlus.dome.push(parkObj);
-      } else if (parkData[1].precipProbability >= 0.4) {
+      } else if (parkData[1][0].precipProbability >= 0.4) {
         let parkName = sortedParks[park];
         finalParksPlus.high.push(parkObj);
       } else {

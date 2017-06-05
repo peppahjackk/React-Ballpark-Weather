@@ -30378,6 +30378,7 @@ var FiveDayLeague = function (_React$Component) {
           // Filters and sorts parks based on precipitation chance
           fullGameData[i] = _darkSkyHelper2.default.sortParks(_this2.state.dailyParks[dailyKeys[i]], i, fullGameData[i]);
         }
+        console.log(fullGameData);
         _this2.setState({
           gameData: fullGameData,
           isLoading: false
@@ -30806,6 +30807,7 @@ var MultiParkDetails = function (_React$Component) {
             null,
             gameData.high.map(function (currPark) {
               var parkData = currPark[Object.keys(currPark)[0]];
+              console.log(parkData);
               return _react2.default.createElement(
                 _semanticUiReact.Table.Row,
                 { key: parkData[2].park + parkData[2].gm },
@@ -30998,7 +31000,7 @@ var PrecipPercent = function (_React$Component) {
       return _react2.default.createElement(
         'span',
         null,
-        Math.round(this.props.parkData[1].precipProbability * 100),
+        Math.round(this.props.parkData[1][0].precipProbability * 100),
         '%',
         gameTime
       );
@@ -31203,18 +31205,20 @@ var getWeatherData = function () {
           return;
         }
         // Sets initial precipitation percentage to the overall chance for the day 
-        precipitationPercentage[game] = [false, info[park].data.daily.data[day], gameData[game]];
+        precipitationPercentage[game] = [false, [info[park].data.daily.data[day]], gameData[game]];
+        var hourlyData = info[park].data.hourly.data;
         // If the game is less than 48 hours away pull weather data from the hour nearest game time
         if (gameTimes[game] - info[park].data.currently.time * 1000 < 172800000 && gameTimes[game] - info[park].data.currently.time * 1000 > 0) {
-          Object.keys(info[park].data.hourly.data).filter(function (hour) {
-            if (-3600000 <= info[park].data.hourly.data[hour].time * 1000 - gameTimes[game] && info[park].data.hourly.data[hour].time * 1000 - gameTimes[game] <= 360000) {
-              precipitationPercentage[game] = [true, info[park].data.hourly.data[hour], gameData[game]];
+          Object.keys(hourlyData).map(function (hour) {
+            hour = parseInt(hour);
+            if (-3600000 <= hourlyData[hour].time * 1000 - gameTimes[game] && hourlyData[hour].time * 1000 - gameTimes[game] <= 360000) {
+              precipitationPercentage[game] = [true, [hourlyData[hour], hourlyData[hour + 1], hourlyData[hour + 2]], gameData[game]];
               return;
             }
             return false;
           });
         } else if (gameTimes[game] - info[park].data.currently.time * 1000 < 0) {
-          precipitationPercentage[game] = [false, info[park].data.currently, gameData[game]];
+          precipitationPercentage[game] = [false, [info[park].data.currently], gameData[game]];
         }
         return;
       });
@@ -31234,16 +31238,16 @@ var getWeatherData = function () {
         } else if (['ARI', 'HOU', 'MIA', 'MIL', 'SEA', 'TB', 'TOR'].indexOf(parks[a].data.home_name_abbrev) > -1) {
           return 1;
         }
-        return parksPlus[parks[b].data.home_name_abbrev + parks[b].data.game_nbr][1].precipProbability - parksPlus[parks[a].data.home_name_abbrev + parks[a].data.game_nbr][1].precipProbability;
+        return parksPlus[parks[b].data.home_name_abbrev + parks[b].data.game_nbr][1][0].precipProbability - parksPlus[parks[a].data.home_name_abbrev + parks[a].data.game_nbr][1][0].precipProbability;
       });
       sortedParks = sortedParks.slice(0);
       for (var park in sortedParks) {
         var parkData = parksPlus[parks[sortedParks[park]].data.home_name_abbrev + parks[sortedParks[park]].data.game_nbr];
         var parkObj = {};
         parkObj[sortedParks[park]] = parkData;
-        if (_typeof(parkData[1]) != 'object') {
+        if (_typeof(parkData[1][0]) != 'object') {
           finalParksPlus.dome.push(parkObj);
-        } else if (parkData[1].precipProbability >= 0.4) {
+        } else if (parkData[1][0].precipProbability >= 0.4) {
           var parkName = sortedParks[park];
           finalParksPlus.high.push(parkObj);
         } else {
