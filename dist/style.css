@@ -2,14 +2,16 @@ body {
   background: #4096ee;
 }
 footer {
-  position: fixed;
+	position:fixed;
   bottom: 0;
   width: 100%;
-  background-color: #436040;
+  background: url(images/dirt-footer-dk.svg);
+  background-size: auto 6rem;
+  background-repeat: repeat-x;
+  height: 4rem;
   color: white;
   text-align: center;
-  padding: .5rem .5rem .7rem;
-  border-top: 6px solid white;
+  padding: 2rem .5rem .7rem;
   z-index: 3;
 }
 
@@ -19,7 +21,7 @@ a {
 }
 
 a:hover {
-  color: #7abcff;
+  color: #4096ee;
   text-decoration: underline;
   transition: color 200ms; 
 }
@@ -30,17 +32,17 @@ a:hover {
 }
 
 #animate-area	{  
-	background-image: url(images/clouds1_v2.svg);
-	background-position: 0px 0px;
-	background-repeat: repeat;
-	animation: animatedBackground 32s linear infinite;
-}
-
-#animate-area2 {
-	background-image: url(images/clouds2_v2.svg);
+	background-image: url(images/clouds1_v3.svg);
 	background-position: 0px 0px;
 	background-repeat: repeat;
 	animation: animatedBackground 70s linear infinite;
+}
+
+#animate-area2 {
+	background-image: url(images/clouds2_v3.svg);
+	background-position: 0px 0px;
+	background-repeat: repeat;
+	animation: animatedBackground 32s linear infinite;
 }
 
 @media (min-width: 992px) {
