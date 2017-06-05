@@ -31,17 +31,17 @@ a:hover {
 }
 
 #animate-area	{  
-	background-image: url(images/clouds1_v2.svg);
-	background-position: 0px 0px;
-	background-repeat: repeat;
-	animation: animatedBackground 32s linear infinite;
-}
-
-#animate-area2 {
-	background-image: url(images/clouds2_v2.svg);
+	background-image: url(images/clouds1_v3.svg);
 	background-position: 0px 0px;
 	background-repeat: repeat;
 	animation: animatedBackground 70s linear infinite;
+}
+
+#animate-area2 {
+	background-image: url(images/clouds2_v3.svg);
+	background-position: 0px 0px;
+	background-repeat: repeat;
+	animation: animatedBackground 32s linear infinite;
 }
 
 @media (min-width: 992px) {
