@@ -4,10 +4,10 @@ import {
   Grid,
   Header
 } from 'semantic-ui-react'
-import darkSkyHelper from '../utils/darkSkyHelper'
-import MultiParkDetails from './MultiParkDetails'
-import Loading from './Loading'
-import PageHeader from './PageHeader'
+import weatherHelper from '../utils/weatherHelper'
+import MultiParkDetails from '../components/MultiParkDetails'
+import Loading from '../components/Loading'
+import PageHeader from '../components/PageHeader'
 import dateManip from '../utils/dateManipulation'
 import mlbHelper from '../utils/mlbHelper'
 
@@ -22,20 +22,20 @@ export default class FiveDayLeague extends React.Component {
 
     componentDidMount() {
       // Obtains game data for the next X days
-      darkSkyHelper.getParks()
+      mlbHelper.getParks()
       .then((dailyParks) => {
           this.setState({
             dailyParks: dailyParks
           })
           // Obtains weather data for necessary parks
-          return darkSkyHelper.getWeather();
+          return weatherHelper.getWeather();
         })
         .then((info)=> {
           this.setState({
             weatherData: info
           });
           // Sets the days and dates for details component headers 
-          return darkSkyHelper.formatDateInfo(this.state.dailyParks);
+          return dateManip.formatDateInfo(this.state.dailyParks);
         })
         .then((dateInfo)=> {
           this.setState({dateInfo})
@@ -51,13 +51,12 @@ export default class FiveDayLeague extends React.Component {
           for (let i = 0; i < this.state.days; i++) {
             let dailyKeys = Object.keys(this.state.dailyParks);
             // Packs game times into new game object
-            fullGameData[i] = darkSkyHelper.extractGameTimes(gameTimesMs[i], this.state.dailyParks[dailyKeys[i]]);
+            fullGameData[i] = mlbHelper.extractGameTimes(gameTimesMs[i], this.state.dailyParks[dailyKeys[i]]);
             // Adds hourly weather data to game object
-            fullGameData[i] = darkSkyHelper.checkHourlyPrecip(this.state.weatherData, i, fullGameData[i], this.state.dailyParks[dailyKeys[i]]);
+            fullGameData[i] = weatherHelper.checkHourlyPrecip(this.state.weatherData, i, fullGameData[i], this.state.dailyParks[dailyKeys[i]]);
             // Filters and sorts parks based on precipitation chance
-            fullGameData[i] = darkSkyHelper.sortParks(this.state.dailyParks[dailyKeys[i]], i, fullGameData[i]);
+            fullGameData[i] = weatherHelper.sortParks(this.state.dailyParks[dailyKeys[i]], i, fullGameData[i]);
           }
-        console.log(fullGameData);
           this.setState({
             gameData: fullGameData,
             isLoading: false

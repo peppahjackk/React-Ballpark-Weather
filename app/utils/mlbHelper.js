@@ -1,4 +1,34 @@
+import axios from 'axios'
+
 export default class mlbHelper {
+  // Calls php script to obtain and organize game data from DB
+  static getParks() {
+    let allParkData = {};
+    return axios.post('./getParks.php')
+      .then((info) => {
+        let parkData = info;
+        Object.keys(parkData.data).map((date) => {
+          let games = parkData.data[date];
+          allParkData[date] = {};
+          Object.keys(games).map((game) => {
+            allParkData[date][game] = games[game];
+          })
+        })
+        return allParkData;
+      })
+      .catch(e => {
+        console.log(e);
+      })
+  }
+  
+  static extractGameTimes(gameTimes, gameData) {
+    let parksPlus = {};
+    for (let game in gameTimes) {
+      parksPlus[gameTimes[game].park] = gameTimes[game].time;
+    }
+    return parksPlus;
+  }
+  
   static convertTime(game, weather, day, dateInfo) {
     let hours, minutes;
     const time = game.event_time;

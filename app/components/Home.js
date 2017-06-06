@@ -1,7 +1,7 @@
 import React from 'react';
 import { Grid, Container } from 'semantic-ui-react'
 import PageHeader from './PageHeader'
-import FiveDayLeague from './FiveDayLeague'
+import FullLeague from '../containers/FullLeagueContainer'
 
 export default class Home extends React.Component {
   render() {
@@ -11,7 +11,7 @@ export default class Home extends React.Component {
           <Grid.Row>    
             <PageHeader/>
           </Grid.Row>
-          <FiveDayLeague header='Ballpark Weather'></FiveDayLeague>
+          <FullLeague header='Ballpark Weather'></FullLeague>
         </Grid>
       </Container>
     )
