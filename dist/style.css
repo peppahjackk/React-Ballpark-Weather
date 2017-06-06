@@ -135,6 +135,10 @@ a:hover {
 	padding: 0.25rem 0;
 }
 
+.isHourly {
+	border-bottom: 1px dotted;
+}
+
 .header.noHighChanceHeader {
 	padding: 0.5rem 0.5rem 0;
 }
