@@ -5,6 +5,7 @@ import PrecipPercent from './PrecipPercent'
 import PrecipType from './PrecipType'
 import DetailsHeader from './DetailsHeader'
 import officialTeamTwitter from '../utils/officialTeamTwitter'
+import HourlyPopup from './HourlyPopup'
 
 export default class MultiParkDetails extends React.Component {
   constructor(props) {
@@ -26,7 +27,7 @@ export default class MultiParkDetails extends React.Component {
                 return (<Table.Row key={parkData[2].park+parkData[2].gm}>
                   <Table.Cell>{parkData[2].data.away_name_abbrev} vs {parkData[2].park}</Table.Cell>
                   <Table.Cell><GameTime data={parkData[2].data} /></Table.Cell>
-                  <Table.Cell><PrecipPercent parkData={parkData} /> <PrecipType parkData={parkData} /></Table.Cell>
+                  <HourlyPopup parkData={parkData} />
                   <Table.Cell>
                     <a href={'http://www.twitter.com/' + officialTeamTwitter.twitterLinks[parkData[2].park]} target="_blank" className='infoIconLink'>
                       <img src="images/icons/social-1_logo-twitter.svg" alt="twitter" className='infoIcon' />

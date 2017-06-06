@@ -56,7 +56,7 @@ export default class getWeatherData {
           return false;
         })
       } else if (gameTimes[game] - (info[park].data.currently.time * 1000) < 0) {
-        precipitationPercentage[game] = [false,[info[park].data.currently],gameData[game]];
+        precipitationPercentage[game] = [false,[info[park].data.currently,hourlyData[0],hourlyData[1]],gameData[game]];
       }
       return;
     });

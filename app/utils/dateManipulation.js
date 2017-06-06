@@ -14,6 +14,19 @@ export default class dateManip {
   
   static prettifyTime(time) {
     let chosenTime = new Date(parseInt(time + '000'));
-    return chosenTime.getHours() + ':' + chosenTime.getMinutes() + ':' + chosenTime.getSeconds();
+    return chosenTime.getHours() + ':0' + chosenTime.getMinutes() + ':0' + chosenTime.getSeconds();
+  }
+  
+  static convertTo(time, zone = 5) {
+    let d = new Date(time);
+    
+    time += (d.getTimezoneOffset() * 60);
+    time -= zone * 60 * 60;
+    return time;
+  }
+  
+  static stripMinutes(time) {
+    let stripped = time.slice(0,-5);
+    return stripped + '00';
   }
 }
