@@ -26,7 +26,8 @@ export default class dateManip {
   }
   
   static stripMinutes(time) {
-    let stripped = time.slice(0,-5);
-    return stripped + '00';
+    let strippedTime = time.slice(0,-6);
+    let strippedPM = time.substr(-3,3);
+    return strippedTime + strippedPM;
   }
 }

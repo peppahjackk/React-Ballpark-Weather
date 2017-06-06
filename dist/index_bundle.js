@@ -16233,8 +16233,9 @@ var dateManip = function () {
   }, {
     key: 'stripMinutes',
     value: function stripMinutes(time) {
-      var stripped = time.slice(0, -5);
-      return stripped + '00';
+      var strippedTime = time.slice(0, -6);
+      var strippedPM = time.substr(-3, 3);
+      return strippedTime + strippedPM;
     }
   }]);
 
@@ -30856,7 +30857,7 @@ var HourlyPopup = function (_React$Component) {
               _react2.default.createElement(
                 _semanticUiReact.Header,
                 { as: 'h4' },
-                _dateManipulation2.default.stripMinutes(this.props.parkData[2].data.event_time)
+                this.props.time
               ),
               _react2.default.createElement(_PrecipPercent2.default, { parkData: this.props.parkData, noStar: true }),
               ' ',
@@ -31071,6 +31072,10 @@ var _HourlyPopup = __webpack_require__(482);
 
 var _HourlyPopup2 = _interopRequireDefault(_HourlyPopup);
 
+var _dateManipulation = __webpack_require__(255);
+
+var _dateManipulation2 = _interopRequireDefault(_dateManipulation);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -31106,8 +31111,10 @@ var MultiParkDetails = function (_React$Component) {
             gameData.high.map(function (currPark) {
               var isHourly = void 0;
               var parkData = currPark[Object.keys(currPark)[0]];
-              if (parkData[0]) {
-                isHourly = _react2.default.createElement(_HourlyPopup2.default, { parkData: parkData });
+              if (parkData[0] === 'hourly') {
+                isHourly = _react2.default.createElement(_HourlyPopup2.default, { parkData: parkData, time: _dateManipulation2.default.stripMinutes(parkData[2].data.event_time) });
+              } else if (parkData[0] === 'current') {
+                isHourly = _react2.default.createElement(_HourlyPopup2.default, { parkData: parkData, time: 'Current' });
               } else {
                 isHourly = _react2.default.createElement(
                   _semanticUiReact.Table.Cell,
@@ -31395,24 +31402,24 @@ var getWeatherData = function () {
       Object.keys(gameTimes).map(function (game) {
         var park = game.slice(0, -1);
         if (['ARI', 'HOU', 'MIA', 'MIL', 'SEA', 'TB', 'TOR'].indexOf(park) > -1) {
-          precipitationPercentage[game] = [false, 0, gameData[game]];
+          precipitationPercentage[game] = ['dome', 0, gameData[game]];
           return;
         }
         // Sets initial precipitation percentage to the overall chance for the day 
-        precipitationPercentage[game] = [false, [info[park].data.daily.data[day]], gameData[game]];
+        precipitationPercentage[game] = ['daily', [info[park].data.daily.data[day]], gameData[game]];
         var hourlyData = info[park].data.hourly.data;
         // If the game is less than 48 hours away pull weather data from the hour nearest game time
         if (gameTimes[game] - info[park].data.currently.time * 1000 < 172800000 && gameTimes[game] - info[park].data.currently.time * 1000 > 0) {
           Object.keys(hourlyData).map(function (hour) {
             hour = parseInt(hour);
             if (-3600000 <= hourlyData[hour].time * 1000 - gameTimes[game] && hourlyData[hour].time * 1000 - gameTimes[game] <= 360000) {
-              precipitationPercentage[game] = [true, [hourlyData[hour], hourlyData[hour + 1], hourlyData[hour + 2]], gameData[game]];
+              precipitationPercentage[game] = ['hourly', [hourlyData[hour], hourlyData[hour + 1], hourlyData[hour + 2]], gameData[game]];
               return;
             }
             return false;
           });
         } else if (gameTimes[game] - info[park].data.currently.time * 1000 < 0) {
-          precipitationPercentage[game] = [false, [info[park].data.currently, hourlyData[0], hourlyData[1]], gameData[game]];
+          precipitationPercentage[game] = ['current', [info[park].data.currently, hourlyData[0], hourlyData[1]], gameData[game]];
         }
         return;
       });
@@ -31424,7 +31431,11 @@ var getWeatherData = function () {
   }, {
     key: 'sortParks',
     value: function sortParks(parks, day, parksPlus) {
-      var finalParksPlus = { high: [], low: [], dome: [] };
+      var finalParksPlus = {
+        high: [],
+        low: [],
+        dome: []
+      };
       var sortedParks = Object.keys(parks).sort(function (a, b) {
         // Pushes any DOME park to the bottom of the list
         if (['ARI', 'HOU', 'MIA', 'MIL', 'SEA', 'TB', 'TOR'].indexOf(parks[b].data.home_name_abbrev) > -1) {

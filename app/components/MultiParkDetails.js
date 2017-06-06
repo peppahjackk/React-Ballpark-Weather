@@ -6,6 +6,7 @@ import PrecipType from './PrecipType'
 import DetailsHeader from './DetailsHeader'
 import officialTeamTwitter from '../utils/officialTeamTwitter'
 import HourlyPopup from './HourlyPopup'
+import dateManipulation from '../utils/dateManipulation'
 
 export default class MultiParkDetails extends React.Component {
   constructor(props) {
@@ -24,8 +25,10 @@ export default class MultiParkDetails extends React.Component {
               {gameData.high.map((currPark) => {
                 let isHourly;
                 let parkData = currPark[Object.keys(currPark)[0]];
-                if (parkData[0]) {
-                  isHourly = <HourlyPopup parkData={parkData} />;
+                if (parkData[0] === 'hourly') {
+                  isHourly = <HourlyPopup parkData={parkData} time={dateManipulation.stripMinutes(parkData[2].data.event_time)}/>;
+                } else if (parkData[0] === 'current') {
+                  isHourly = <HourlyPopup parkData={parkData} time='Current' />
                 } else {
                   isHourly = <Table.Cell><PrecipPercent parkData={parkData} /> <PrecipType parkData={parkData} /></Table.Cell>;
                 }

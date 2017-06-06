@@ -15,7 +15,7 @@ export default class HourlyPopup extends React.Component {
         <Grid centered divided columns={3}>
           <Grid.Row>
             <Grid.Column>
-              <Header as='h4'>{dateManipulation.stripMinutes(this.props.parkData[2].data.event_time)}</Header>
+              <Header as='h4'>{this.props.time}</Header>
               <PrecipPercent parkData={this.props.parkData}  noStar/> <PrecipType parkData={this.props.parkData} />
             </Grid.Column>
             <Grid.Column>
