@@ -5,6 +5,8 @@ import PrecipPercent from './PrecipPercent'
 import PrecipType from './PrecipType'
 import DetailsHeader from './DetailsHeader'
 import officialTeamTwitter from '../utils/officialTeamTwitter'
+import HourlyPopup from './HourlyPopup'
+import dateManipulation from '../utils/dateManipulation'
 
 export default class MultiParkDetails extends React.Component {
   constructor(props) {
@@ -14,18 +16,26 @@ export default class MultiParkDetails extends React.Component {
   render() {
     let highChanceTable,
         lowChanceList,
-    gameData = this.props.gameData;
+        gameData = this.props.gameData;
     // Places high chance parks into a table
     if (gameData.high.length) {
       highChanceTable = <Table celled compact unstackable className='precipTable'>
             <DetailsHeader />
             <Table.Body>
               {gameData.high.map((currPark) => {
-               let parkData = currPark[Object.keys(currPark)[0]];
+                let isHourly;
+                let parkData = currPark[Object.keys(currPark)[0]];
+                if (parkData[0] === 'hourly') {
+                  isHourly = <HourlyPopup parkData={parkData} time={dateManipulation.stripMinutes(parkData[2].data.event_time)}/>;
+                } else if (parkData[0] === 'current') {
+                  isHourly = <HourlyPopup parkData={parkData} time='Current' />
+                } else {
+                  isHourly = <Table.Cell><PrecipPercent parkData={parkData} /> <PrecipType parkData={parkData} /></Table.Cell>;
+                }
                 return (<Table.Row key={parkData[2].park+parkData[2].gm}>
                   <Table.Cell>{parkData[2].data.away_name_abbrev} vs {parkData[2].park}</Table.Cell>
                   <Table.Cell><GameTime data={parkData[2].data} /></Table.Cell>
-                  <Table.Cell><PrecipPercent parkData={parkData} /> <PrecipType parkData={parkData} /></Table.Cell>
+                  {isHourly}
                   <Table.Cell>
                     <a href={'http://www.twitter.com/' + officialTeamTwitter.twitterLinks[parkData[2].park]} target="_blank" className='infoIconLink'>
                       <img src="images/icons/social-1_logo-twitter.svg" alt="twitter" className='infoIcon' />

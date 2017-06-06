@@ -57,6 +57,7 @@ export default class FiveDayLeague extends React.Component {
             // Filters and sorts parks based on precipitation chance
             fullGameData[i] = darkSkyHelper.sortParks(this.state.dailyParks[dailyKeys[i]], i, fullGameData[i]);
           }
+        console.log(fullGameData);
           this.setState({
             gameData: fullGameData,
             isLoading: false
