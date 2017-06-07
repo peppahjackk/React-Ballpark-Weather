@@ -8,8 +8,9 @@ footer {
   background: url(images/dirt-footer-dk.svg);
   background-size: auto 6rem;
   background-repeat: repeat-x;
-  height: 4rem;
+  min-height: 4rem;
   color: white;
+	font-size: .85rem;
   text-align: center;
   padding: 2rem .5rem .7rem;
   z-index: 3;
@@ -35,23 +36,27 @@ a:hover {
 	background-image: url(images/clouds1_v3.svg);
 	background-position: 0px 0px;
 	background-repeat: repeat;
-	animation: animatedBackground 70s linear infinite;
 }
 
 #animate-area2 {
 	background-image: url(images/clouds2_v3.svg);
 	background-position: 0px 0px;
 	background-repeat: repeat;
-	animation: animatedBackground 32s linear infinite;
 }
 
 @media (min-width: 992px) {
 	#animate-area {
 		height: 100%;
+		animation: animatedBackground 70s linear infinite;
 	}
 	
 	#animate-area2 {
 		height: 100%;
+		animation: animatedBackground 32s linear infinite;
+	}
+	
+	footer {
+		font-size: 1rem;
 	}
 }
 

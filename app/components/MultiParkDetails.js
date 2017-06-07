@@ -47,7 +47,7 @@ export default class MultiParkDetails extends React.Component {
           </Table>
     } else {
       // Delivers the good news that no games have a high precipitation chance
-      highChanceTable = <div><Header as='h3' className='infoSubHeader noHighChanceHeader'>No more games have a high chance of rain!</Header> <Divider /></div>
+      highChanceTable = <div><Header as='h3' className='infoSubHeader noHighChanceHeader'>No games have a high chance of rain!</Header> <Divider /></div>
     }
 
       // Places Low chance parks into a list
