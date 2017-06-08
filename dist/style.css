@@ -19,6 +19,7 @@ footer {
 a {
   color: white;
   text-decoration: underline;
+	white-space: nowrap;
 }
 
 a:hover {
@@ -189,15 +190,24 @@ a:hover {
 	margin-top: 0 !important;
 }
 
-.errorMsg {
+.errorContainer {
 	min-height: 6rem;
 	padding: 1.5rem;
 }
 
-.errorMsg p {
+.errorContainer p {
 	color: #fff;
 }
 
-.errorMsg p:nth-child(2) {
+.errorContainer p:nth-child(2) {
 	padding-top: 1rem;
+}
+
+.errorMsg {
+	padding: .5rem;
+	background-color: white;
+}
+
+.errorMsg p {
+	color: #436040;
 }
