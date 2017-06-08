@@ -99,7 +99,7 @@ a:hover {
 }
 
 .headerImg {
-	width: 300px;
+	width: 270px;
 	padding: 0 .5rem;
 }
 
@@ -187,4 +187,17 @@ a:hover {
 
 .noMarginTop {
 	margin-top: 0 !important;
+}
+
+.errorMsg {
+	min-height: 6rem;
+	padding: 1.5rem;
+}
+
+.errorMsg p {
+	color: #fff;
+}
+
+.errorMsg p:nth-child(2) {
+	padding-top: 1rem;
 }

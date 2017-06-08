@@ -7,6 +7,7 @@ import {
 import weatherHelper from '../utils/weatherHelper'
 import MultiParkDetails from '../components/MultiParkDetails'
 import Loading from '../components/Loading'
+import ErrorMsg from '../components/ErrorMsg'
 import PageHeader from '../components/PageHeader'
 import dateManip from '../utils/dateManipulation'
 import mlbHelper from '../utils/mlbHelper'
@@ -64,21 +65,27 @@ export default class FiveDayLeague extends React.Component {
         })
         .catch((e)=> {
           console.log(e);
+          this.setState({
+            error: e.message,
+            isLoading: false
+          })
         });
     }
 
     render() {
-      let eachDay = [];
+      let content = [];
       // Builds an array of Details components for each day
-      if (this.state.isLoading === false) {
+      if (this.state.isLoading === false && !this.state.error) {
         for (var i = 0; i < this.state.days; i++) {
-          eachDay.push( <MultiParkDetails key={i} gameData={this.state.gameData[i]} dateInfo={this.state.dateInfo} days={this.state.days} day={i}></MultiParkDetails>);
+          content.push( <MultiParkDetails key={i} gameData={this.state.gameData[i]} dateInfo={this.state.dateInfo} days={this.state.days} day={i}></MultiParkDetails>);
           }
-        }
+        } else {
+          content = <ErrorMsg e={this.state.error} />
+                       }
         return (this.state.isLoading === true ?
           <Loading days={this.state.days} header={this.props.header} subheader={this.props.subheader} /> 
         :
-          <Grid.Row columns='3' className='detailsRow'> { eachDay } </Grid.Row>
+          <Grid.Row columns='3' className='detailsRow'> { content } </Grid.Row>
         )
       }
     }
