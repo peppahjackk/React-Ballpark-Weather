@@ -37,12 +37,14 @@ a:hover {
 	background-image: url(images/clouds1_v3.svg);
 	background-position: 0px 0px;
 	background-repeat: repeat;
+	min-height: 100%;
 }
 
 #animate-area2 {
 	background-image: url(images/clouds2_v3.svg);
 	background-position: 0px 0px;
 	background-repeat: repeat;
+	min-height: 100%;
 }
 
 @media (min-width: 992px) {
