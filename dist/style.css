@@ -92,6 +92,7 @@ a:hover {
 }
 
 .header.infoHeader {
+	margin-top: 0 !important;
 	margin-bottom: 0;
 	color: white;
 	font-family: Roboto, sans-serif;
@@ -156,6 +157,7 @@ p.infoSubHeader {
 	color: white;
 	border: 1px solid white;
 	font-family: Roboto, sans-serif;
+	margin: .5rem 0 1rem;
 }
 
 .ui.thead.precipTHead {
@@ -209,9 +211,21 @@ p.infoSubHeader {
 	display: block;
 }
 
+.lowChance .precipItem {
+	font-size: 1.3em;
+	color: white;
+}
+
+.lowChance .emptyItem {
+	font-size: 1.3em;
+}
+
 @media screen and (min-width: 991px) {
-	.lowChance.listItem {
+	.lowChance .listItem {
 		display: inline-block;
+	}
+	.lowChance .listItem:last-child {
+		display: block;
 	}
 }
 

@@ -12,7 +12,7 @@ export default class PrecipPercent extends React.Component {
       gameTime = '*';
     } 
     return(
-      <span>
+      <span className='precipItem'>
         {Math.round(this.props.parkData[1][this.props.hour].precipProbability * 100)}%{gameTime}
       </span>
     )
