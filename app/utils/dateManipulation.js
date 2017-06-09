@@ -6,7 +6,7 @@ export default class dateManip {
     const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 
     // Finds weather data for an outdoor park
-    let dailyParks = Object.keys(park);
+    let dailyParks = Object.keys(park).sort((a,b)=>a-b);
     for (let i = 0; i < dailyParks.length; i++) {
       let currDate = dailyParks[i];
       let yr = currDate.substr(0, 4);
