@@ -7,7 +7,7 @@ import {
 import weatherHelper from '../utils/weatherHelper'
 import MultiParkDetails from '../components/MultiParkDetails'
 import Loading from '../components/Loading'
-import ErrorMsg from '../components/ErrorMsg'
+import Message from '../components/Message'
 import PageHeader from '../components/PageHeader'
 import dateManip from '../utils/dateManipulation'
 import mlbHelper from '../utils/mlbHelper'
@@ -78,14 +78,15 @@ export default class FiveDayLeague extends React.Component {
       if (this.state.isLoading === false && !this.state.error) {
         for (var i = 0; i < this.state.days; i++) {
           content.push( <MultiParkDetails key={i} gameData={this.state.gameData[i]} dateInfo={this.state.dateInfo} days={this.state.days} day={i}></MultiParkDetails>);
-          }
-        } else {
-          content = <ErrorMsg e={this.state.error} />
-                       }
-        return (this.state.isLoading === true ?
-          <Loading days={this.state.days} header={this.props.header} subheader={this.props.subheader} /> 
-        :
-          <Grid.Row columns='3' className='detailsRow'> { content } </Grid.Row>
-        )
+        }
+        content.push( <p className='updated'>Weather data last updated: {this.state.weatherData.ATL.ts} </p>)
+      } else {
+        content = <Message key='error' e={this.state.error} />
       }
+      return (this.state.isLoading === true ?
+        <Loading days={this.state.days} header={this.props.header} subheader={this.props.subheader} /> 
+      :
+        <Grid.Row columns='3' className='detailsRow'> { content } </Grid.Row>
+      )
+    }
     }

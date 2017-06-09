@@ -14,7 +14,8 @@ export default class Loading extends React.Component {
               <Loader active inverted size='large'>Grilling Hot Dogs...</Loader></Dimmer>
               <DetailsSkeleton />
               <DetailsSkeleton />
-              <DetailsSkeleton /> 
+              <DetailsSkeleton />
+              <p className='updated'>Weather data last updated: 0000-00-00 00:00:00</p>
           </Grid.Row>
     )
   }

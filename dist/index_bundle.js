@@ -30482,85 +30482,7 @@ EmptyTableRow.propTypes = {
 };
 
 /***/ }),
-/* 478 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _react = __webpack_require__(1);
-
-var _react2 = _interopRequireDefault(_react);
-
-var _semanticUiReact = __webpack_require__(30);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var ErrorMsg = function (_React$Component) {
-  _inherits(ErrorMsg, _React$Component);
-
-  function ErrorMsg(props) {
-    _classCallCheck(this, ErrorMsg);
-
-    return _possibleConstructorReturn(this, (ErrorMsg.__proto__ || Object.getPrototypeOf(ErrorMsg)).call(this, props));
-  }
-
-  _createClass(ErrorMsg, [{
-    key: 'render',
-    value: function render() {
-      return _react2.default.createElement(
-        _semanticUiReact.Grid.Column,
-        { tablet: 16, mobile: 16, computer: 10 },
-        _react2.default.createElement(
-          'div',
-          { className: 'detailsContainer errorContainer' },
-          _react2.default.createElement(
-            _semanticUiReact.Header,
-            { as: 'h2', className: 'infoHeader' },
-            'Oops, we\'ve committed an error!'
-          ),
-          _react2.default.createElement(
-            'p',
-            null,
-            'Try loading the page again. If the problem persists, please email the following error message to: ',
-            _react2.default.createElement(
-              'a',
-              { href: 'mailto:dev-support@ballpark-weather.com' },
-              'dev-support@ballpark-weather.com'
-            )
-          ),
-          _react2.default.createElement(
-            'div',
-            { className: 'errorMsg' },
-            _react2.default.createElement(
-              'p',
-              null,
-              this.props.e
-            )
-          )
-        )
-      );
-    }
-  }]);
-
-  return ErrorMsg;
-}(_react2.default.Component);
-
-exports.default = ErrorMsg;
-
-/***/ }),
+/* 478 */,
 /* 479 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -30925,7 +30847,12 @@ var Loading = function (_React$Component) {
         ),
         _react2.default.createElement(_DetailsSkeleton2.default, null),
         _react2.default.createElement(_DetailsSkeleton2.default, null),
-        _react2.default.createElement(_DetailsSkeleton2.default, null)
+        _react2.default.createElement(_DetailsSkeleton2.default, null),
+        _react2.default.createElement(
+          'p',
+          { className: 'updated' },
+          'Weather data last updated: 0000-00-00 00:00:00'
+        )
       );
     }
   }]);
@@ -31354,9 +31281,9 @@ var _Loading = __webpack_require__(483);
 
 var _Loading2 = _interopRequireDefault(_Loading);
 
-var _ErrorMsg = __webpack_require__(478);
+var _Message = __webpack_require__(919);
 
-var _ErrorMsg2 = _interopRequireDefault(_ErrorMsg);
+var _Message2 = _interopRequireDefault(_Message);
 
 var _PageHeader = __webpack_require__(254);
 
@@ -31452,8 +31379,15 @@ var FiveDayLeague = function (_React$Component) {
         for (var i = 0; i < this.state.days; i++) {
           content.push(_react2.default.createElement(_MultiParkDetails2.default, { key: i, gameData: this.state.gameData[i], dateInfo: this.state.dateInfo, days: this.state.days, day: i }));
         }
+        content.push(_react2.default.createElement(
+          'p',
+          { className: 'updated' },
+          'Weather data last updated: ',
+          this.state.weatherData.ATL.ts,
+          ' '
+        ));
       } else {
-        content = _react2.default.createElement(_ErrorMsg2.default, { e: this.state.error });
+        content = _react2.default.createElement(_Message2.default, { key: 'error', e: this.state.error });
       }
       return this.state.isLoading === true ? _react2.default.createElement(_Loading2.default, { days: this.state.days, header: this.props.header, subheader: this.props.subheader }) : _react2.default.createElement(
         _semanticUiReact.Grid.Row,
@@ -64303,6 +64237,151 @@ module.exports = g;
 
 module.exports = __webpack_require__(458);
 
+
+/***/ }),
+/* 919 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(1);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _semanticUiReact = __webpack_require__(30);
+
+var _MessageError = __webpack_require__(920);
+
+var _MessageError2 = _interopRequireDefault(_MessageError);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var ErrorMsg = function (_React$Component) {
+  _inherits(ErrorMsg, _React$Component);
+
+  function ErrorMsg(props) {
+    _classCallCheck(this, ErrorMsg);
+
+    return _possibleConstructorReturn(this, (ErrorMsg.__proto__ || Object.getPrototypeOf(ErrorMsg)).call(this, props));
+  }
+
+  _createClass(ErrorMsg, [{
+    key: 'render',
+    value: function render() {
+      var message = void 0;
+      if (this.props.e) {
+        message = _react2.default.createElement(_MessageError2.default, { e: this.props.e });
+      } else {
+        message = _react2.default.createElement(
+          'div',
+          { className: 'detailsContainer' },
+          _react2.default.createElement(
+            'p',
+            null,
+            this.props.msg
+          )
+        );
+      }
+      return _react2.default.createElement(
+        _semanticUiReact.Grid.Column,
+        { tablet: 16, mobile: 16, computer: 10 },
+        message
+      );
+    }
+  }]);
+
+  return ErrorMsg;
+}(_react2.default.Component);
+
+exports.default = ErrorMsg;
+
+/***/ }),
+/* 920 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(1);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _semanticUiReact = __webpack_require__(30);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var ErrorMsg = function (_React$Component) {
+  _inherits(ErrorMsg, _React$Component);
+
+  function ErrorMsg(props) {
+    _classCallCheck(this, ErrorMsg);
+
+    return _possibleConstructorReturn(this, (ErrorMsg.__proto__ || Object.getPrototypeOf(ErrorMsg)).call(this, props));
+  }
+
+  _createClass(ErrorMsg, [{
+    key: 'render',
+    value: function render() {
+      return _react2.default.createElement(
+        'div',
+        { className: 'detailsContainer errorContainer' },
+        _react2.default.createElement(
+          _semanticUiReact.Header,
+          { as: 'h2', className: 'infoHeader' },
+          'Oops, we\'ve committed an error!'
+        ),
+        _react2.default.createElement(
+          'p',
+          null,
+          'Try loading the page again. If the problem persists, please email the following error message to: ',
+          _react2.default.createElement(
+            'a',
+            { href: 'mailto:dev-support@ballpark-weather.com' },
+            'dev-support@ballpark-weather.com'
+          )
+        ),
+        _react2.default.createElement(
+          'div',
+          { className: 'errorMsg' },
+          _react2.default.createElement(
+            'p',
+            null,
+            this.props.e
+          )
+        )
+      );
+    }
+  }]);
+
+  return ErrorMsg;
+}(_react2.default.Component);
+
+exports.default = ErrorMsg;
 
 /***/ })
 /******/ ]);

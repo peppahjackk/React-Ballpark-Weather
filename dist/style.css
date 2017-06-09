@@ -145,7 +145,7 @@ p.infoSubHeader {
 	margin-top: 0;
 }
 
-@media screen and (max-width: 991px) {
+@media screen and (min-width: 991px) {
 	.detailsRow .column .detailsContainer:first-child, .detailsRow .column:first-child .detailsContainer:first-child {
 		margin-top: 1rem;
 	}
@@ -231,6 +231,14 @@ p.infoSubHeader {
 .noMarginTop {
 	margin-top: 0 !important;
 }
+
+.updated {
+	margin-top: -1.25rem;
+	color: white;
+	background-color: #4096ee;
+	padding: .5rem;
+}
+
 
 .errorContainer {
 	min-height: 6rem;
