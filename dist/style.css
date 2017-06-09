@@ -1,39 +1,44 @@
 body {
-  background: #4096ee;
+	background: #4096ee;
 }
+
 footer {
-	position:fixed;
-  bottom: 0;
-  width: 100%;
-  background: url(images/dirt-footer-dk.svg);
-  background-size: auto 6rem;
-  background-repeat: repeat-x;
-  min-height: 4rem;
-  color: white;
+	position: fixed;
+	bottom: 0;
+	width: 100%;
+	background: url(images/dirt-footer-dk.svg);
+	background-size: auto 6rem;
+	background-repeat: repeat-x;
+	min-height: 4rem;
+	color: white;
 	font-size: .85rem;
-  text-align: center;
-  padding: 2rem .5rem .7rem;
-  z-index: 3;
+	text-align: center;
+	padding: 2rem .5rem .7rem;
+	z-index: 3;
 }
 
 a {
-  color: white;
-  text-decoration: underline;
+	color: white;
+	text-decoration: underline;
 	white-space: nowrap;
 }
 
 a:hover {
-  color: #4096ee;
-  text-decoration: underline;
-  transition: color 200ms; 
+	color: #4096ee;
+	text-decoration: underline;
+	transition: color 200ms;
 }
 
 @keyframes animatedBackground {
-	from { background-position: 0 0; }
-	to { background-position: 1280px 0; }
+	from {
+		background-position: 0 0;
+	}
+	to {
+		background-position: 1280px 0;
+	}
 }
 
-#animate-area	{  
+#animate-area {
 	background-image: url(images/clouds1_v3.svg);
 	background-position: 0px 0px;
 	background-repeat: repeat;
@@ -52,12 +57,10 @@ a:hover {
 		height: 100%;
 		animation: animatedBackground 70s linear infinite;
 	}
-	
 	#animate-area2 {
 		height: 100%;
 		animation: animatedBackground 32s linear infinite;
 	}
-	
 	footer {
 		font-size: 1rem;
 	}
@@ -81,7 +84,7 @@ a:hover {
 }
 
 .skeleton {
-	min-height: 250px;
+	min-height: 350px;
 }
 
 .skeleIndicator {
@@ -94,7 +97,8 @@ a:hover {
 	font-family: Roboto, sans-serif;
 }
 
-.header.infoSubHeader, p.infoSubHeader {
+.header.infoSubHeader,
+p.infoSubHeader {
 	margin-bottom: 0;
 	color: white;
 	font-family: Roboto, sans-serif;
@@ -106,21 +110,49 @@ a:hover {
 	padding: 0 .5rem;
 }
 
+.details {
+	padding: 0.5em;
+}
+
+.detailsRow {
+	height: 100%;
+	padding: 0 0 .5rem !important;
+	z-index: 2;
+}
+
 .detailsContainer {
 	padding: .5rem;
 	border: 6px solid white;
 	border-radius: 4px;
-	margin: 1.5rem 0 1rem;
-	background: #436040; /* Old browsers */
-	background: -moz-linear-gradient(top, #436040 0%, #2f4d2e 100%); /* FF3.6-15 */
-	background: -webkit-linear-gradient(top, #436040 0%,#2f4d2e 100%); /* Chrome10-25,Safari5.1-6 */
-	background: linear-gradient(to bottom, #436040 0%,#2f4d2e 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
-	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#436040', endColorstr='#2f4d2e',GradientType=0 );
+	margin: 0 0 1rem;
+	background: #436040;
+	/* Old browsers */
+	background: -moz-linear-gradient(top, #436040 0%, #2f4d2e 100%);
+	/* FF3.6-15 */
+	background: -webkit-linear-gradient(top, #436040 0%, #2f4d2e 100%);
+	/* Chrome10-25,Safari5.1-6 */
+	background: linear-gradient(to bottom, #436040 0%, #2f4d2e 100%);
+	/* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+	filter: progid: DXImageTransform.Microsoft.gradient( startColorstr='#436040', endColorstr='#2f4d2e', GradientType=0);
 	position: relative;
 }
 
+.detailsRow .column .detailsContainer:first-child {
+	margin-top: 2rem;
+}
+
+.detailsRow .column:first-child .detailsContainer:first-child {
+	margin-top: 0;
+}
+
+@media screen and (max-width: 991px) {
+	.detailsRow .column .detailsContainer:first-child, .detailsRow .column:first-child .detailsContainer:first-child {
+		margin-top: 1rem;
+	}
+}
+
 .ui.table.precipTable {
-	background:none;
+	background: none;
 	color: white;
 	border: 1px solid white;
 	font-family: Roboto, sans-serif;
@@ -160,19 +192,27 @@ a:hover {
 	-webkit-column-gap: 4px;
 	-moz-column-count: 2;
 	-moz-column-gap: 4px;
-	color: rgb(167,167,167);
+	color: rgb(167, 167, 167);
 	margin: 0.5rem 0;
 	font-size: 0.95rem;
 }
 
-.details {
-	padding: 0.5em;
+.lowChance span {
+	white-space: nowrap;
 }
 
-.detailsRow {
-	height: 100%;
-	padding: 0 0 .5rem !important;
-	z-index: 2;
+.lowChance .divider {
+	margin: 0 0 .25rem;
+}
+
+.lowChance .listItem {
+	display: block;
+}
+
+@media screen and (min-width: 991px) {
+	.lowChance.listItem {
+		display: inline-block;
+	}
 }
 
 .infoIconLink {

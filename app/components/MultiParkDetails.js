@@ -53,13 +53,21 @@ export default class MultiParkDetails extends React.Component {
       // Places Low chance parks into a list
       lowChanceList = gameData.low.map((currPark) => {
         let parkData = currPark[Object.keys(currPark)[0]];
-        return (<li key={parkData[2].park+parkData[2].gm} className='listItem'>{parkData[2].data.away_name_abbrev} vs {parkData[2].park} <PrecipPercent parkData={parkData} /></li>)
+        let time = parkData[2].data.event_time;
+        if (['preview','pre-game','warmup'].indexOf(parkData[2].data.status.toLowerCase()) < 0) {
+             time = parkData[2].data.status;
+             }
+        return (<li key={parkData[2].park+parkData[2].gm} className='listItem'><PrecipPercent parkData={parkData} /> <span>{parkData[2].data.away_name_abbrev} vs {parkData[2].park} </span>{time}<Divider /></li>)
       });
 
       // Adds Dome parks to the end of the low chance parks list
       gameData.dome.map((currPark) => {
         let parkData = currPark[Object.keys(currPark)[0]];
-        lowChanceList.push(<li key={parkData[2].park+parkData[2].gm} className='listItem'>{parkData[2].data.away_name_abbrev} vs {parkData[2].park} -%</li>);
+        let time = parkData[2].data.event_time;
+        if (['preview','pre-game','warmup'].indexOf(parkData[2].data.status.toLowerCase()) < 0) {
+             time = parkData[2].data.status;
+             }
+        lowChanceList.push(<li key={parkData[2].park+parkData[2].gm} className='listItem'>-% <span>{parkData[2].data.away_name_abbrev} vs {parkData[2].park} </span>{time}<Divider /></li>);
       return; 
       });
 
