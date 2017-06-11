@@ -5,7 +5,8 @@ import PrecipPercent from './PrecipPercent'
 import PrecipType from './PrecipType'
 import DetailsHeader from './DetailsHeader'
 import officialTeamTwitter from '../utils/officialTeamTwitter'
-import HourlyPopup from './HourlyPopup'
+import PopupHourly from './PopupHourly'
+import PopupDaily from './PopupDaily'
 import dateManipulation from '../utils/dateManipulation'
 
 export default class MultiParkDetails extends React.Component {
@@ -26,11 +27,11 @@ export default class MultiParkDetails extends React.Component {
                 let isHourly;
                 let parkData = currPark[Object.keys(currPark)[0]];
                 if (parkData[0] === 'hourly') {
-                  isHourly = <Table.Cell><HourlyPopup parkData={parkData} time={dateManipulation.stripMinutes(parkData[2].data.event_time)}/></Table.Cell>;
+                  isHourly = <Table.Cell><PopupHourly parkData={parkData} time={dateManipulation.stripMinutes(parkData[2].data.event_time)}/></Table.Cell>;
                 } else if (parkData[0] === 'current') {
-                  isHourly = <Table.Cell><HourlyPopup parkData={parkData} time='Current' /></Table.Cell>
+                  isHourly = <Table.Cell><PopupHourly parkData={parkData} time='Current' /></Table.Cell>
                 } else {
-                  isHourly = <Table.Cell><PrecipPercent parkData={parkData} /> <PrecipType parkData={parkData} /></Table.Cell>;
+                  isHourly = <Table.Cell><PopupDaily parkData={parkData} /></Table.Cell>;
                 }
                 return (<Table.Row key={parkData[2].park+parkData[2].gm}>
                   <Table.Cell>{parkData[2].data.away_name_abbrev} vs {parkData[2].park}</Table.Cell>
@@ -55,11 +56,11 @@ console.log(this.props.gameData);
         let isHourly;
         let parkData = currPark[Object.keys(currPark)[0]];
         if (parkData[0] === 'hourly') {
-          isHourly = <HourlyPopup parkData={parkData} time={dateManipulation.stripMinutes(parkData[2].data.event_time)}/>;
+          isHourly = <PopupHourly parkData={parkData} time={dateManipulation.stripMinutes(parkData[2].data.event_time)}/>;
         } else if (parkData[0] === 'current') {
-          isHourly = <HourlyPopup parkData={parkData} time='Current' />
+          isHourly = <PopupHourly parkData={parkData} time='Current' />
         } else {
-          isHourly = <div><PrecipPercent parkData={parkData} /> <PrecipType parkData={parkData} /></div>;
+          isHourly = <PopupDaily parkData={parkData} />;
         }
         let time = parkData[2].data.event_time;
         if (['preview','pre-game','warmup'].indexOf(parkData[2].data.status.toLowerCase()) < 0) {

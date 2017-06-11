@@ -1,5 +1,4 @@
 import React from 'react'
-import { Table } from 'semantic-ui-react'
 
 export default class PrecipPercent extends React.Component {
   constructor(props) {
@@ -7,9 +6,15 @@ export default class PrecipPercent extends React.Component {
   }
   
   render() {
+    let isHighChance;
+    console.log(this.props.parkData);
+    if (this.props.parkData[1][0].precipProbability >= 0.4) {
+      console.log('high chance');
+      isHighChance = this.props.parkData[1][0].precipType;
+    }
     return(
       <span>
-        {this.props.parkData[1].precipType || 'rain'}
+        {isHighChance}
       </span>
     )
   }

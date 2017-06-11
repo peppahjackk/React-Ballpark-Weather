@@ -16244,8 +16244,6 @@ var _react = __webpack_require__(1);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _semanticUiReact = __webpack_require__(26);
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -16266,10 +16264,16 @@ var PrecipPercent = function (_React$Component) {
   _createClass(PrecipPercent, [{
     key: 'render',
     value: function render() {
+      var isHighChance = void 0;
+      console.log(this.props.parkData);
+      if (this.props.parkData[1][0].precipProbability >= 0.4) {
+        console.log('high chance');
+        isHighChance = this.props.parkData[1][0].precipType;
+      }
       return _react2.default.createElement(
         'span',
         null,
-        this.props.parkData[1].precipType || 'rain'
+        isHighChance
       );
     }
   }]);
@@ -30691,119 +30695,6 @@ var _react2 = _interopRequireDefault(_react);
 
 var _semanticUiReact = __webpack_require__(26);
 
-var _PrecipPercent = __webpack_require__(255);
-
-var _PrecipPercent2 = _interopRequireDefault(_PrecipPercent);
-
-var _PrecipType = __webpack_require__(256);
-
-var _PrecipType2 = _interopRequireDefault(_PrecipType);
-
-var _dateManipulation = __webpack_require__(149);
-
-var _dateManipulation2 = _interopRequireDefault(_dateManipulation);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var HourlyPopup = function (_React$Component) {
-  _inherits(HourlyPopup, _React$Component);
-
-  function HourlyPopup(props) {
-    _classCallCheck(this, HourlyPopup);
-
-    return _possibleConstructorReturn(this, (HourlyPopup.__proto__ || Object.getPrototypeOf(HourlyPopup)).call(this, props));
-  }
-
-  _createClass(HourlyPopup, [{
-    key: 'render',
-    value: function render() {
-      return _react2.default.createElement(
-        _semanticUiReact.Popup,
-        { trigger: _react2.default.createElement(
-            'span',
-            { className: 'isHourly' },
-            _react2.default.createElement(_PrecipPercent2.default, { parkData: this.props.parkData }),
-            ' ',
-            _react2.default.createElement(_PrecipType2.default, { parkData: this.props.parkData })
-          ), flowing: true, hoverable: true },
-        _react2.default.createElement(
-          _semanticUiReact.Grid,
-          { centered: true, divided: true, columns: 3 },
-          _react2.default.createElement(
-            _semanticUiReact.Grid.Row,
-            null,
-            _react2.default.createElement(
-              _semanticUiReact.Grid.Column,
-              null,
-              _react2.default.createElement(
-                _semanticUiReact.Header,
-                { as: 'h4' },
-                this.props.time
-              ),
-              _react2.default.createElement(_PrecipPercent2.default, { parkData: this.props.parkData, noStar: true }),
-              ' ',
-              _react2.default.createElement(_PrecipType2.default, { parkData: this.props.parkData })
-            ),
-            _react2.default.createElement(
-              _semanticUiReact.Grid.Column,
-              null,
-              _react2.default.createElement(
-                _semanticUiReact.Header,
-                { as: 'h4' },
-                '+1 Hr'
-              ),
-              _react2.default.createElement(_PrecipPercent2.default, { parkData: this.props.parkData, hour: 1, noStar: true }),
-              ' ',
-              _react2.default.createElement(_PrecipType2.default, { parkData: this.props.parkData })
-            ),
-            _react2.default.createElement(
-              _semanticUiReact.Grid.Column,
-              null,
-              _react2.default.createElement(
-                _semanticUiReact.Header,
-                { as: 'h4' },
-                '+2 Hr'
-              ),
-              _react2.default.createElement(_PrecipPercent2.default, { parkData: this.props.parkData, hour: 2, noStar: true }),
-              ' ',
-              _react2.default.createElement(_PrecipType2.default, { parkData: this.props.parkData })
-            )
-          )
-        )
-      );
-    }
-  }]);
-
-  return HourlyPopup;
-}(_react2.default.Component);
-
-exports.default = HourlyPopup;
-
-/***/ }),
-/* 482 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _react = __webpack_require__(1);
-
-var _react2 = _interopRequireDefault(_react);
-
-var _semanticUiReact = __webpack_require__(26);
-
 var _DetailsSkeleton = __webpack_require__(476);
 
 var _DetailsSkeleton2 = _interopRequireDefault(_DetailsSkeleton);
@@ -30858,7 +30749,7 @@ var Loading = function (_React$Component) {
 exports.default = Loading;
 
 /***/ }),
-/* 483 */
+/* 482 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -30922,7 +30813,7 @@ const menuTitle = 'Ballpark Weather';
 exports.default = Main;
 
 /***/ }),
-/* 484 */
+/* 483 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -30940,7 +30831,7 @@ var _react2 = _interopRequireDefault(_react);
 
 var _semanticUiReact = __webpack_require__(26);
 
-var _MessageError = __webpack_require__(485);
+var _MessageError = __webpack_require__(484);
 
 var _MessageError2 = _interopRequireDefault(_MessageError);
 
@@ -30992,7 +30883,7 @@ var ErrorMsg = function (_React$Component) {
 exports.default = ErrorMsg;
 
 /***/ }),
-/* 485 */
+/* 484 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -31067,7 +30958,7 @@ var ErrorMsg = function (_React$Component) {
 exports.default = ErrorMsg;
 
 /***/ }),
-/* 486 */
+/* 485 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -31105,9 +30996,13 @@ var _officialTeamTwitter = __webpack_require__(490);
 
 var _officialTeamTwitter2 = _interopRequireDefault(_officialTeamTwitter);
 
-var _HourlyPopup = __webpack_require__(481);
+var _PopupHourly = __webpack_require__(486);
 
-var _HourlyPopup2 = _interopRequireDefault(_HourlyPopup);
+var _PopupHourly2 = _interopRequireDefault(_PopupHourly);
+
+var _PopupDaily = __webpack_require__(920);
+
+var _PopupDaily2 = _interopRequireDefault(_PopupDaily);
 
 var _dateManipulation = __webpack_require__(149);
 
@@ -31160,21 +31055,19 @@ var MultiParkDetails = function (_React$Component) {
                   isHourly = _react2.default.createElement(
                     _semanticUiReact.Table.Cell,
                     null,
-                    _react2.default.createElement(_HourlyPopup2.default, { parkData: parkData, time: _dateManipulation2.default.stripMinutes(parkData[2].data.event_time) })
+                    _react2.default.createElement(_PopupHourly2.default, { parkData: parkData, time: _dateManipulation2.default.stripMinutes(parkData[2].data.event_time) })
                   );
                 } else if (parkData[0] === 'current') {
                   isHourly = _react2.default.createElement(
                     _semanticUiReact.Table.Cell,
                     null,
-                    _react2.default.createElement(_HourlyPopup2.default, { parkData: parkData, time: 'Current' })
+                    _react2.default.createElement(_PopupHourly2.default, { parkData: parkData, time: 'Current' })
                   );
                 } else {
                   isHourly = _react2.default.createElement(
                     _semanticUiReact.Table.Cell,
                     null,
-                    _react2.default.createElement(_PrecipPercent2.default, { parkData: parkData }),
-                    ' ',
-                    _react2.default.createElement(_PrecipType2.default, { parkData: parkData })
+                    _react2.default.createElement(_PopupDaily2.default, { parkData: parkData })
                   );
                 }
                 return _react2.default.createElement(
@@ -31227,17 +31120,11 @@ var MultiParkDetails = function (_React$Component) {
         var isHourly = void 0;
         var parkData = currPark[Object.keys(currPark)[0]];
         if (parkData[0] === 'hourly') {
-          isHourly = _react2.default.createElement(_HourlyPopup2.default, { parkData: parkData, time: _dateManipulation2.default.stripMinutes(parkData[2].data.event_time) });
+          isHourly = _react2.default.createElement(_PopupHourly2.default, { parkData: parkData, time: _dateManipulation2.default.stripMinutes(parkData[2].data.event_time) });
         } else if (parkData[0] === 'current') {
-          isHourly = _react2.default.createElement(_HourlyPopup2.default, { parkData: parkData, time: 'Current' });
+          isHourly = _react2.default.createElement(_PopupHourly2.default, { parkData: parkData, time: 'Current' });
         } else {
-          isHourly = _react2.default.createElement(
-            'div',
-            null,
-            _react2.default.createElement(_PrecipPercent2.default, { parkData: parkData }),
-            ' ',
-            _react2.default.createElement(_PrecipType2.default, { parkData: parkData })
-          );
+          isHourly = _react2.default.createElement(_PopupDaily2.default, { parkData: parkData });
         }
         var time = parkData[2].data.event_time;
         if (['preview', 'pre-game', 'warmup'].indexOf(parkData[2].data.status.toLowerCase()) < 0) {
@@ -31350,6 +31237,119 @@ var MultiParkDetails = function (_React$Component) {
 exports.default = MultiParkDetails;
 
 /***/ }),
+/* 486 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(1);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _semanticUiReact = __webpack_require__(26);
+
+var _PrecipPercent = __webpack_require__(255);
+
+var _PrecipPercent2 = _interopRequireDefault(_PrecipPercent);
+
+var _PrecipType = __webpack_require__(256);
+
+var _PrecipType2 = _interopRequireDefault(_PrecipType);
+
+var _dateManipulation = __webpack_require__(149);
+
+var _dateManipulation2 = _interopRequireDefault(_dateManipulation);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var PopupHourly = function (_React$Component) {
+  _inherits(PopupHourly, _React$Component);
+
+  function PopupHourly(props) {
+    _classCallCheck(this, PopupHourly);
+
+    return _possibleConstructorReturn(this, (PopupHourly.__proto__ || Object.getPrototypeOf(PopupHourly)).call(this, props));
+  }
+
+  _createClass(PopupHourly, [{
+    key: 'render',
+    value: function render() {
+      return _react2.default.createElement(
+        _semanticUiReact.Popup,
+        { trigger: _react2.default.createElement(
+            'span',
+            { className: 'isHourly' },
+            _react2.default.createElement(_PrecipPercent2.default, { parkData: this.props.parkData }),
+            ' ',
+            _react2.default.createElement(_PrecipType2.default, { parkData: this.props.parkData })
+          ), flowing: true, hoverable: true },
+        _react2.default.createElement(
+          _semanticUiReact.Grid,
+          { centered: true, divided: true, columns: 3 },
+          _react2.default.createElement(
+            _semanticUiReact.Grid.Row,
+            null,
+            _react2.default.createElement(
+              _semanticUiReact.Grid.Column,
+              null,
+              _react2.default.createElement(
+                _semanticUiReact.Header,
+                { as: 'h4' },
+                this.props.time
+              ),
+              _react2.default.createElement(_PrecipPercent2.default, { parkData: this.props.parkData, noStar: true }),
+              ' ',
+              _react2.default.createElement(_PrecipType2.default, { parkData: this.props.parkData })
+            ),
+            _react2.default.createElement(
+              _semanticUiReact.Grid.Column,
+              null,
+              _react2.default.createElement(
+                _semanticUiReact.Header,
+                { as: 'h4' },
+                '+1 Hr'
+              ),
+              _react2.default.createElement(_PrecipPercent2.default, { parkData: this.props.parkData, hour: 1, noStar: true }),
+              ' ',
+              _react2.default.createElement(_PrecipType2.default, { parkData: this.props.parkData })
+            ),
+            _react2.default.createElement(
+              _semanticUiReact.Grid.Column,
+              null,
+              _react2.default.createElement(
+                _semanticUiReact.Header,
+                { as: 'h4' },
+                '+2 Hr'
+              ),
+              _react2.default.createElement(_PrecipPercent2.default, { parkData: this.props.parkData, hour: 2, noStar: true }),
+              ' ',
+              _react2.default.createElement(_PrecipType2.default, { parkData: this.props.parkData })
+            )
+          )
+        )
+      );
+    }
+  }]);
+
+  return PopupHourly;
+}(_react2.default.Component);
+
+exports.default = PopupHourly;
+
+/***/ }),
 /* 487 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -31370,7 +31370,7 @@ var _reactRouter = __webpack_require__(829);
 
 var _reactRouter2 = _interopRequireDefault(_reactRouter);
 
-var _Main = __webpack_require__(483);
+var _Main = __webpack_require__(482);
 
 var _Main2 = _interopRequireDefault(_Main);
 
@@ -31438,15 +31438,15 @@ var _weatherHelper = __webpack_require__(491);
 
 var _weatherHelper2 = _interopRequireDefault(_weatherHelper);
 
-var _MultiParkDetails = __webpack_require__(486);
+var _MultiParkDetails = __webpack_require__(485);
 
 var _MultiParkDetails2 = _interopRequireDefault(_MultiParkDetails);
 
-var _Loading = __webpack_require__(482);
+var _Loading = __webpack_require__(481);
 
 var _Loading2 = _interopRequireDefault(_Loading);
 
-var _Message = __webpack_require__(484);
+var _Message = __webpack_require__(483);
 
 var _Message2 = _interopRequireDefault(_Message);
 
@@ -64402,6 +64402,76 @@ module.exports = g;
 
 module.exports = __webpack_require__(458);
 
+
+/***/ }),
+/* 920 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(1);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _semanticUiReact = __webpack_require__(26);
+
+var _PrecipPercent = __webpack_require__(255);
+
+var _PrecipPercent2 = _interopRequireDefault(_PrecipPercent);
+
+var _PrecipType = __webpack_require__(256);
+
+var _PrecipType2 = _interopRequireDefault(_PrecipType);
+
+var _dateManipulation = __webpack_require__(149);
+
+var _dateManipulation2 = _interopRequireDefault(_dateManipulation);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var PopupDaily = function (_React$Component) {
+  _inherits(PopupDaily, _React$Component);
+
+  function PopupDaily(props) {
+    _classCallCheck(this, PopupDaily);
+
+    return _possibleConstructorReturn(this, (PopupDaily.__proto__ || Object.getPrototypeOf(PopupDaily)).call(this, props));
+  }
+
+  _createClass(PopupDaily, [{
+    key: 'render',
+    value: function render() {
+      return _react2.default.createElement(
+        _semanticUiReact.Popup,
+        { trigger: _react2.default.createElement(
+            'span',
+            { className: 'isHourly' },
+            _react2.default.createElement(_PrecipPercent2.default, { parkData: this.props.parkData }),
+            ' ',
+            _react2.default.createElement(_PrecipType2.default, { parkData: this.props.parkData })
+          ), flowing: true, hoverable: true },
+        this.props.parkData[1][0].summary
+      );
+    }
+  }]);
+
+  return PopupDaily;
+}(_react2.default.Component);
+
+exports.default = PopupDaily;
 
 /***/ })
 /******/ ]);

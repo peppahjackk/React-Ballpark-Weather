@@ -4,7 +4,7 @@ import PrecipPercent from './PrecipPercent'
 import PrecipType from './PrecipType'
 import dateManipulation from '../utils/dateManipulation'
 
-export default class HourlyPopup extends React.Component {
+export default class PopupHourly extends React.Component {
   constructor(props) {
     super(props)
   }
