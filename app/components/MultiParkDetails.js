@@ -89,7 +89,7 @@ console.log(this.props.gameData);
         </div>
         <div className='detailsContainer'>
           {highChanceTable}
-          <Header as='h3' className='infoHeader noMarginTop'>Low or No Chance MLB Parks</Header>
+          <Header as='h3' className='infoHeader noMarginTop'>MLB Parks with a low rain chance</Header>
           <ul className='list lowChance'>{lowChanceList}</ul>     
           <p className='infoSubHeader'>* indicates game time data</p>
         </div>

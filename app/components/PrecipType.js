@@ -7,10 +7,9 @@ export default class PrecipPercent extends React.Component {
   
   render() {
     let isHighChance;
-    console.log(this.props.parkData);
-    if (this.props.parkData[1][0].precipProbability >= 0.4) {
+    if (this.props.parkData[1][this.props.hour].precipProbability >= 0.4) {
       console.log('high chance');
-      isHighChance = this.props.parkData[1][0].precipType;
+      isHighChance = this.props.parkData[1][this.props.hour].precipType;
     }
     return(
       <span>
@@ -18,4 +17,8 @@ export default class PrecipPercent extends React.Component {
       </span>
     )
   }
+}
+
+PrecipPercent.defaultProps = {
+  hour: 0
 }

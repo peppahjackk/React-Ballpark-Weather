@@ -252,6 +252,9 @@ p.infoSubHeader {
 	padding: .5rem;
 }
 
+.popup h4, .popup h5 {
+	white-space: nowrap;
+}
 
 .errorContainer {
 	min-height: 6rem;
