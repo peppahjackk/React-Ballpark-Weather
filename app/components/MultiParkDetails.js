@@ -57,7 +57,7 @@ export default class MultiParkDetails extends React.Component {
         if (['preview','pre-game','warmup'].indexOf(parkData[2].data.status.toLowerCase()) < 0) {
              time = parkData[2].data.status;
              }
-        return (<li key={parkData[2].park+parkData[2].gm} className='listItem'><span>{parkData[2].data.away_name_abbrev} vs {parkData[2].park} </span><PrecipPercent parkData={parkData} /> <span>{time}</span><Divider /></li>)
+        return (<li key={parkData[2].park+parkData[2].gm} className='listItem'><span className='parkItem'>{parkData[2].data.away_name_abbrev} vs {parkData[2].park}</span> - <span>{time} </span> - <PrecipPercent parkData={parkData} /><Divider /></li>)
       });
 
       // Adds Dome parks to the end of the low chance parks list
@@ -67,17 +67,9 @@ export default class MultiParkDetails extends React.Component {
         if (['preview','pre-game','warmup'].indexOf(parkData[2].data.status.toLowerCase()) < 0) {
              time = parkData[2].data.status;
              }
-        lowChanceList.push(<li key={parkData[2].park+parkData[2].gm} className='listItem'><span>{parkData[2].data.away_name_abbrev} vs {parkData[2].park} </span><span className='precipItem'>-%</span> <span>{time}</span><Divider /></li>);
+        lowChanceList.push(<li key={parkData[2].park+parkData[2].gm} className='listItem'><span className='parkItem'>{parkData[2].data.away_name_abbrev} vs {parkData[2].park}</span> - <span>{time}</span> - <span className='precipItem'>DOME</span><Divider /></li>);
       return; 
       });
-
-      // Adds a dash to keep the two column list looking even stevens 
-        if (!lowChanceList.length) {
-          lowChanceList.push(<li key={'emptyPark1'} className='listItem'>n/a</li>);
-          lowChanceList.push(<li key={'emptyPark2'} className='listItem'>n/a</li>);
-        } else if (lowChanceList.length % 2) {
-        lowChanceList.push(<li key={'emptyPark'+this.props.day} className='listItem emptyItem'>-<Divider /></li>);
-      } 
                          
     return (
       <Grid.Column tablet={16} mobile={16} computer={5}>
@@ -88,7 +80,7 @@ export default class MultiParkDetails extends React.Component {
         </div>
         <div className='detailsContainer'>
           {highChanceTable}
-          <Header as='h4' className='infoHeader noMarginTop'>Low or No Chance MLB Parks</Header>
+          <Header as='h3' className='infoHeader noMarginTop'>Low or No Chance MLB Parks</Header>
           <ul className='list lowChance'>{lowChanceList}</ul>     
           <p className='infoSubHeader'>* indicates game time data</p>
         </div>
