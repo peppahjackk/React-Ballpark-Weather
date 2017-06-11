@@ -11,7 +11,7 @@ export default class HourlyPopup extends React.Component {
   
   render() {
     return (
-      <Popup trigger={<Table.Cell><span className='isHourly'><PrecipPercent parkData={this.props.parkData}/> <PrecipType parkData={this.props.parkData} /></span></Table.Cell>} flowing hoverable>
+      <Popup trigger={<span className='isHourly'><PrecipPercent parkData={this.props.parkData}/> <PrecipType parkData={this.props.parkData} /></span>} flowing hoverable>
         <Grid centered divided columns={3}>
           <Grid.Row>
             <Grid.Column>

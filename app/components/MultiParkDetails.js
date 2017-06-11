@@ -26,9 +26,9 @@ export default class MultiParkDetails extends React.Component {
                 let isHourly;
                 let parkData = currPark[Object.keys(currPark)[0]];
                 if (parkData[0] === 'hourly') {
-                  isHourly = <HourlyPopup parkData={parkData} time={dateManipulation.stripMinutes(parkData[2].data.event_time)}/>;
+                  isHourly = <Table.Cell><HourlyPopup parkData={parkData} time={dateManipulation.stripMinutes(parkData[2].data.event_time)}/></Table.Cell>;
                 } else if (parkData[0] === 'current') {
-                  isHourly = <HourlyPopup parkData={parkData} time='Current' />
+                  isHourly = <Table.Cell><HourlyPopup parkData={parkData} time='Current' /></Table.Cell>
                 } else {
                   isHourly = <Table.Cell><PrecipPercent parkData={parkData} /> <PrecipType parkData={parkData} /></Table.Cell>;
                 }
@@ -49,15 +49,23 @@ export default class MultiParkDetails extends React.Component {
       // Delivers the good news that no games have a high precipitation chance
       highChanceTable = <div><Header as='h3' className='infoHeader noHighChanceHeader'>No games have a high chance of rain!</Header> <Divider /></div>
     }
-
+console.log(this.props.gameData);
       // Places Low chance parks into a list
       lowChanceList = gameData.low.map((currPark) => {
+        let isHourly;
         let parkData = currPark[Object.keys(currPark)[0]];
+        if (parkData[0] === 'hourly') {
+          isHourly = <HourlyPopup parkData={parkData} time={dateManipulation.stripMinutes(parkData[2].data.event_time)}/>;
+        } else if (parkData[0] === 'current') {
+          isHourly = <HourlyPopup parkData={parkData} time='Current' />
+        } else {
+          isHourly = <div><PrecipPercent parkData={parkData} /> <PrecipType parkData={parkData} /></div>;
+        }
         let time = parkData[2].data.event_time;
         if (['preview','pre-game','warmup'].indexOf(parkData[2].data.status.toLowerCase()) < 0) {
              time = parkData[2].data.status;
              }
-        return (<li key={parkData[2].park+parkData[2].gm} className='listItem'><span className='parkItem'>{parkData[2].data.away_name_abbrev} vs {parkData[2].park}</span> - <span>{time} </span> - <PrecipPercent parkData={parkData} /><Divider /></li>)
+        return (<li key={parkData[2].park+parkData[2].gm} className='listItem'><span className='parkItem'>{parkData[2].data.away_name_abbrev} vs {parkData[2].park}</span> - <span>{time} </span> - {isHourly}<Divider /></li>)
       });
 
       // Adds Dome parks to the end of the low chance parks list
