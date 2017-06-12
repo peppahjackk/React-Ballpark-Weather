@@ -54,13 +54,10 @@ export default class weatherHelper {
       let parkData = parksPlus[parks[sortedParks[park]].data.home_name_abbrev + parks[sortedParks[park]].data.game_nbr];
       let parkObj = {};
       parkObj[sortedParks[park]] = parkData;
-      console.log(parkData[1]);
       let parksHigh;
       if(typeof parkData[1][0] === 'object') {
         parksHigh = Math.max(...parkData[1].map((a)=>a.precipProbability));
       }
-      console.log(parksHigh);
-      console.log(typeof parkData[1][0]);
       if (typeof parkData[1][0] != 'object') {
         finalParksPlus.dome.push(parkObj);
       } else if (parksHigh >= 0.4) {
