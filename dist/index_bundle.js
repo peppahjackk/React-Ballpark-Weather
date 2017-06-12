@@ -9902,6 +9902,8 @@ var _react2 = _interopRequireDefault(_react);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
@@ -9921,6 +9923,14 @@ var PrecipPercent = function (_React$Component) {
     key: 'render',
     value: function render() {
       var gameTime = void 0;
+      var displayPercent = Math.round(this.props.parkData[1][this.props.hour].precipProbability * 100);
+      if (this.props.pickHighest) {
+        var hoursPrecip = this.props.parkData[1].map(function (hour) {
+          return hour.precipProbability;
+        });
+
+        displayPercent = Math.round(Math.max.apply(Math, _toConsumableArray(hoursPrecip)) * 100);
+      }
       // Adds indicator if hourly weather data is utilized
       if (this.props.parkData[0] != 'dome' && this.props.parkData[0] != 'daily' && !this.props.noStar) {
         gameTime = '*';
@@ -9928,7 +9938,7 @@ var PrecipPercent = function (_React$Component) {
       return _react2.default.createElement(
         'span',
         { className: 'precipItem' },
-        Math.round(this.props.parkData[1][this.props.hour].precipProbability * 100),
+        displayPercent,
         '%',
         gameTime
       );
@@ -31376,7 +31386,7 @@ var PopupHourly = function (_React$Component) {
         { trigger: _react2.default.createElement(
             'span',
             { className: 'isHourly' },
-            _react2.default.createElement(_PrecipPercent2.default, { parkData: this.props.parkData }),
+            _react2.default.createElement(_PrecipPercent2.default, { parkData: this.props.parkData, pickHighest: true }),
             ' ',
             precipType
           ), flowing: true, hoverable: true },
