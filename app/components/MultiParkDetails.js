@@ -50,7 +50,6 @@ export default class MultiParkDetails extends React.Component {
       // Delivers the good news that no games have a high precipitation chance
       highChanceTable = <div><Header as='h3' className='infoHeader noHighChanceHeader'>No games have a high chance of rain!</Header> <Divider /></div>
     }
-console.log(this.props.gameData);
       // Places Low chance parks into a list
       lowChanceList = gameData.low.map((currPark) => {
         let isHourly;
@@ -66,7 +65,7 @@ console.log(this.props.gameData);
         if (['preview','pre-game','warmup'].indexOf(parkData[2].data.status.toLowerCase()) < 0) {
              time = parkData[2].data.status;
              }
-        return (<li key={parkData[2].park+parkData[2].gm} className='listItem'><span className='parkItem'>{parkData[2].data.away_name_abbrev} vs {parkData[2].park}</span> - <span>{time} </span> - {isHourly}<Divider /></li>)
+        return (<li key={parkData[2].park+parkData[2].gm} className='listItem'><span className='parkItem'>{parkData[2].data.away_name_abbrev} vs {parkData[2].park}</span> - <span>{time} </span> - {isHourly}</li>)
       });
 
       // Adds Dome parks to the end of the low chance parks list
@@ -76,7 +75,7 @@ console.log(this.props.gameData);
         if (['preview','pre-game','warmup'].indexOf(parkData[2].data.status.toLowerCase()) < 0) {
              time = parkData[2].data.status;
              }
-        lowChanceList.push(<li key={parkData[2].park+parkData[2].gm} className='listItem'><span className='parkItem'>{parkData[2].data.away_name_abbrev} vs {parkData[2].park}</span> - <span>{time}</span> - <span className='precipItem'>DOME</span><Divider /></li>);
+        lowChanceList.push(<li key={parkData[2].park+parkData[2].gm} className='listItem'><span className='parkItem'>{parkData[2].data.away_name_abbrev} vs {parkData[2].park}</span> - <span>{time}</span> - <span className='precipItem'>DOME</span></li>);
       return; 
       });
                          
@@ -90,8 +89,9 @@ console.log(this.props.gameData);
         <div className='detailsContainer'>
           {highChanceTable}
           <Header as='h3' className='infoHeader noMarginTop'>MLB Parks with a low rain chance</Header>
-          <ul className='list lowChance'>{lowChanceList}</ul>     
-          <p className='infoSubHeader'>* indicates game time data</p>
+          <ul className='list lowChance'>{lowChanceList}</ul>
+          <Divider />
+          <p className='infoSubHeader indicator'>* indicates game time data</p>
         </div>
       </Grid.Column>
     )

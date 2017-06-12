@@ -252,6 +252,10 @@ p.infoSubHeader {
 	padding: .5rem;
 }
 
+.indicator {
+	margin: -0.5rem 0 0;
+}
+
 .popup h4, .popup h5 {
 	white-space: nowrap;
 }

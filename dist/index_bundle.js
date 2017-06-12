@@ -31118,7 +31118,6 @@ var MultiParkDetails = function (_React$Component) {
           _react2.default.createElement(_semanticUiReact.Divider, null)
         );
       }
-      console.log(this.props.gameData);
       // Places Low chance parks into a list
       lowChanceList = gameData.low.map(function (currPark) {
         var isHourly = void 0;
@@ -31152,8 +31151,7 @@ var MultiParkDetails = function (_React$Component) {
             ' '
           ),
           ' - ',
-          isHourly,
-          _react2.default.createElement(_semanticUiReact.Divider, null)
+          isHourly
         );
       });
 
@@ -31185,8 +31183,7 @@ var MultiParkDetails = function (_React$Component) {
             'span',
             { className: 'precipItem' },
             'DOME'
-          ),
-          _react2.default.createElement(_semanticUiReact.Divider, null)
+          )
         ));
         return;
       });
@@ -31225,9 +31222,10 @@ var MultiParkDetails = function (_React$Component) {
             { className: 'list lowChance' },
             lowChanceList
           ),
+          _react2.default.createElement(_semanticUiReact.Divider, null),
           _react2.default.createElement(
             'p',
-            { className: 'infoSubHeader' },
+            { className: 'infoSubHeader indicator' },
             '* indicates game time data'
           )
         )
@@ -31638,7 +31636,7 @@ var FiveDayLeague = function (_React$Component) {
         }
         content.push(_react2.default.createElement(
           'p',
-          { className: 'updated' },
+          { key: 'lastUpdated', className: 'updated' },
           'Weather data last updated: ',
           this.state.weatherData.ATL.ts,
           ' '
