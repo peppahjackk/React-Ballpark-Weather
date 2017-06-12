@@ -79,7 +79,7 @@ export default class FiveDayLeague extends React.Component {
         for (var i = 0; i < this.state.days; i++) {
           content.push( <MultiParkDetails key={i} gameData={this.state.gameData[i]} dateInfo={this.state.dateInfo} days={this.state.days} day={i}></MultiParkDetails>);
         }
-        content.push( <p className='updated'>Weather data last updated: {this.state.weatherData.ATL.ts} </p>)
+        content.push( <p key='lastUpdated' className='updated'>Weather data last updated: {this.state.weatherData.ATL.ts} </p>)
       } else {
         content = <Message key='error' e={this.state.error} />
       }

@@ -5,7 +5,8 @@ import PrecipPercent from './PrecipPercent'
 import PrecipType from './PrecipType'
 import DetailsHeader from './DetailsHeader'
 import officialTeamTwitter from '../utils/officialTeamTwitter'
-import HourlyPopup from './HourlyPopup'
+import PopupHourly from './PopupHourly'
+import PopupDaily from './PopupDaily'
 import dateManipulation from '../utils/dateManipulation'
 
 export default class MultiParkDetails extends React.Component {
@@ -26,11 +27,11 @@ export default class MultiParkDetails extends React.Component {
                 let isHourly;
                 let parkData = currPark[Object.keys(currPark)[0]];
                 if (parkData[0] === 'hourly') {
-                  isHourly = <HourlyPopup parkData={parkData} time={dateManipulation.stripMinutes(parkData[2].data.event_time)}/>;
+                  isHourly = <Table.Cell><PopupHourly parkData={parkData} time={dateManipulation.stripMinutes(parkData[2].data.event_time)}/></Table.Cell>;
                 } else if (parkData[0] === 'current') {
-                  isHourly = <HourlyPopup parkData={parkData} time='Current' />
+                  isHourly = <Table.Cell><PopupHourly parkData={parkData} time='Current' /></Table.Cell>
                 } else {
-                  isHourly = <Table.Cell><PrecipPercent parkData={parkData} /> <PrecipType parkData={parkData} /></Table.Cell>;
+                  isHourly = <Table.Cell><PopupDaily parkData={parkData} /></Table.Cell>;
                 }
                 return (<Table.Row key={parkData[2].park+parkData[2].gm}>
                   <Table.Cell>{parkData[2].data.away_name_abbrev} vs {parkData[2].park}</Table.Cell>
@@ -49,15 +50,22 @@ export default class MultiParkDetails extends React.Component {
       // Delivers the good news that no games have a high precipitation chance
       highChanceTable = <div><Header as='h3' className='infoHeader noHighChanceHeader'>No games have a high chance of rain!</Header> <Divider /></div>
     }
-
       // Places Low chance parks into a list
       lowChanceList = gameData.low.map((currPark) => {
+        let isHourly;
         let parkData = currPark[Object.keys(currPark)[0]];
+        if (parkData[0] === 'hourly') {
+          isHourly = <PopupHourly parkData={parkData} time={dateManipulation.stripMinutes(parkData[2].data.event_time)}/>;
+        } else if (parkData[0] === 'current') {
+          isHourly = <PopupHourly parkData={parkData} time='Current' />
+        } else {
+          isHourly = <PopupDaily parkData={parkData} />;
+        }
         let time = parkData[2].data.event_time;
         if (['preview','pre-game','warmup'].indexOf(parkData[2].data.status.toLowerCase()) < 0) {
              time = parkData[2].data.status;
              }
-        return (<li key={parkData[2].park+parkData[2].gm} className='listItem'><span>{parkData[2].data.away_name_abbrev} vs {parkData[2].park} </span><PrecipPercent parkData={parkData} /> <span>{time}</span><Divider /></li>)
+        return (<li key={parkData[2].park+parkData[2].gm} className='listItem'><span className='parkItem'>{parkData[2].data.away_name_abbrev} vs {parkData[2].park}</span> - <span>{time} </span> - {isHourly}</li>)
       });
 
       // Adds Dome parks to the end of the low chance parks list
@@ -67,17 +75,9 @@ export default class MultiParkDetails extends React.Component {
         if (['preview','pre-game','warmup'].indexOf(parkData[2].data.status.toLowerCase()) < 0) {
              time = parkData[2].data.status;
              }
-        lowChanceList.push(<li key={parkData[2].park+parkData[2].gm} className='listItem'><span>{parkData[2].data.away_name_abbrev} vs {parkData[2].park} </span><span className='precipItem'>-%</span> <span>{time}</span><Divider /></li>);
+        lowChanceList.push(<li key={parkData[2].park+parkData[2].gm} className='listItem'><span className='parkItem'>{parkData[2].data.away_name_abbrev} vs {parkData[2].park}</span> - <span>{time}</span> - <span className='precipItem'>DOME</span></li>);
       return; 
       });
-
-      // Adds a dash to keep the two column list looking even stevens 
-        if (!lowChanceList.length) {
-          lowChanceList.push(<li key={'emptyPark1'} className='listItem'>n/a</li>);
-          lowChanceList.push(<li key={'emptyPark2'} className='listItem'>n/a</li>);
-        } else if (lowChanceList.length % 2) {
-        lowChanceList.push(<li key={'emptyPark'+this.props.day} className='listItem emptyItem'>-<Divider /></li>);
-      } 
                          
     return (
       <Grid.Column tablet={16} mobile={16} computer={5}>
@@ -88,9 +88,10 @@ export default class MultiParkDetails extends React.Component {
         </div>
         <div className='detailsContainer'>
           {highChanceTable}
-          <Header as='h4' className='infoHeader noMarginTop'>Low or No Chance MLB Parks</Header>
-          <ul className='list lowChance'>{lowChanceList}</ul>     
-          <p className='infoSubHeader'>* indicates game time data</p>
+          <Header as='h3' className='infoHeader noMarginTop'>MLB Parks with a low rain chance</Header>
+          <ul className='list lowChance'>{lowChanceList}</ul>
+          <Divider />
+          <p className='infoSubHeader indicator'>* indicates game time data</p>
         </div>
       </Grid.Column>
     )
