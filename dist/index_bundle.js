@@ -9970,38 +9970,33 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var PrecipPercent = function (_React$Component) {
-  _inherits(PrecipPercent, _React$Component);
+var PrecipType = function (_React$Component) {
+  _inherits(PrecipType, _React$Component);
 
-  function PrecipPercent(props) {
-    _classCallCheck(this, PrecipPercent);
+  function PrecipType(props) {
+    _classCallCheck(this, PrecipType);
 
-    return _possibleConstructorReturn(this, (PrecipPercent.__proto__ || Object.getPrototypeOf(PrecipPercent)).call(this, props));
+    return _possibleConstructorReturn(this, (PrecipType.__proto__ || Object.getPrototypeOf(PrecipType)).call(this, props));
   }
 
-  _createClass(PrecipPercent, [{
+  _createClass(PrecipType, [{
     key: 'render',
     value: function render() {
-      var isHighChance = void 0;
-      if (this.props.parkData[1][this.props.hour].precipProbability >= 0.4) {
-        console.log('high chance');
-        isHighChance = this.props.parkData[1][this.props.hour].precipType;
-      }
       return _react2.default.createElement(
         'span',
         null,
-        isHighChance
+        this.props.parkData[1][this.props.hour].precipType
       );
     }
   }]);
 
-  return PrecipPercent;
+  return PrecipType;
 }(_react2.default.Component);
 
-exports.default = PrecipPercent;
+exports.default = PrecipType;
 
 
-PrecipPercent.defaultProps = {
+PrecipType.defaultProps = {
   hour: 0
 };
 
@@ -31123,11 +31118,11 @@ var MultiParkDetails = function (_React$Component) {
         var isHourly = void 0;
         var parkData = currPark[Object.keys(currPark)[0]];
         if (parkData[0] === 'hourly') {
-          isHourly = _react2.default.createElement(_PopupHourly2.default, { parkData: parkData, time: _dateManipulation2.default.stripMinutes(parkData[2].data.event_time) });
+          isHourly = _react2.default.createElement(_PopupHourly2.default, { parkData: parkData, time: _dateManipulation2.default.stripMinutes(parkData[2].data.event_time), noType: true });
         } else if (parkData[0] === 'current') {
-          isHourly = _react2.default.createElement(_PopupHourly2.default, { parkData: parkData, time: 'Current' });
+          isHourly = _react2.default.createElement(_PopupHourly2.default, { parkData: parkData, time: 'Current', noType: true });
         } else {
-          isHourly = _react2.default.createElement(_PopupDaily2.default, { parkData: parkData });
+          isHourly = _react2.default.createElement(_PopupDaily2.default, { parkData: parkData, noType: true });
         }
         var time = parkData[2].data.event_time;
         if (['preview', 'pre-game', 'warmup'].indexOf(parkData[2].data.status.toLowerCase()) < 0) {
@@ -31289,6 +31284,10 @@ var PopupDaily = function (_React$Component) {
   _createClass(PopupDaily, [{
     key: 'render',
     value: function render() {
+      var precipType = void 0;
+      if (!this.props.noType) {
+        precipType = _react2.default.createElement(_PrecipType2.default, { parkData: this.props.parkData });
+      }
       return _react2.default.createElement(
         _semanticUiReact.Popup,
         { trigger: _react2.default.createElement(
@@ -31296,7 +31295,7 @@ var PopupDaily = function (_React$Component) {
             { className: 'isHourly' },
             _react2.default.createElement(_PrecipPercent2.default, { parkData: this.props.parkData }),
             ' ',
-            _react2.default.createElement(_PrecipType2.default, { parkData: this.props.parkData })
+            precipType
           ), flowing: true, hoverable: true },
         _react2.default.createElement(
           'div',
@@ -31368,6 +31367,10 @@ var PopupHourly = function (_React$Component) {
   _createClass(PopupHourly, [{
     key: 'render',
     value: function render() {
+      var precipType = void 0;
+      if (!this.props.noType) {
+        precipType = _react2.default.createElement(_PrecipType2.default, { parkData: this.props.parkData });
+      }
       return _react2.default.createElement(
         _semanticUiReact.Popup,
         { trigger: _react2.default.createElement(
@@ -31375,7 +31378,7 @@ var PopupHourly = function (_React$Component) {
             { className: 'isHourly' },
             _react2.default.createElement(_PrecipPercent2.default, { parkData: this.props.parkData }),
             ' ',
-            _react2.default.createElement(_PrecipType2.default, { parkData: this.props.parkData })
+            precipType
           ), flowing: true, hoverable: true },
         _react2.default.createElement(
           'div',
@@ -31399,9 +31402,13 @@ var PopupHourly = function (_React$Component) {
                   { as: 'h4' },
                   this.props.time
                 ),
-                _react2.default.createElement(_PrecipPercent2.default, { parkData: this.props.parkData, noStar: true }),
-                ' ',
-                _react2.default.createElement(_PrecipType2.default, { parkData: this.props.parkData })
+                _react2.default.createElement(
+                  'span',
+                  { className: 'noWrap' },
+                  _react2.default.createElement(_PrecipPercent2.default, { parkData: this.props.parkData, noStar: true }),
+                  ' ',
+                  _react2.default.createElement(_PrecipType2.default, { parkData: this.props.parkData })
+                )
               ),
               _react2.default.createElement(
                 _semanticUiReact.Grid.Column,
@@ -31411,9 +31418,13 @@ var PopupHourly = function (_React$Component) {
                   { as: 'h4' },
                   '+1 Hr'
                 ),
-                _react2.default.createElement(_PrecipPercent2.default, { parkData: this.props.parkData, hour: 1, noStar: true }),
-                ' ',
-                _react2.default.createElement(_PrecipType2.default, { parkData: this.props.parkData, hour: 1 })
+                _react2.default.createElement(
+                  'span',
+                  { className: 'noWrap' },
+                  _react2.default.createElement(_PrecipPercent2.default, { parkData: this.props.parkData, hour: 1, noStar: true }),
+                  ' ',
+                  _react2.default.createElement(_PrecipType2.default, { parkData: this.props.parkData, hour: 1 })
+                )
               ),
               _react2.default.createElement(
                 _semanticUiReact.Grid.Column,
@@ -31423,9 +31434,13 @@ var PopupHourly = function (_React$Component) {
                   { as: 'h4' },
                   '+2 Hr'
                 ),
-                _react2.default.createElement(_PrecipPercent2.default, { parkData: this.props.parkData, hour: 2, noStar: true }),
-                ' ',
-                _react2.default.createElement(_PrecipType2.default, { parkData: this.props.parkData, hour: 2 })
+                _react2.default.createElement(
+                  'span',
+                  { className: 'noWrap' },
+                  _react2.default.createElement(_PrecipPercent2.default, { parkData: this.props.parkData, hour: 2, noStar: true }),
+                  ' ',
+                  _react2.default.createElement(_PrecipType2.default, { parkData: this.props.parkData, hour: 2 })
+                )
               )
             )
           )
@@ -31863,7 +31878,7 @@ var weatherHelper = function () {
         if (gameTimes[game] - info[park].data.currently.time * 1000 < 172800000 && gameTimes[game] - info[park].data.currently.time * 1000 > 0) {
           Object.keys(hourlyData).map(function (hour) {
             hour = parseInt(hour);
-            if (-3600000 <= hourlyData[hour].time * 1000 - gameTimes[game] && hourlyData[hour].time * 1000 - gameTimes[game] <= 360000) {
+            if (-3600000 <= hourlyData[hour].time * 1000 - gameTimes[game] && hourlyData[hour].time * 1000 - gameTimes[game] <= 360000 && hourlyData[hour + 2]) {
               precipitationPercentage[game] = ['hourly', [hourlyData[hour], hourlyData[hour + 1], hourlyData[hour + 2]], gameData[game]];
               return;
             }

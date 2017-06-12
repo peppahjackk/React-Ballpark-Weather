@@ -10,8 +10,12 @@ export default class PopupDaily extends React.Component {
   }
   
   render() {
+    let precipType;
+    if (!this.props.noType) {
+      precipType = <PrecipType parkData={this.props.parkData} />;
+    }
     return (
-        <Popup trigger={<span className='isHourly'><PrecipPercent parkData={this.props.parkData}/> <PrecipType parkData={this.props.parkData} /></span>} flowing hoverable>
+        <Popup trigger={<span className='isHourly'><PrecipPercent parkData={this.props.parkData}/> {precipType}</span>} flowing hoverable>
           <div className='popup'>
             <Header as='h5' textAlign='center'>Weather Summary:</Header>    
             {this.props.parkData[1][0].summary}

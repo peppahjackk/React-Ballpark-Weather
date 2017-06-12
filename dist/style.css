@@ -260,6 +260,10 @@ p.infoSubHeader {
 	white-space: nowrap;
 }
 
+.noWrap {
+	white-space: nowrap;
+}
+
 .errorContainer {
 	min-height: 6rem;
 	padding: 1.5rem;

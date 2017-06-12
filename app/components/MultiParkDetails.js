@@ -55,11 +55,11 @@ export default class MultiParkDetails extends React.Component {
         let isHourly;
         let parkData = currPark[Object.keys(currPark)[0]];
         if (parkData[0] === 'hourly') {
-          isHourly = <PopupHourly parkData={parkData} time={dateManipulation.stripMinutes(parkData[2].data.event_time)}/>;
+          isHourly = <PopupHourly parkData={parkData} time={dateManipulation.stripMinutes(parkData[2].data.event_time)} noType/>;
         } else if (parkData[0] === 'current') {
-          isHourly = <PopupHourly parkData={parkData} time='Current' />
+          isHourly = <PopupHourly parkData={parkData} time='Current' noType/>
         } else {
-          isHourly = <PopupDaily parkData={parkData} />;
+          isHourly = <PopupDaily parkData={parkData} noType/>;
         }
         let time = parkData[2].data.event_time;
         if (['preview','pre-game','warmup'].indexOf(parkData[2].data.status.toLowerCase()) < 0) {

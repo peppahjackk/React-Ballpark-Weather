@@ -16,7 +16,7 @@ export default class weatherHelper {
       if (gameTimes[game] - (info[park].data.currently.time * 1000) < 172800000 && gameTimes[game] - (info[park].data.currently.time * 1000) > 0) {
         Object.keys(hourlyData).map((hour) => {
           hour = parseInt(hour);
-          if ((-3600000 <= (hourlyData[hour].time * 1000) - gameTimes[game] && (hourlyData[hour].time * 1000) - gameTimes[game] <= 360000)) {
+          if ((-3600000 <= (hourlyData[hour].time * 1000) - gameTimes[game] && (hourlyData[hour].time * 1000) - gameTimes[game] <= 360000) && hourlyData[hour + 2]) {
             precipitationPercentage[game] = ['hourly', [hourlyData[hour], hourlyData[hour + 1], hourlyData[hour + 2]], gameData[game]];
             return;
           }
