@@ -37,6 +37,7 @@ export default class weatherHelper {
       low: [],
       dome: []
     };
+    let pickHighest = (arr)=> Math.round(Math.max(...arr) * 100);
     let sortedParks = Object.keys(parks).sort((a, b) => {
       // Pushes any DOME park to the bottom of the list
       if (['ARI', 'HOU', 'MIA', 'MIL', 'SEA', 'TB', 'TOR'].indexOf(parks[b].data.home_name_abbrev) > -1) {
@@ -44,16 +45,22 @@ export default class weatherHelper {
       } else if ((['ARI', 'HOU', 'MIA', 'MIL', 'SEA', 'TB', 'TOR'].indexOf(parks[a].data.home_name_abbrev) > -1)) {
         return 1;
       }
-      return parksPlus[parks[b].data.home_name_abbrev + parks[b].data.game_nbr][1][0].precipProbability - parksPlus[parks[a].data.home_name_abbrev + parks[a].data.game_nbr][1][0].precipProbability;
+      let aMax = parksPlus[parks[a].data.home_name_abbrev + parks[a].data.game_nbr][1].map((a)=>a.precipProbability);
+      let bMax = parksPlus[parks[b].data.home_name_abbrev + parks[b].data.game_nbr][1].map((b)=>b.precipProbability);
+      return Math.round(Math.max(...bMax) * 100) - Math.round(Math.max(...aMax) * 100);
     })
     sortedParks = sortedParks.slice(0);
     for (let park in sortedParks) {
       let parkData = parksPlus[parks[sortedParks[park]].data.home_name_abbrev + parks[sortedParks[park]].data.game_nbr];
       let parkObj = {};
       parkObj[sortedParks[park]] = parkData;
+      let parksHigh;
+      if(typeof parkData[1][0] === 'object') {
+        parksHigh = Math.max(...parkData[1].map((a)=>a.precipProbability));
+      }
       if (typeof parkData[1][0] != 'object') {
         finalParksPlus.dome.push(parkObj);
-      } else if (parkData[1][0].precipProbability >= 0.4) {
+      } else if (parksHigh >= 0.4) {
         let parkName = sortedParks[park];
         finalParksPlus.high.push(parkObj);
       } else {

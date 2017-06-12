@@ -15,7 +15,7 @@ export default class PopupHourly extends React.Component {
       precipType = <PrecipType parkData={this.props.parkData} />;
     }
     return (
-      <Popup trigger={<span className='isHourly'><PrecipPercent parkData={this.props.parkData}/> {precipType}</span>} flowing hoverable>  
+      <Popup trigger={<span className='isHourly'><PrecipPercent parkData={this.props.parkData} pickHighest/> {precipType}</span>} flowing hoverable>  
         <div className='popup'>
           <Header as='h5' textAlign='center'>Hourly Rain %:</Header>
           <Grid centered divided columns={3}>

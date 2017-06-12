@@ -88,7 +88,10 @@ a:hover {
 }
 
 .skeleIndicator {
-	margin-top: 56px;
+	position: absolute;
+	bottom: 0.5rem;
+	left: 50%;
+	transform: translateX(-50%);
 }
 
 .header.infoHeader {
@@ -162,6 +165,10 @@ p.infoSubHeader {
 
 .ui.thead.precipTHead {
 	background: none;
+}
+
+.ui.table thead th {
+	color: #436040;
 }
 
 .list {

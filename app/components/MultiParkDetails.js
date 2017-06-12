@@ -20,7 +20,7 @@ export default class MultiParkDetails extends React.Component {
         gameData = this.props.gameData;
     // Places high chance parks into a table 
     if (gameData.high.length) {
-      highChanceTable = <div><Header as='h3' className='infoHeader'>MLB Parks with a high rain chance</Header><Table celled compact unstackable className='precipTable'>
+      highChanceTable = <div><Header as='h3' className='infoHeader'>MLB Parks with a high rain chance</Header><Table celled compact='very' unstackable className='precipTable'>
             <DetailsHeader />
             <Table.Body>
               {gameData.high.map((currPark) => {
