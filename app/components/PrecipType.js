@@ -1,24 +1,19 @@
 import React from 'react'
 
-export default class PrecipPercent extends React.Component {
+export default class PrecipType extends React.Component {
   constructor(props) {
     super(props)
   }
   
   render() {
-    let isHighChance;
-    if (this.props.parkData[1][this.props.hour].precipProbability >= 0.4) {
-      console.log('high chance');
-      isHighChance = this.props.parkData[1][this.props.hour].precipType;
-    }
     return(
       <span>
-        {isHighChance}
+        {this.props.parkData[1][this.props.hour].precipType}
       </span>
     )
   }
 }
 
-PrecipPercent.defaultProps = {
+PrecipType.defaultProps = {
   hour: 0
 }
