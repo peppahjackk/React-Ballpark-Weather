@@ -9928,7 +9928,6 @@ var PrecipPercent = function (_React$Component) {
         var hoursPrecip = this.props.parkData[1].map(function (hour) {
           return hour.precipProbability;
         });
-
         displayPercent = Math.round(Math.max.apply(Math, _toConsumableArray(hoursPrecip)) * 100);
       }
       // Adds indicator if hourly weather data is utilized
@@ -31052,7 +31051,7 @@ var MultiParkDetails = function (_React$Component) {
           ),
           _react2.default.createElement(
             _semanticUiReact.Table,
-            { celled: true, compact: true, unstackable: true, className: 'precipTable' },
+            { celled: true, compact: 'very', unstackable: true, className: 'precipTable' },
             _react2.default.createElement(_DetailsHeader2.default, null),
             _react2.default.createElement(
               _semanticUiReact.Table.Body,
@@ -31864,6 +31863,8 @@ var _axios2 = _interopRequireDefault(_axios);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 var weatherHelper = function () {
@@ -31912,6 +31913,9 @@ var weatherHelper = function () {
         low: [],
         dome: []
       };
+      var pickHighest = function pickHighest(arr) {
+        return Math.round(Math.max.apply(Math, _toConsumableArray(arr)) * 100);
+      };
       var sortedParks = Object.keys(parks).sort(function (a, b) {
         // Pushes any DOME park to the bottom of the list
         if (['ARI', 'HOU', 'MIA', 'MIL', 'SEA', 'TB', 'TOR'].indexOf(parks[b].data.home_name_abbrev) > -1) {
@@ -31919,16 +31923,31 @@ var weatherHelper = function () {
         } else if (['ARI', 'HOU', 'MIA', 'MIL', 'SEA', 'TB', 'TOR'].indexOf(parks[a].data.home_name_abbrev) > -1) {
           return 1;
         }
-        return parksPlus[parks[b].data.home_name_abbrev + parks[b].data.game_nbr][1][0].precipProbability - parksPlus[parks[a].data.home_name_abbrev + parks[a].data.game_nbr][1][0].precipProbability;
+        var aMax = parksPlus[parks[a].data.home_name_abbrev + parks[a].data.game_nbr][1].map(function (a) {
+          return a.precipProbability;
+        });
+        var bMax = parksPlus[parks[b].data.home_name_abbrev + parks[b].data.game_nbr][1].map(function (b) {
+          return b.precipProbability;
+        });
+        return Math.round(Math.max.apply(Math, _toConsumableArray(bMax)) * 100) - Math.round(Math.max.apply(Math, _toConsumableArray(aMax)) * 100);
       });
       sortedParks = sortedParks.slice(0);
       for (var park in sortedParks) {
         var parkData = parksPlus[parks[sortedParks[park]].data.home_name_abbrev + parks[sortedParks[park]].data.game_nbr];
         var parkObj = {};
         parkObj[sortedParks[park]] = parkData;
+        console.log(parkData[1]);
+        var parksHigh = void 0;
+        if (_typeof(parkData[1][0]) === 'object') {
+          parksHigh = Math.max.apply(Math, _toConsumableArray(parkData[1].map(function (a) {
+            return a.precipProbability;
+          })));
+        }
+        console.log(parksHigh);
+        console.log(_typeof(parkData[1][0]));
         if (_typeof(parkData[1][0]) != 'object') {
           finalParksPlus.dome.push(parkObj);
-        } else if (parkData[1][0].precipProbability >= 0.4) {
+        } else if (parksHigh >= 0.4) {
           var parkName = sortedParks[park];
           finalParksPlus.high.push(parkObj);
         } else {

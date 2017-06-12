@@ -164,6 +164,10 @@ p.infoSubHeader {
 	background: none;
 }
 
+.ui.table thead th {
+	color: #436040;
+}
+
 .list {
 	list-style-type: none;
 	padding: 0;
