@@ -1,11 +1,7 @@
 import React from 'react'
 import { Table } from 'semantic-ui-react'
 
-export default class DetailsHeader extends React.Component {
-  constructor(props) {
-    super(props)
-  }
-  
+export default class DetailsHeader extends React.Component {  
   render() {
     return(
       <Table.Header className='precipTHead'>

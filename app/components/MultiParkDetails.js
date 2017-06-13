@@ -26,6 +26,7 @@ export default class MultiParkDetails extends React.Component {
               {gameData.high.map((currPark) => {
                 let isHourly;
                 let parkData = currPark[Object.keys(currPark)[0]];
+                // Set the hourly or daily detail popup on hover
                 if (parkData[0] === 'hourly') {
                   isHourly = <Table.Cell><PopupHourly parkData={parkData} time={dateManipulation.stripMinutes(parkData[2].data.event_time)}/></Table.Cell>;
                 } else if (parkData[0] === 'current') {
@@ -50,10 +51,11 @@ export default class MultiParkDetails extends React.Component {
       // Delivers the good news that no games have a high precipitation chance
       highChanceTable = <div><Header as='h3' className='infoHeader noHighChanceHeader'>No games have a high chance of rain!</Header> <Divider /></div>
     }
-      // Places Low chance parks into a list
+      // Places low chance parks into a list
       lowChanceList = gameData.low.map((currPark) => {
         let isHourly;
         let parkData = currPark[Object.keys(currPark)[0]];
+        // Sets hourly or daily detail popup on hover
         if (parkData[0] === 'hourly') {
           isHourly = <PopupHourly parkData={parkData} time={dateManipulation.stripMinutes(parkData[2].data.event_time)} noType/>;
         } else if (parkData[0] === 'current') {
@@ -61,6 +63,7 @@ export default class MultiParkDetails extends React.Component {
         } else {
           isHourly = <PopupDaily parkData={parkData} noType/>;
         }
+        // Displays game start time or status if it is in play or delayed
         let time = parkData[2].data.event_time;
         if (['preview','pre-game','warmup'].indexOf(parkData[2].data.status.toLowerCase()) < 0) {
              time = parkData[2].data.status;
@@ -71,6 +74,7 @@ export default class MultiParkDetails extends React.Component {
       // Adds Dome parks to the end of the low chance parks list
       gameData.dome.map((currPark) => {
         let parkData = currPark[Object.keys(currPark)[0]];
+        // Displays game start time or status if it is in play or delayed
         let time = parkData[2].data.event_time;
         if (['preview','pre-game','warmup'].indexOf(parkData[2].data.status.toLowerCase()) < 0) {
              time = parkData[2].data.status;

@@ -11,7 +11,7 @@ export default class Home extends React.Component {
           <Grid.Row>    
             <PageHeader/>
           </Grid.Row>
-          <FullLeague header='Ballpark Weather'></FullLeague>
+          <FullLeague />
         </Grid>
       </Container>
     )

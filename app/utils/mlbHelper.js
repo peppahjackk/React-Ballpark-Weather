@@ -7,6 +7,7 @@ export default class mlbHelper {
     return axios.post('./getParks.php')
       .then((info) => {
         let parkData = info;
+        // Organizes returned info into an object: date->game->gameInfo
         Object.keys(parkData.data).map((date) => {
           let games = parkData.data[date];
           allParkData[date] = {};
@@ -22,6 +23,7 @@ export default class mlbHelper {
   }
   
   static extractGameTimes(gameTimes, gameData) {
+    // Begins building the nest parksPlus object
     let parksPlus = {};
     for (let game in gameTimes) {
       parksPlus[gameTimes[game].park] = gameTimes[game].time;

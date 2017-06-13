@@ -1,6 +1,7 @@
 import React from 'react'
 import { Grid, Header, Table, Divider } from 'semantic-ui-react'
 import EmptyTableRows from './EmptyTableRows'
+import EmptyListItems from './EmptyListItems'
 import DetailsHeader from './DetailsHeader'
 
 export default class DetailsSkeleton extends React.Component {
@@ -24,12 +25,7 @@ export default class DetailsSkeleton extends React.Component {
           </Table>
             <Header as='h4' className='infoHeader noMarginTop'>Low or No Chance Parks</Header>
             <ul className='list lowChance'>
-              <li className='listItem'><span className='parkItem'>Park</span> - Time - <span className='precipItem'>0%</span></li>
-              <li className='listItem'><span className='parkItem'>Park</span> - Time - <span className='precipItem'>0%</span></li>
-              <li className='listItem'><span className='parkItem'>Park</span> - Time - <span className='precipItem'>0%</span></li>
-              <li className='listItem'><span className='parkItem'>Park</span> - Time - <span className='precipItem'>0%</span></li>
-              <li className='listItem'><span className='parkItem'>Park</span> - Time - <span className='precipItem'>0%</span></li>
-              <li className='listItem'><span className='parkItem'>Park</span> - Time - <span className='precipItem'>0%</span></li>
+              <EmptyListItems rows={6} />
             </ul>
             <p className='infoSubHeader skeleIndicator'>* indicates game time data</p>
         </div>
