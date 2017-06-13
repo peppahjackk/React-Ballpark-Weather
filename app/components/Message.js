@@ -9,11 +9,12 @@ export default class ErrorMsg extends React.Component {
   
   render() {
     let message;
+    // Sets message type to error or regular
     if (this.props.e) {
       message = <MessageError e={this.props.e} />
     } else {
       message = <div className='detailsContainer'>
-          <p>{this.props.msg}</p>
+        <p>{this.props.msg}</p>
       </div>
     }
     return (

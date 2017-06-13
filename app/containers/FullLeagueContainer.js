@@ -84,7 +84,7 @@ export default class FiveDayLeague extends React.Component {
         content = <Message key='error' e={this.state.error} />
       }
       return (this.state.isLoading === true ?
-        <Loading days={this.state.days} header={this.props.header} subheader={this.props.subheader} /> 
+        <Loading days={this.state.days} subheader={this.props.subheader} /> 
       :
         <Grid.Row columns='3' className='detailsRow'> { content } </Grid.Row>
       )
