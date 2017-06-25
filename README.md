@@ -1,1 +1,11 @@
-A web app built in React.JS that pulls weather data from baseball cities and details which upcoming games have a high chance of precipitation.
+# Ballpark Weather
+> A tool built in React.js for forecasting potential inclement weather during upcoming MLB games and by extension, weather delays
+
+## Planned Features
+
+* Number of days displayed (In-Progress)
+* Sortable tables
+* Radar Map
+* Individual Stadium Routes
+* More detailed weather info (precipitation intensity, wind, etc)
+* Improved animation performance
