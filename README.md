@@ -1,5 +1,6 @@
 # Ballpark Weather
-> A tool built in React.js for forecasting potential inclement weather during upcoming MLB games and by extension, weather delays
+> A tool built in React.js for forecasting potential inclement weather during upcoming MLB games and by extension, weather delays.
+[http://www.ballparkweather.com](www.ballpark-weather.com)
 
 ## Planned Features
 
