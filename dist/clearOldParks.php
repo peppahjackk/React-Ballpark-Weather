@@ -15,7 +15,7 @@ if ($conn->connect_error) {
   die('Connection failed: ' . $conn->connect_error);
 }
 
-$sql = "DELETE FROM GameData WHERE (status!='preview' AND status!='warm-up' AND status!='game over' AND status!='in progress' AND status!='delayed' AND status!='postponed')";
+$sql = "DELETE FROM GameData WHERE (status='final') || (gm=0) || (date=0)";
 if ($conn->query($sql) === FALSE) {
   echo 'Error: ' . $sql . '<br>' . $conn->error;
 } else {

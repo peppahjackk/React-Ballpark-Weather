@@ -37,21 +37,33 @@ for ($i = 0; $i <= 8; $i++) {
   curl_setopt($curl, CURLOPT_URL, 'http://gd2.mlb.com/components/game/mlb/year_'.$y.'/month_'.$m.'/day_'.$d.'/grid.json');
   curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
   $result = curl_exec($curl);
+  if(strlen($result) < 1000) {
+    continue;
+  }
   
   // Convert data to object and strip extraneous information
   $result = json_decode($result);
+  
+  // If no games or all star game, skip loop iteration
+  if (gettype($result->data->games->game) != 'array') {
+    if ($result->data->games->game->home_name_abbrev === 'AL' || $result->data->games->game->home_name_abbrev === 'NL') {
+      continue;
+    };
+  };
+ 
   $result = $result->data->games->game;
   
   // Insert each game into DB for current day
   foreach ($result as $currentGame) {
     $currentGameStr = json_encode($currentGame);
     $currDate = parseDate($currentGame->calendar_event_id);
-    
     $sql = "REPLACE INTO GameData " .
     "(gid, date, park, gm, data, status) " .
     "VALUES ( '$currentGame->calendar_event_id', '$currDate', '$currentGame->home_name_abbrev', '$currentGame->game_nbr', '$currentGameStr', '$currentGame->status' )";
     if ($conn->query($sql) === FALSE) {
       echo 'Error: ' . $sql . '<br>' . $conn->error;
+    } else {
+      echo 'Game entered';
     }
   }
 }
