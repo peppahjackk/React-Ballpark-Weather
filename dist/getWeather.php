@@ -22,7 +22,7 @@ $result = $conn->query($sql);
 
 if ($result->num_rows > 0) {
   // output data of each row
-  while($row = $result->fetch_assoc()) {
+  while($row=mysqli_fetch_assoc($result)) {
     $weatherData->$row['park'] = (object)[];
     if (gettype(json_decode($row['data'])) === 'object') {
       $weatherData->$row['park']->data = json_decode($row['data']);
